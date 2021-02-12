@@ -4,16 +4,19 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAIN
+#include "core.h"
+
 
 bool verbose = 0;
-char* target_file = NULL;
+char* target_file = "prog.mem";
 uint32_t pc_init = 0x00000000;
 
 void usage(char* message, int err) {
     FILE* fd = err == 0 ? stdout : stderr;
     fprintf(fd, "%s\n", message);
 
-    fprintf(fd, "--load-file <config_file>          Decoded runtime code\n");
+    fprintf(fd, "--load-file <config_file>          Decoded runtime code (default: \"%s\")\n", target_file);
     fprintf(fd, "--pc-init <addr>                   Hexadecimal value to start the program counter (default: %08X)\n", pc_init);
     fprintf(fd, "--verbose                          Show extra verbose information\n");
 
@@ -47,9 +50,45 @@ int main(int argc, char* argv[]) {
     }
 
     // Load the Input file
-    if (target_file) {
-        printf("pc-init at: %08X\n", pc_init);
-        printf("Load file not implemented: %s\n", target_file);
+    if (target_file && strlen(target_file) > 0) {
+        INFO("pc-init at: %08X", pc_init);
+
+        // Open file
+        FILE *f;
+        if ((f = fopen(target_file, "r+")) == NULL)
+            FAIL_SYS("Unable to open input file: %s", target_file);
+
+        // Parse the file
+        int line_no = 0;
+        char line[255];
+        while (fgets(line, sizeof(line), f) != NULL) {
+
+            // Split the string into 
+            char* addr_ptr = line;
+            char* value_ptr;
+            if ((value_ptr = strchr(addr_ptr, ':')) != NULL) {
+                value_ptr[0] = 0;
+                value_ptr++;
+            } else
+                FAIL("Invalid line: %s", line);
+
+            // Parse address
+            uint32_t addr;
+            if (sscanf(addr_ptr, "%X", &addr) != 1)
+                FAIL("Invalid line: %s", line);
+
+            // Parse value
+            uint32_t value;
+            if (sscanf(value_ptr, "%X", &value) != 1)
+                FAIL("Invalid line: %s", line);
+
+            // Log to verbose information the parsed line
+            INFO("%04X (L%02d): %08X", addr, line_no, value);
+            line_no++;
+        }
+
+        if (line_no == 0)
+            FAIL("File is empty");
     } else {
         usage("Target file not specified", 1);
     }
