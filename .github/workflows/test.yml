@@ -1,0 +1,13 @@
+name: Compile Test
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Compile the program
+        run: make
