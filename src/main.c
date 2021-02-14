@@ -12,6 +12,7 @@
 bool verbose = 0;
 char* target_file = "prog.mem";
 uint32_t pc_init = 0x00000000;
+uint32_t sp_init = 65535;
 uint32_t simulation_size = 1 << 28;
 
 void usage(char* message, int err) {
@@ -20,6 +21,7 @@ void usage(char* message, int err) {
 
     fprintf(fd, "--load-file <config_file>          Decoded runtime code (default: \"%s\")\n", target_file);
     fprintf(fd, "--pc-init <addr>                   Hexadecimal value to start the program counter (default: 0x00000000)\n");
+    fprintf(fd, "--sp_init <addr>                   Decimal value to specify the stack address (default: 65535)\n");
     fprintf(fd, "--verbose                          Show extra verbose information\n");
 
     fprintf(fd, "--help                             Show this help dialog\n");
@@ -39,6 +41,11 @@ int main(int argc, char* argv[]) {
             if ((err = sscanf(argv[i], "%X", &pc_init)) != 1) {
                 fprintf(stderr, "Invalid format for --pc-init\n");
             }
+        } else if (strcmp("--sp-init", argv[i]) == 0) {
+            i++;
+            if ((err = sscanf(argv[i], "%d", &sp_init)) != 1) {
+                fprintf(stderr, "Invalid format for --sp-init\n");
+            }
         } else if (strcmp("--verbose", argv[i]) == 0) {
             verbose = true;
         } else if (strcmp("--help", argv[i]) == 0) {
@@ -53,7 +60,8 @@ int main(int argc, char* argv[]) {
 
     // Load the Input file
     if (target_file && strlen(target_file) > 0) {
-        INFO("pc-init at: %08X", pc_init);
+        INFO("pc-init at: 0x%08X", pc_init);
+        INFO("Stack Address: %d", sp_init);
 
         // Open file
         FILE *f;
