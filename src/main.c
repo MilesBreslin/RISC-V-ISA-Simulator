@@ -6,11 +6,13 @@
 
 #define MAIN
 #include "core.h"
+#include "simulator.h"
 
 
 bool verbose = 0;
 char* target_file = "prog.mem";
 uint32_t pc_init = 0x00000000;
+uint32_t simulation_size = 1 << 28;
 
 void usage(char* message, int err) {
     FILE* fd = err == 0 ? stdout : stderr;
@@ -58,6 +60,9 @@ int main(int argc, char* argv[]) {
         if ((f = fopen(target_file, "r+")) == NULL)
             FAIL_SYS("Unable to open input file: %s", target_file);
 
+        simulator s;
+        simulator_init(&s, simulation_size);
+
         // Parse the file
         int line_no = 0;
         char line[255];
@@ -82,6 +87,8 @@ int main(int argc, char* argv[]) {
             if (sscanf(value_ptr, "%X", &value) != 1)
                 FAIL("Invalid line: %s", line);
 
+            write_word(&s, addr, value);
+
             // Log to verbose information the parsed line
             INFO("%04X (L%02d): %08X", addr, line_no, value);
             line_no++;
@@ -89,6 +96,9 @@ int main(int argc, char* argv[]) {
 
         if (line_no == 0)
             FAIL("File is empty");
+        
+        if (verbose)
+            display_memory(&s, 0, line_no);
     } else {
         usage("Target file not specified", 1);
     }
