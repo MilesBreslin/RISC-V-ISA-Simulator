@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+FAIL() {
+    echo "$@" >&2
+    exit 1
+}
+
+CC_CANDIDATES=(
+    riscv64-unknown-linux-gnu-gcc
+    /pkgs/riscv-gnu-toolchain/riscv-gnu-toolchain/bin/riscv64-unknown-linux-gnu-gcc
+)
+for i in "${CC_CANDIDATES[@]}" ; do
+    [ -n "$CC" ] && break
+    if which "$i" > /dev/null 2>/dev/null ; then
+        CC="$i"
+    fi
+done
+CC=${CC:-"riscv64-unknown-linux-gnu-gcc"}
+
+OBJDUMP_CANDIDATES=(
+    llvm-objdump{,-{11..9}}
+)
+for i in "${OBJDUMP_CANDIDATES[@]}" ; do
+    [ -n "$OBJDUMP" ] && break
+    if which "$i" > /dev/null 2>/dev/null ; then
+        OBJDUMP="$i"
+    fi
+done
+
+# Check for dependencies
+if [ -z "$CC" ] ; then
+    FAIL "Could not find a compiler"
+fi
+if [ -z "$OBJDUMP" ] ; then
+    FAIL "Could not find llvm-objdump"
+fi
+
+# Check usage args
+if [ -z "$1" ] ; then
+    FAIL "$0 <target_file>"
+fi
+[ -e "$1" ] || FAIL "File $1 not found"
+
+# Ensure we know the target and the base name for the target
+TARGET="$1"
+BASEFILENAME="${TARGET/.c}"
+if [ "$TARGET" == "$BASEFILENAME" ] ; then
+    FAIL "Could not parse path \"$TARGET\". Is it a .c file?"
+fi
+
+set -e
+
+"$CC" -march=rv32i -mabi=ilp32 -fpic -ggdb -O0 -c "$TARGET" -o "$BASEFILENAME.o"
+"$OBJDUMP" -d "$BASEFILENAME.o" \
+    | sed 's/^ *//;/^[a-f0-9]*:/!d;s/  .*//;s/ //g' \
+    > "$BASEFILENAME.mem"

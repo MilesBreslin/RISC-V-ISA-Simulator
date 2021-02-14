@@ -13,5 +13,11 @@ build/riscv_simulator: src/main.o src/simulator.o
 src/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+tests/%: tests/%.mem build/riscv_simulator
+	./build/riscv_simulator --load-file $< --verbose
+
+tests/%.mem: tests/%.c
+	./tools/c_to_mem $@
+
 clean:
 	-rm -rf src/*.o build
