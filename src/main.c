@@ -19,7 +19,7 @@ void usage(char* message, int err) {
     fprintf(fd, "%s\n", message);
 
     fprintf(fd, "--load-file <config_file>          Decoded runtime code (default: \"%s\")\n", target_file);
-    fprintf(fd, "--pc-init <addr>                   Hexadecimal value to start the program counter (default: %08X)\n", pc_init);
+    fprintf(fd, "--pc-init <addr>                   Hexadecimal value to start the program counter (default: 0x00000000)\n");
     fprintf(fd, "--verbose                          Show extra verbose information\n");
 
     fprintf(fd, "--help                             Show this help dialog\n");
