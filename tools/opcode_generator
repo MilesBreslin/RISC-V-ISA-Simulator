@@ -1,0 +1,260 @@
+#!/usr/bin/env bash
+
+SCRIPT="$(<<-'EOF' cat
+def concat_strings(sep):
+    if length <= 1 then
+        first
+    else
+        first + sep + (.[1:] | concat_strings(sep))
+    end;
+def indent:
+    split("\n") | map(([range(4)] | map(" ") | concat_strings("")) + .) | concat_strings("\n");
+def to_hex:
+    floor
+    | if . == 0 then
+        "0"
+    else
+        (. / 16 | to_hex) + 
+        (. % 16
+            | (
+                if . < 10 then
+                    tostring
+                else
+                    [ (. + 65 - 10) ]
+                    | implode
+                end
+            )
+        )
+    end;
+def alphabet:
+    [ range(26) ] | map(. + 65) | implode;
+def escape_c_string:
+    (
+        [
+            alphabet,
+            (alphabet | ascii_downcase),
+            ([range(10)] | map(tostring))[],
+            "/~:$ _-,.<>?;[]{}()=+!@#$%^&*|"
+        ] | concat_strings("") | explode
+    ) as $valid_characters
+    | explode
+    | map(
+        . as $char
+        | if ($valid_characters | contains([$char])) then
+            $char
+        else
+            ("\" \"\\x\(
+                $char
+                | to_hex
+                | ltrimstr("0")
+                | [
+                    ([range(4 - length)] | map("0"))[],
+                    .
+                ] | concat_strings("")
+            )\" \"" | explode)[]
+        end
+    )
+    | implode;
+def c_string:
+    if type == "string" then
+        (
+            split("\n")
+            | map(escape_c_string)
+            | [
+                (.[:-1] | map("\"\(.)\\n\" \\"))[],
+                ("\"\(last)\"")
+            ]
+            | concat_strings("\n")
+        )
+    else if type == "number" or type == "boolean" then
+        tostring
+    else if type == "object" then
+        "{\n\(to_entries
+        | map(
+            if .key | startswith("!") then
+                ".\(.key | ltrimstr("!")) = \(.value)"
+            else
+                ".\(.key) = \(.value | c_string)"
+            end
+        ) | concat_strings(",\n") | indent)\n}"
+    else if type == "array" then
+        "{\n\(map(c_string) | concat_strings(",\n") | indent)\n}"
+    else
+        "NULL"
+    end
+    end
+    end
+    end;
+def c_struct_def(name):
+    "typedef struct {\n\(
+        to_entries
+        | map(
+            "\(.value) \(.key);"
+        )
+        | concat_strings("\n")
+        | indent
+    )\n} \(name);";
+
+def count_bits:
+    if .zeros == null then
+        (.end - .start)
+    else
+        .zeros
+    end;
+def add_bits_offset(offset):
+    (first | count_bits) as $first_bits_count
+    | [ (first | .offset = offset) ]
+    + (if length > 1 then
+        .[1:] | add_bits_offset(offset + $first_bits_count)
+    else
+        []
+    end);
+def generate(file_type):
+    (
+        .instruction_types
+        | to_entries
+        | map(
+            .key as $instruction_type_letter
+            | "\($instruction_type_letter)_INSTRUCTION" as $instruction_type_name
+            | "\($instruction_type_name) as_\($instruction_type_name | ascii_downcase)(uint32_t instruction)" as $function_name
+            | .value
+            | {
+                "header": [
+                    (
+                        map(
+                            .signed as $signed
+                            | (.bits | map(count_bits) | add) as $total_bits
+                            | {
+                                "key": .name,
+                                "value": (
+                                    $total_bits
+                                    | (if . < 8 then 8 else . end)
+                                    | log2
+                                    | ceil
+                                    | pow(2;.)
+                                    | "// <TotalBits=\($total_bits)>\n"
+                                    + if $signed == true then
+                                        "int\(.)_t"
+                                    else
+                                        "uint\(.)_t"
+                                    end
+                                ),
+                            }
+                        )
+                        | from_entries
+                        | c_struct_def($instruction_type_name)
+                    ),
+                    "\($function_name);"
+                ] | concat_strings("\n"),
+                "code": (
+                    [
+                        "\($function_name) {",
+                        ("return (\($instruction_type_name)) \(
+                            map(
+                                .signed as $signed
+                                | {
+                                    "key": "!\(.name)",
+                                    "value": "(\n\(
+                                        .bits
+                                        | (map(count_bits) | add) as $total_bits
+                                        | add_bits_offset(0)
+                                        | map("// <Start=\(.start)> <End=\(.end)> <Length=\(count_bits)> <Offset=\(.offset)> <Zero=\(.zeros != null)>\n\(
+                                            if .zeros == null then
+                                                "((instruction << \(.start)) & (0xFFFFFFFF >> (32 + \(.start) - \(.end))) << \(.offset))"
+                                            else
+                                                0
+                                            end)"
+                                        ) + [ (if $signed then
+                                                "// Signed <Bits=\($total_bits)>\n(\(
+                                                    "(instruction >> (\($total_bits) - 1)) == 0 ? 0 : (0xFFFFFFFF << \($total_bits))"
+                                                ))"
+                                            else
+                                                "// Unsigned\n0"
+                                            end)
+                                        ]
+                                        | "// <TotalBits=\($total_bits)>\n\(concat_strings("\n|\n"))"
+                                        | indent
+                                    )\n)",
+                                }
+                            )
+                            | from_entries
+                            | c_string
+                        );" | indent),
+                        "}"
+                    ]
+                    | concat_strings("\n")
+                )
+            }
+            | getpath([ file_type ])
+        )
+    )
+    + (
+        .operations
+        | to_entries
+        | map(
+            .key as $operation_name
+            | .value
+            | "bool is_\($operation_name | ascii_downcase)_instruction(uint32_t instruction, \(.instruction_type)_INSTRUCTION* decoded_instruction)" as $is_function_name
+            | {
+                "header": [
+                    ("const uint8_t \("OPCODE_\($operation_name)" | ascii_upcase) = \(.opcode);"),
+                    (if .func3 != null then
+                        ("const uint8_t \("FUNC3_\($operation_name)" | ascii_upcase) = \(.func3);")
+                    else empty end),
+                    (if .func7 != null then
+                        ("const uint8_t \("FUNC7_\($operation_name)" | ascii_upcase) = \(.func7);")
+                    else empty end),
+
+                    ("\($is_function_name);")
+                ],
+                "code": [
+                    ("\($is_function_name) {\n\(
+                        [
+                            "if (decoded_instruction->opcode != \(.opcode)) return false;",
+                            (if .func3 != null then
+                                "if (decoded_instruction->func3 != \(.func3)) return false;"
+                            else empty end),
+                            (if .func7 != null then
+                                "if (decoded_instruction->func7 != \(.func7)) return false;"
+                            else empty end),
+                            "return true;"
+                        ]
+                        | concat_strings("\n")
+                        | indent
+                    )\n}")
+                ],
+            }
+            | getpath([ file_type ])
+            | concat_strings("\n")
+        )
+    )
+    | if file_type == "header" then
+        [
+            "#ifndef INSTRUCTIONS_H",
+            "#define INSTRUCTIONS_H",
+            "#include <stdbool.h>",
+            "#include <stdint.h>"
+        ] + . + [
+            "#endif"
+        ]
+    else
+        [
+            ([
+                "#include <stdbool.h>",
+                "#include <stdint.h>",
+                "#include \"instructions.h\""
+            ] | concat_strings("\n"))
+        ] + .
+    end
+    | concat_strings("\n\n")
+    | [
+        "// This file has been generated using `tools/opcode_generator`",
+        "// DO NOT EDIT BY HAND",
+        "",
+        .
+    ] | concat_strings("\n");
+EOF
+)"
+
+yq -r "$SCRIPT generate(\"header\")" opcodes.yaml > src/instructions.h
+yq -r "$SCRIPT generate(\"code\")" opcodes.yaml > src/instructions.c

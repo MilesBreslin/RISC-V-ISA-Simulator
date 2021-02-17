@@ -1,0 +1,102 @@
+operations:
+  ADD:
+    opcode: "0b0110011"
+    func3: "0b000"
+    func7: "0b0000000"
+    instruction_type: R
+  SUB:
+    opcode: "0b0110011"
+    func3: "0b000"
+    func7: "0b0100000"
+    instruction_type: R
+  LW:
+    opcode: "0b0000011"
+    func3: "0b010"
+    instruction_type: I
+instruction_types:
+  R:
+    - name: opcode
+      signed: false
+      bits:
+        - start: 0
+          end: 6
+    - name: rd
+      signed: false
+      bits:
+        - start: 7
+          end: 11
+    - name: func3
+      signed: false
+      bits:
+        - start: 12
+          end: 14
+    - name: rs1
+      signed: false
+      bits:
+        - start: 15
+          end: 19
+    - name: rs2
+      signed: false
+      bits:
+        - start: 20
+          end: 24
+    - name: func7
+      signed: false
+      bits:
+        - start: 25
+          end: 31
+  I:
+    - name: opcode
+      signed: false
+      bits:
+        - start: 0
+          end: 7
+    - name: rd
+      signed: false
+      bits:
+        - start: 6
+          end: 11
+    - name: func3
+      signed: false
+      bits:
+        - start: 12
+          end: 14
+    - name: rs1
+      signed: false
+      bits:
+        - start: 15
+          end: 19
+    - name: imm
+      signed: true
+      bits:
+        - zeros: 1
+        - start: 25
+          end: 31
+  S:
+    - name: opcode
+      signed: false
+      bits:
+        - start: 0
+          end: 6
+    - name: func3
+      signed: false
+      bits:
+        - start: 12
+          end: 14
+    - name: rs1
+      signed: false
+      bits:
+        - start: 15
+          end: 19
+    - name: rs2
+      signed: false
+      bits:
+        - start: 20
+          end: 24
+    - name: imm
+      signed: false
+      bits:
+        - start: 7
+          end: 11
+        - start: 25
+          end: 31
