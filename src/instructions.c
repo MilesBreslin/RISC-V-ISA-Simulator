@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "core.h"
 #include "instructions.h"
 
 R_INSTRUCTION as_r_instruction(uint32_t instruction) {
@@ -154,21 +155,24 @@ S_INSTRUCTION as_s_instruction(uint32_t instruction) {
     };
 }
 
-bool is_add_instruction(uint32_t instruction, R_INSTRUCTION* decoded_instruction) {
+bool is_add_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction) {
+    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_add_instruction");
     if (decoded_instruction->opcode != 0b0110011) return false;
     if (decoded_instruction->func3 != 0b000) return false;
     if (decoded_instruction->func7 != 0b0000000) return false;
     return true;
 }
 
-bool is_sub_instruction(uint32_t instruction, R_INSTRUCTION* decoded_instruction) {
+bool is_sub_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction) {
+    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_sub_instruction");
     if (decoded_instruction->opcode != 0b0110011) return false;
     if (decoded_instruction->func3 != 0b000) return false;
     if (decoded_instruction->func7 != 0b0100000) return false;
     return true;
 }
 
-bool is_lw_instruction(uint32_t instruction, I_INSTRUCTION* decoded_instruction) {
+bool is_lw_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_instruction) {
+    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_lw_instruction");
     if (decoded_instruction->opcode != 0b0000011) return false;
     if (decoded_instruction->func3 != 0b010) return false;
     return true;

@@ -7,6 +7,7 @@ extern _Bool verbose;
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "errno.h"
 extern int errno;
 

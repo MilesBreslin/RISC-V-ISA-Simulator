@@ -56,15 +56,15 @@ S_INSTRUCTION as_s_instruction(uint32_t instruction);
 const uint8_t OPCODE_ADD = 0b0110011;
 const uint8_t FUNC3_ADD = 0b000;
 const uint8_t FUNC7_ADD = 0b0000000;
-bool is_add_instruction(uint32_t instruction, R_INSTRUCTION* decoded_instruction);
+bool is_add_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_SUB = 0b0110011;
 const uint8_t FUNC3_SUB = 0b000;
 const uint8_t FUNC7_SUB = 0b0100000;
-bool is_sub_instruction(uint32_t instruction, R_INSTRUCTION* decoded_instruction);
+bool is_sub_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_LW = 0b0000011;
 const uint8_t FUNC3_LW = 0b010;
-bool is_lw_instruction(uint32_t instruction, I_INSTRUCTION* decoded_instruction);
+bool is_lw_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_instruction);
 
 #endif

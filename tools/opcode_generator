@@ -194,7 +194,8 @@ def generate(file_type):
         | map(
             .key as $operation_name
             | .value
-            | "bool is_\($operation_name | ascii_downcase)_instruction(uint32_t instruction, \(.instruction_type)_INSTRUCTION* decoded_instruction)" as $is_function_name
+            | "is_\($operation_name | ascii_downcase)_instruction" as $is_function_name
+            | "bool \($is_function_name)(uint32_t instruction, const \(.instruction_type)_INSTRUCTION* decoded_instruction)" as $is_function_prototype
             | {
                 "header": [
                     ("const uint8_t \("OPCODE_\($operation_name)" | ascii_upcase) = \(.opcode);"),
@@ -205,11 +206,12 @@ def generate(file_type):
                         ("const uint8_t \("FUNC7_\($operation_name)" | ascii_upcase) = \(.func7);")
                     else empty end),
 
-                    ("\($is_function_name);")
+                    ("\($is_function_prototype);")
                 ],
                 "code": [
-                    ("\($is_function_name) {\n\(
+                    ("\($is_function_prototype) {\n\(
                         [
+                            "if (decoded_instruction == NULL) FAIL(\"Received NULL pointer on \($is_function_name)\");",
                             "if (decoded_instruction->opcode != \(.opcode)) return false;",
                             (if .func3 != null then
                                 "if (decoded_instruction->func3 != \(.func3)) return false;"
@@ -242,6 +244,7 @@ def generate(file_type):
             ([
                 "#include <stdbool.h>",
                 "#include <stdint.h>",
+                "#include \"core.h\"",
                 "#include \"instructions.h\""
             ] | concat_strings("\n"))
         ] + .
