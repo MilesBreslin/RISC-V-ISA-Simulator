@@ -9,10 +9,71 @@ operations:
     func3: "0b000"
     func7: "0b0100000"
     instruction_type: R
-  LW:
-    opcode: "0b0000011"
+  SLL:
+    opcode: "0b0110011"
+    func3: "0b001"
+    func7: "0b0000000"
+    instruction_type: R
+  SLT:
+    opcode: "0b0110011"
+    func3: "0b010"
+    func7: "0b0000000"
+    instruction_type: R
+  SLTU:
+    opcode: "0b0110011"
+    func3: "0b011"
+    func7: "0b0000000"
+    instruction_type: R
+  XOR:
+    opcode: "0b0110011"
+    func3: "0b100"
+    func7: "0b0000000"
+    instruction_type: R
+  SRL:
+    opcode: "0b0110011"
+    func3: "0b101"
+    func7: "0b0000000"
+    instruction_type: R
+  SRA:
+    opcode: "0b0110011"
+    func3: "0b101"
+    func7: "0b0100000"
+    instruction_type: R
+  OR:
+    opcode: "0b0110011"
+    func3: "0b110"
+    func7: "0b0000000"
+    instruction_type: R
+  AND:
+    opcode: "0b0110011"
+    func3: "0b111"
+    func7: "0b0000000"
+    instruction_type: R
+  ADDI:
+    opcode: "0b0010011"
+    func3: "0b000"
+    instruction_type: I
+  SLTI:
+    opcode: "0b0010011"
     func3: "0b010"
     instruction_type: I
+  SLTIU:
+    opcode: "0b0010011"
+    func3: "0b011"
+    instruction_type: 
+  XORI:
+    opcode: "0b0010011"
+    func3: "0b100"
+    instruction_type: I
+  ORI:
+    opcode: "0b0010011"
+    func3: "0b110"
+    instruction_type: I
+  ANDI:
+    opcode: "0b0010011"
+    func3: "0b111"
+    instruction_type: I
+
 instruction_types:
   R:
     - name: opcode
