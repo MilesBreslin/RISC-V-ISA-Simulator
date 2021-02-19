@@ -76,17 +76,14 @@ operations:
   SLLI:
     opcode: "0b0010011"
     func3: "0b001"
-    func7: "0b0000000"
     instruction_type: I
   SRLI:
     opcode: "0b0010011"
     func3: "0b101"
-    func7: "0b0000000"
     instruction_type: I
   SRAI:
     opcode: "0b0010011"
     func3: "0b101"
-    func7: "0b0100000"
     instruction_type: I
   BEQ:
     opcode: "0b1100011"
