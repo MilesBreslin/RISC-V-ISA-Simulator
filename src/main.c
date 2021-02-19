@@ -107,7 +107,14 @@ int main(int argc, char* argv[]) {
         
         if (verbose)
             display_memory(&s, 0, line_no);
+
+        if (!(execute_simulation_step(&s, line_no))) {
+            simulator_destroy(&s);
+            exit(EXIT_SUCCESS);
+        }
+
     } else {
         usage("Target file not specified", 1);
     }
+
 }

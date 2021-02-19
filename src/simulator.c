@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "core.h"
 #include "simulator.h"
@@ -64,4 +65,20 @@ void write_byte(simulator* s, uint32_t addr, uint8_t byte) {
     }
 
     *((uint8_t*) (s->memory + addr)) = byte;
+}
+
+/*Newly Added function*/
+bool execute_simulation_step(simulator* s, uint32_t length) {
+    uint32_t PC = 0x00000000;
+    bool ret = true;
+    
+    for (int i = 0; i < length; i++) {
+        if ((*(uint32_t*)(s->memory + PC)) == 0) {
+            INFO("Execution halted at PC: %08X", PC);
+            return ret = false;
+        }
+        PC += 4;
+    }
+
+    return ret;
 }

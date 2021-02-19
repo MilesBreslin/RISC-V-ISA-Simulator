@@ -13,5 +13,6 @@ void simulator_destroy(simulator *s);
 void display_memory(simulator *s, uint32_t start_addr, uint32_t length);
 void write_word(simulator *s, uint32_t addr, uint32_t word);
 void write_byte(simulator *s, uint32_t addr, uint8_t byte);
+bool execute_simulation_step(simulator* s, uint32_t length); //newly added
 
 #endif
