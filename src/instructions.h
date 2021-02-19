@@ -163,17 +163,14 @@ bool is_andi_instruction(const I_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_SLLI = 0b0010011;
 const uint8_t FUNC3_SLLI = 0b001;
-const uint8_t FUNC7_SLLI = 0b0000000;
 bool is_slli_instruction(const I_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_SRLI = 0b0010011;
 const uint8_t FUNC3_SRLI = 0b101;
-const uint8_t FUNC7_SRLI = 0b0000000;
 bool is_srli_instruction(const I_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_SRAI = 0b0010011;
 const uint8_t FUNC3_SRAI = 0b101;
-const uint8_t FUNC7_SRAI = 0b0100000;
 bool is_srai_instruction(const I_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_BEQ = 0b1100011;

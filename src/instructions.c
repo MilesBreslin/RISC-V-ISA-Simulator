@@ -387,7 +387,6 @@ bool is_slli_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_slli_instruction");
     if (decoded_instruction->opcode != 0b0010011) return false;
     if (decoded_instruction->func3 != 0b001) return false;
-    if (decoded_instruction->func7 != 0b0000000) return false;
     return true;
 }
 
@@ -395,7 +394,6 @@ bool is_srli_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_srli_instruction");
     if (decoded_instruction->opcode != 0b0010011) return false;
     if (decoded_instruction->func3 != 0b101) return false;
-    if (decoded_instruction->func7 != 0b0000000) return false;
     return true;
 }
 
@@ -403,7 +401,6 @@ bool is_srai_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_srai_instruction");
     if (decoded_instruction->opcode != 0b0010011) return false;
     if (decoded_instruction->func3 != 0b101) return false;
-    if (decoded_instruction->func7 != 0b0100000) return false;
     return true;
 }
 
