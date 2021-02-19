@@ -120,51 +120,51 @@ operations:
     instruction_type: U
   JAL:
     opcode: "0b1101111"
-    instruction_type: U
+    instruction_type: J
   JALR:
     opcode: "0b1100111"
     func3: "0b0"
-    instruction_type: U
+    instruction_type: I
   LB:
     opcode: "0b0000011"
     func3: "0b000"
-    instruction_type: U
+    instruction_type: I
   LH:
     opcode: "0b0000111"
     func3: "0b001"
-    instruction_type: U
+    instruction_type: I
   LW:
     opcode: "0b0000011"
     func3: "0b010"
-    instruction_type: U
+    instruction_type: I
   LBU:
     opcode: "0b0000011"
     func3: "0b100"
-    instruction_type: U
+    instruction_type: I
   LHU:
     opcode: "0b0000011"
     func3: "0b101"
-    instruction_type: U
+    instruction_type: I
   SB:
     opcode: "0b0100011"
     func3: "0b000"
-    instruction_type: U
+    instruction_type: S
   SH:
     opcode: "0b0100011"
     func3: "0b001"
-    instruction_type: U
+    instruction_type: S
   SW:
     opcode: "0b0100011"
     func3: "0b010"
-    instruction_type: U
+    instruction_type: S
   SBU:
     opcode: "0b0100011"
     func3: "0b100"
-    instruction_type: U
+    instruction_type: S
   SHU:
     opcode: "0b0100011"
     func3: "0b101"
-    instruction_type: U
+    instruction_type: S
 
 instruction_types:
   R:
