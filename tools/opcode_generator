@@ -195,7 +195,7 @@ def generate(file_type):
             .key as $operation_name
             | .value
             | "is_\($operation_name | ascii_downcase)_instruction" as $is_function_name
-            | "bool \($is_function_name)(uint32_t instruction, const \(.instruction_type)_INSTRUCTION* decoded_instruction)" as $is_function_prototype
+            | "bool \($is_function_name)(const \(.instruction_type)_INSTRUCTION* decoded_instruction)" as $is_function_prototype
             | {
                 "header": [
                     ("const uint8_t \("OPCODE_\($operation_name)" | ascii_upcase) = \(.opcode);"),

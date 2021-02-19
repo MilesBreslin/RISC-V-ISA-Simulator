@@ -261,7 +261,7 @@ J_INSTRUCTION as_j_instruction(uint32_t instruction) {
     };
 }
 
-bool is_add_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction) {
+bool is_add_instruction(const R_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_add_instruction");
     if (decoded_instruction->opcode != 0b0110011) return false;
     if (decoded_instruction->func3 != 0b000) return false;
@@ -269,7 +269,7 @@ bool is_add_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instr
     return true;
 }
 
-bool is_sub_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction) {
+bool is_sub_instruction(const R_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_sub_instruction");
     if (decoded_instruction->opcode != 0b0110011) return false;
     if (decoded_instruction->func3 != 0b000) return false;
@@ -277,7 +277,7 @@ bool is_sub_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instr
     return true;
 }
 
-bool is_sll_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction) {
+bool is_sll_instruction(const R_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_sll_instruction");
     if (decoded_instruction->opcode != 0b0110011) return false;
     if (decoded_instruction->func3 != 0b001) return false;
@@ -285,7 +285,7 @@ bool is_sll_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instr
     return true;
 }
 
-bool is_slt_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction) {
+bool is_slt_instruction(const R_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_slt_instruction");
     if (decoded_instruction->opcode != 0b0110011) return false;
     if (decoded_instruction->func3 != 0b010) return false;
@@ -293,7 +293,7 @@ bool is_slt_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instr
     return true;
 }
 
-bool is_sltu_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction) {
+bool is_sltu_instruction(const R_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_sltu_instruction");
     if (decoded_instruction->opcode != 0b0110011) return false;
     if (decoded_instruction->func3 != 0b011) return false;
@@ -301,7 +301,7 @@ bool is_sltu_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_inst
     return true;
 }
 
-bool is_xor_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction) {
+bool is_xor_instruction(const R_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_xor_instruction");
     if (decoded_instruction->opcode != 0b0110011) return false;
     if (decoded_instruction->func3 != 0b100) return false;
@@ -309,7 +309,7 @@ bool is_xor_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instr
     return true;
 }
 
-bool is_srl_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction) {
+bool is_srl_instruction(const R_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_srl_instruction");
     if (decoded_instruction->opcode != 0b0110011) return false;
     if (decoded_instruction->func3 != 0b101) return false;
@@ -317,7 +317,7 @@ bool is_srl_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instr
     return true;
 }
 
-bool is_sra_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction) {
+bool is_sra_instruction(const R_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_sra_instruction");
     if (decoded_instruction->opcode != 0b0110011) return false;
     if (decoded_instruction->func3 != 0b101) return false;
@@ -325,7 +325,7 @@ bool is_sra_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instr
     return true;
 }
 
-bool is_or_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction) {
+bool is_or_instruction(const R_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_or_instruction");
     if (decoded_instruction->opcode != 0b0110011) return false;
     if (decoded_instruction->func3 != 0b110) return false;
@@ -333,7 +333,7 @@ bool is_or_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instru
     return true;
 }
 
-bool is_and_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instruction) {
+bool is_and_instruction(const R_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_and_instruction");
     if (decoded_instruction->opcode != 0b0110011) return false;
     if (decoded_instruction->func3 != 0b111) return false;
@@ -341,49 +341,49 @@ bool is_and_instruction(uint32_t instruction, const R_INSTRUCTION* decoded_instr
     return true;
 }
 
-bool is_addi_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_instruction) {
+bool is_addi_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_addi_instruction");
     if (decoded_instruction->opcode != 0b0010011) return false;
     if (decoded_instruction->func3 != 0b000) return false;
     return true;
 }
 
-bool is_slti_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_instruction) {
+bool is_slti_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_slti_instruction");
     if (decoded_instruction->opcode != 0b0010011) return false;
     if (decoded_instruction->func3 != 0b010) return false;
     return true;
 }
 
-bool is_sltiu_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_instruction) {
+bool is_sltiu_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_sltiu_instruction");
     if (decoded_instruction->opcode != 0b0010011) return false;
     if (decoded_instruction->func3 != 0b011) return false;
     return true;
 }
 
-bool is_xori_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_instruction) {
+bool is_xori_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_xori_instruction");
     if (decoded_instruction->opcode != 0b0010011) return false;
     if (decoded_instruction->func3 != 0b100) return false;
     return true;
 }
 
-bool is_ori_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_instruction) {
+bool is_ori_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_ori_instruction");
     if (decoded_instruction->opcode != 0b0010011) return false;
     if (decoded_instruction->func3 != 0b110) return false;
     return true;
 }
 
-bool is_andi_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_instruction) {
+bool is_andi_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_andi_instruction");
     if (decoded_instruction->opcode != 0b0010011) return false;
     if (decoded_instruction->func3 != 0b111) return false;
     return true;
 }
 
-bool is_slli_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_instruction) {
+bool is_slli_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_slli_instruction");
     if (decoded_instruction->opcode != 0b0010011) return false;
     if (decoded_instruction->func3 != 0b001) return false;
@@ -391,7 +391,7 @@ bool is_slli_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_inst
     return true;
 }
 
-bool is_srli_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_instruction) {
+bool is_srli_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_srli_instruction");
     if (decoded_instruction->opcode != 0b0010011) return false;
     if (decoded_instruction->func3 != 0b101) return false;
@@ -399,7 +399,7 @@ bool is_srli_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_inst
     return true;
 }
 
-bool is_srai_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_instruction) {
+bool is_srai_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_srai_instruction");
     if (decoded_instruction->opcode != 0b0010011) return false;
     if (decoded_instruction->func3 != 0b101) return false;
@@ -407,137 +407,137 @@ bool is_srai_instruction(uint32_t instruction, const I_INSTRUCTION* decoded_inst
     return true;
 }
 
-bool is_beq_instruction(uint32_t instruction, const B_INSTRUCTION* decoded_instruction) {
+bool is_beq_instruction(const B_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_beq_instruction");
     if (decoded_instruction->opcode != 0b1100011) return false;
     if (decoded_instruction->func3 != 0b000) return false;
     return true;
 }
 
-bool is_bne_instruction(uint32_t instruction, const B_INSTRUCTION* decoded_instruction) {
+bool is_bne_instruction(const B_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_bne_instruction");
     if (decoded_instruction->opcode != 0b1100011) return false;
     if (decoded_instruction->func3 != 0b001) return false;
     return true;
 }
 
-bool is_blt_instruction(uint32_t instruction, const B_INSTRUCTION* decoded_instruction) {
+bool is_blt_instruction(const B_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_blt_instruction");
     if (decoded_instruction->opcode != 0b1100011) return false;
     if (decoded_instruction->func3 != 0b100) return false;
     return true;
 }
 
-bool is_bge_instruction(uint32_t instruction, const B_INSTRUCTION* decoded_instruction) {
+bool is_bge_instruction(const B_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_bge_instruction");
     if (decoded_instruction->opcode != 0b1100011) return false;
     if (decoded_instruction->func3 != 0b101) return false;
     return true;
 }
 
-bool is_bltu_instruction(uint32_t instruction, const B_INSTRUCTION* decoded_instruction) {
+bool is_bltu_instruction(const B_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_bltu_instruction");
     if (decoded_instruction->opcode != 0b1100011) return false;
     if (decoded_instruction->func3 != 0b110) return false;
     return true;
 }
 
-bool is_bgeu_instruction(uint32_t instruction, const B_INSTRUCTION* decoded_instruction) {
+bool is_bgeu_instruction(const B_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_bgeu_instruction");
     if (decoded_instruction->opcode != 0b1100011) return false;
     if (decoded_instruction->func3 != 0b111) return false;
     return true;
 }
 
-bool is_lui_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_lui_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_lui_instruction");
     if (decoded_instruction->opcode != 0b0110111) return false;
     return true;
 }
 
-bool is_auipc_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_auipc_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_auipc_instruction");
     if (decoded_instruction->opcode != 0b0010111) return false;
     return true;
 }
 
-bool is_jal_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_jal_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_jal_instruction");
     if (decoded_instruction->opcode != 0b1101111) return false;
     return true;
 }
 
-bool is_jalr_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_jalr_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_jalr_instruction");
     if (decoded_instruction->opcode != 0b1100111) return false;
     if (decoded_instruction->func3 != 0b0) return false;
     return true;
 }
 
-bool is_lb_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_lb_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_lb_instruction");
     if (decoded_instruction->opcode != 0b0000011) return false;
     if (decoded_instruction->func3 != 0b000) return false;
     return true;
 }
 
-bool is_lh_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_lh_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_lh_instruction");
     if (decoded_instruction->opcode != 0b0000111) return false;
     if (decoded_instruction->func3 != 0b001) return false;
     return true;
 }
 
-bool is_lw_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_lw_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_lw_instruction");
     if (decoded_instruction->opcode != 0b0000011) return false;
     if (decoded_instruction->func3 != 0b010) return false;
     return true;
 }
 
-bool is_lbu_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_lbu_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_lbu_instruction");
     if (decoded_instruction->opcode != 0b0000011) return false;
     if (decoded_instruction->func3 != 0b100) return false;
     return true;
 }
 
-bool is_lhu_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_lhu_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_lhu_instruction");
     if (decoded_instruction->opcode != 0b0000011) return false;
     if (decoded_instruction->func3 != 0b101) return false;
     return true;
 }
 
-bool is_sb_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_sb_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_sb_instruction");
     if (decoded_instruction->opcode != 0b0100011) return false;
     if (decoded_instruction->func3 != 0b000) return false;
     return true;
 }
 
-bool is_sh_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_sh_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_sh_instruction");
     if (decoded_instruction->opcode != 0b0100011) return false;
     if (decoded_instruction->func3 != 0b001) return false;
     return true;
 }
 
-bool is_sw_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_sw_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_sw_instruction");
     if (decoded_instruction->opcode != 0b0100011) return false;
     if (decoded_instruction->func3 != 0b010) return false;
     return true;
 }
 
-bool is_sbu_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_sbu_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_sbu_instruction");
     if (decoded_instruction->opcode != 0b0100011) return false;
     if (decoded_instruction->func3 != 0b100) return false;
     return true;
 }
 
-bool is_shu_instruction(uint32_t instruction, const U_INSTRUCTION* decoded_instruction) {
+bool is_shu_instruction(const U_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_shu_instruction");
     if (decoded_instruction->opcode != 0b0100011) return false;
     if (decoded_instruction->func3 != 0b101) return false;
