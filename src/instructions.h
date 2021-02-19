@@ -207,50 +207,50 @@ const uint8_t OPCODE_AUIPC = 0b0010111;
 bool is_auipc_instruction(const U_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_JAL = 0b1101111;
-bool is_jal_instruction(const U_INSTRUCTION* decoded_instruction);
+bool is_jal_instruction(const J_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_JALR = 0b1100111;
 const uint8_t FUNC3_JALR = 0b0;
-bool is_jalr_instruction(const U_INSTRUCTION* decoded_instruction);
+bool is_jalr_instruction(const I_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_LB = 0b0000011;
 const uint8_t FUNC3_LB = 0b000;
-bool is_lb_instruction(const U_INSTRUCTION* decoded_instruction);
+bool is_lb_instruction(const I_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_LH = 0b0000111;
 const uint8_t FUNC3_LH = 0b001;
-bool is_lh_instruction(const U_INSTRUCTION* decoded_instruction);
+bool is_lh_instruction(const I_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_LW = 0b0000011;
 const uint8_t FUNC3_LW = 0b010;
-bool is_lw_instruction(const U_INSTRUCTION* decoded_instruction);
+bool is_lw_instruction(const I_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_LBU = 0b0000011;
 const uint8_t FUNC3_LBU = 0b100;
-bool is_lbu_instruction(const U_INSTRUCTION* decoded_instruction);
+bool is_lbu_instruction(const I_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_LHU = 0b0000011;
 const uint8_t FUNC3_LHU = 0b101;
-bool is_lhu_instruction(const U_INSTRUCTION* decoded_instruction);
+bool is_lhu_instruction(const I_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_SB = 0b0100011;
 const uint8_t FUNC3_SB = 0b000;
-bool is_sb_instruction(const U_INSTRUCTION* decoded_instruction);
+bool is_sb_instruction(const S_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_SH = 0b0100011;
 const uint8_t FUNC3_SH = 0b001;
-bool is_sh_instruction(const U_INSTRUCTION* decoded_instruction);
+bool is_sh_instruction(const S_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_SW = 0b0100011;
 const uint8_t FUNC3_SW = 0b010;
-bool is_sw_instruction(const U_INSTRUCTION* decoded_instruction);
+bool is_sw_instruction(const S_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_SBU = 0b0100011;
 const uint8_t FUNC3_SBU = 0b100;
-bool is_sbu_instruction(const U_INSTRUCTION* decoded_instruction);
+bool is_sbu_instruction(const S_INSTRUCTION* decoded_instruction);
 
 const uint8_t OPCODE_SHU = 0b0100011;
 const uint8_t FUNC3_SHU = 0b101;
-bool is_shu_instruction(const U_INSTRUCTION* decoded_instruction);
+bool is_shu_instruction(const S_INSTRUCTION* decoded_instruction);
 
 #endif
