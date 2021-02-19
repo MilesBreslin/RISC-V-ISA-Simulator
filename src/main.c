@@ -12,7 +12,7 @@
 bool verbose = 0;
 char* target_file = "prog.mem";
 uint32_t pc_init = 0x00000000;
-uint32_t sp_init = 65535;
+uint32_t sp_init = 0x0000FFFF;
 uint32_t simulation_size = 1 << 28;
 
 void usage(char* message, int err) {
@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
             }
         } else if (strcmp("--sp-init", argv[i]) == 0) {
             i++;
-            if ((err = sscanf(argv[i], "%d", &sp_init)) != 1) {
+            if ((err = sscanf(argv[i], "%X", &sp_init)) != 1) {
                 fprintf(stderr, "Invalid format for --sp-init\n");
             }
         } else if (strcmp("--verbose", argv[i]) == 0) {
