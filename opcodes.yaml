@@ -88,6 +88,83 @@ operations:
     func3: "0b101"
     func7: "0b0100000"
     instruction_type: I
+  BEQ:
+    opcode: "0b1100011"
+    func3: "0b000"
+    instruction_type: B
+  BNE:
+    opcode: "0b1100011"
+    func3: "0b001"
+    instruction_type: B
+  BLT:
+    opcode: "0b1100011"
+    func3: "0b100"
+    instruction_type: B
+  BGE:
+    opcode: "0b1100011"
+    func3: "0b"101"
+    instruction_type: B
+  BLTU:
+    opcode: "0b1100011"
+    func3: "0b110"
+    instruction_type: B
+  BGEU:
+    opcode: "0b1100011"
+    func3: "0b111"
+    instruction_type: B
+  LUI:
+    opcode: "0b0110111"
+    instruction_type: U
+  AUIPC:
+    opcode: "0b0010111"
+    instruction_type: U
+  JAL:
+    opcode: "0b1101111"
+    instruction_type: U
+  JALR:
+    opcode: "0b1100111"
+    func3: "0b0"
+    instruction_type: U
+  LB:
+    opcode: "0b0000011"
+    func3: "0b000"
+    instruction_type: U
+  LH:
+    opcode: "0b0000111"
+    func3: "0b001"
+    instruction_type: U
+  LW:
+    opcode: "0b0000011"
+    func3: "0b010"
+    instruction_type: U
+  LBU:
+    opcode: "0b0000011"
+    func3: "0b100"
+    instruction_type: U
+  LHU:
+    opcode: "0b0000011"
+    func3: "0b101"
+    instruction_type: U
+  SB:
+    opcode: "0b0100011"
+    func3: "0b000"
+    instruction_type: U
+  SH:
+    opcode: "0b0100011"
+    func3: "0b001"
+    instruction_type: U
+  SW:
+    opcode: "0b0100011"
+    func3: "0b010"
+    instruction_type: U
+  SBU:
+    opcode: "0b0100011"
+    func3: "0b100"
+    instruction_type: U
+  SHU:
+    opcode: "0b0100011"
+    func3: "0b101"
+    instruction_type: U
 
 instruction_types:
   R:
@@ -126,11 +203,11 @@ instruction_types:
       signed: false
       bits:
         - start: 0
-          end: 7
+          end: 6
     - name: rd
       signed: false
       bits:
-        - start: 6
+        - start: 7
           end: 11
     - name: func3
       signed: false
@@ -175,4 +252,64 @@ instruction_types:
         - start: 7
           end: 11
         - start: 25
+          end: 31
+  U:
+    - name: opcode
+      signed: false
+      bits:
+        - start: 0
+          end: 6
+    -name: rd
+    signed: false
+    bits:
+        -start: 7
+         end: 11
+    - name: imm
+      signed: true
+      bits:
+        - start: 12
+          end: 31
+  B:
+    - name: opcode
+      signed: false
+      bits:
+        - start: 0
+          end: 6
+    - name: func3
+      signed: false
+      bits:
+        - start: 12
+          end: 14
+    - name: rs1
+      signed: false
+      bits:
+        - start: 15
+          end: 19
+    - name: rs2
+      signed: false
+      bits:
+        - start: 20
+          end: 24
+    - name: imm
+      signed: false
+      bits:
+        - start: 7
+          end: 11
+        - start: 25
+          end: 31
+  J:
+    - name: opcode
+      signed: false
+      bits:
+        - start: 0
+          end: 6
+    - name: rd
+      signed: false
+      bits:
+        - start: 7
+          end: 11
+    - name: imm
+      signed: false
+      bits:
+        - start: 12
           end: 31
