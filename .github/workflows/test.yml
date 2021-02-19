@@ -28,3 +28,5 @@ jobs:
           PATH="$HOME/.local/bin:$PATH" bash ./tools/opcode_generator
       - name: Fail if not up-to-date
         run: git status | grep clean
+      - name: Compile generated code
+        run: gcc -c src/instructions.c
