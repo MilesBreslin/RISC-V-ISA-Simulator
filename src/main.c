@@ -108,9 +108,17 @@ int main(int argc, char* argv[]) {
         if (verbose)
             display_memory(&s, 0, line_no);
 
-        if (!(execute_simulation_step(&s, line_no))) {
-            simulator_destroy(&s);
-            exit(EXIT_SUCCESS);
+        /*Execution loop*/
+        while (1) {
+            bool ret = (execute_simulation_step(&s, pc_init));
+
+            if (!ret) {
+                simulator_destroy(&s);
+                exit(EXIT_SUCCESS);
+                printf("Shouldn't see this if execution halted\n"); //There to prove that the sim actually halts
+            }
+
+            pc_init += 4;
         }
 
     } else {
