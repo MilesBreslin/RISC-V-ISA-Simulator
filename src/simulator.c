@@ -40,49 +40,73 @@ void display_memory(simulator* s, uint32_t start_addr, uint32_t length) {
     // Print all values
     uint32_t addr = start_addr;
     while (actual_len-- > 0) {
-        printf("| %08X | %08X | \n", addr, *(uint32_t*) (s->memory + addr));
+        printf("| %08X | %08X | \n", addr, read_word(s, addr));
         addr += 4;
     }
 
     printf("%s\n", line);
 }
 
-void write_word(simulator* s, uint32_t addr, uint32_t word) {
-    // Check if address is out of bounds
-    if (out_of_bounds_check(s, addr, uint32_t)) {
-        WARN("Out of bounds memory write access: %08X", addr);
-        return;
-    }
-
-    *((uint32_t*) (s->memory + addr)) = word;
-    s->pc = addr;
+// Generic write memory function
+// Use write_word, write_hword, write_byte instead
+#define write_memory(s, addr, data, data_type) {\
+    if (out_of_bounds_check(s, addr, data_type)) {\
+        WARN("Out of bounds memory write access: %08X", addr);\
+        return;\
+    }\
+    if (addr % sizeof(data_type) != 0) {\
+        WARN("Unaligned memory write access: %08X", addr);\
+        return;\
+    }\
+    *((data_type*) (s->memory + addr)) = data;\
 }
 
-void write_byte(simulator* s, uint32_t addr, uint8_t byte) {
-    // Check if address is out of bounds
-    if (out_of_bounds_check(s, addr, uint8_t)) {
-        WARN("Out of bounds memory write access: %08X", addr);
-        return;
-    }
+void write_word(simulator* s, uint32_t addr, uint32_t data) write_memory(s, addr, data, uint32_t)
+void write_hword(simulator* s, uint32_t addr, uint16_t data) write_memory(s, addr, data, uint16_t)
+void write_byte(simulator* s, uint32_t addr, uint8_t data) write_memory(s, addr, data, uint8_t)
 
-    *((uint8_t*) (s->memory + addr)) = byte;
+// Generic read memory function
+// Use read_word, read_hword, read_byte instead
+#define read_memory(s, addr, data_type) {\
+    if (out_of_bounds_check(s, addr, data_type)) {\
+        WARN("Out of bounds memory read access: %08X", addr);\
+        return (data_type) 0;\
+    }\
+    if (addr % sizeof(data_type) != 0)\
+        WARN("Unaligned memory read access: %08X", addr);\
+    return *((data_type*) (s->memory + addr));\
+}
+uint32_t read_word(simulator* s, uint32_t addr) read_memory(s, addr, uint32_t)
+uint16_t read_hword(simulator* s, uint32_t addr) read_memory(s, addr, uint16_t)
+uint8_t read_byte(simulator* s, uint32_t addr) read_memory(s, addr, uint8_t)
+int32_t read_sword(simulator* s, uint32_t addr) read_memory(s, addr, int32_t)
+int16_t read_shword(simulator* s, uint32_t addr) read_memory(s, addr, int16_t)
+int8_t read_sbyte(simulator* s, uint32_t addr) read_memory(s, addr, int8_t)
+
+uint32_t read_register(simulator* s, REGISTER reg) {
+    if (reg > 32)
+        FAIL("Invalid register read");
+    if (reg == REG_ZERO)
+        return 0;
+    return s->reg[reg];
+}
+void write_register(simulator* s, REGISTER reg, uint32_t data) {
+    if (reg > 32)
+        FAIL("Invalid register write");
+    if (reg == REG_ZERO)
+        return;
+    s->reg[reg] = data;
 }
 
-bool execute_simulation_step(simulator* s, uint32_t PC) {
-    // Check if address is out of bounds
-    if (PC > s->pc) {
-        WARN("Execution reached the end without a halt: %08X", PC);
-        exit(EXIT_FAILURE);
-    }
-
-    bool ret = true;
+bool execute_simulation_step(simulator* s) {
+    uint32_t pc = s->pc;
+    s->pc += 4;
     
-    if ((*(uint32_t*)(s->memory + PC)) == 0) {
-        INFO("Execution halted at PC: %08X", PC);
-        ret = false;
+    // No need to check OOB, read_word returns 0 on invalid memory
+    uint32_t encoded_instruction = read_word(s, pc);
+    if (encoded_instruction == 0) {
+        INFO("Execution halted at PC: %08X", pc);
+        return false;
     }
-    else {
-        /*else if instruction != zeros, then execute*/
-    }
-    return ret;
+    return true;
 }
