@@ -47,6 +47,9 @@ void display_memory(simulator* s, uint32_t start_addr, uint32_t length) {
     printf("%s\n", line);
 }
 
+// Disable pointer math warnings only for mem access functions
+#pragma GCC diagnostic ignored "-Wpointer-arith"
+
 // Generic write memory function
 // Use write_word, write_hword, write_byte instead
 #define write_memory(s, addr, data, data_type) {\
@@ -56,7 +59,6 @@ void display_memory(simulator* s, uint32_t start_addr, uint32_t length) {
     }\
     if (addr % sizeof(data_type) != 0) {\
         WARN("Unaligned memory write access: %08X", addr);\
-        return;\
     }\
     *((data_type*) (s->memory + addr)) = data;\
 }
@@ -83,16 +85,19 @@ int32_t read_sword(simulator* s, uint32_t addr) read_memory(s, addr, int32_t)
 int16_t read_shword(simulator* s, uint32_t addr) read_memory(s, addr, int16_t)
 int8_t read_sbyte(simulator* s, uint32_t addr) read_memory(s, addr, int8_t)
 
+// Enable warnings for any other pointer math
+#pragma GCC diagnostic warning "-Wpointer-arith"
+
 uint32_t read_register(simulator* s, REGISTER reg) {
     if (reg > 32)
-        FAIL("Invalid register read");
+        FAIL("Invalid register read: %d", reg);
     if (reg == REG_ZERO)
         return 0;
     return s->reg[reg];
 }
 void write_register(simulator* s, REGISTER reg, uint32_t data) {
     if (reg > 32)
-        FAIL("Invalid register write");
+        FAIL("Invalid register write: %d", reg);
     if (reg == REG_ZERO)
         return;
     s->reg[reg] = data;
