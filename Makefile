@@ -17,7 +17,7 @@ tests/%: tests/%.mem build/riscv_simulator
 	./build/riscv_simulator --load-file $< --verbose
 
 tests/%.mem: tests/%.c
-	./tools/c_to_mem $@
+	./tools/c_to_mem $<
 
 clean:
 	-rm -rf src/*.o build
