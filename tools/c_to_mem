@@ -18,7 +18,8 @@ done
 CC=${CC:-"riscv64-unknown-linux-gnu-gcc"}
 
 OBJDUMP_CANDIDATES=(
-    llvm-objdump{,-{11..9}}
+    riscv64-unknown-linux-gnu-objdump
+    /pkgs/riscv-gnu-toolchain/riscv-gnu-toolchain/bin/riscv64-unknown-linux-gnu-objdump
 )
 for i in "${OBJDUMP_CANDIDATES[@]}" ; do
     [ -n "$OBJDUMP" ] && break
