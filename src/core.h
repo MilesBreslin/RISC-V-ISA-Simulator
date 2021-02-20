@@ -11,7 +11,7 @@ extern _Bool verbose;
 #include "errno.h"
 extern int errno;
 
-#define CASSERT(condition, msg) char assert_#msg[!!(condition)-1];
+#define CASSERT(condition, msg) char __assert_##msg[2*!!(condition)-1];
 #define FAIL(fmt, ...) do { fprintf(stderr, "FAIL: " fmt "\n", ##__VA_ARGS__); exit(1); } while (0)
 #define FAIL_SYS(fmt, ...) do { fprintf(stderr, "FAIL: " fmt ": %s\n", ##__VA_ARGS__, strerror(errno)); exit(1); } while (0)
 #define WARN(fmt, ...) do { fprintf(stderr, "WARN: " fmt "\n", ##__VA_ARGS__); } while (0)

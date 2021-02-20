@@ -9,80 +9,82 @@
 
 #include <stdint.h>
 
+#include "simulator.h"
+
 typedef struct {
-    // <TotalBits=6>
+    // <TotalBits=7>
     uint8_t opcode;
-    // <TotalBits=4>
-    uint8_t rd;
-    // <TotalBits=2>
+    // <TotalBits=5>
+    REGISTER rd;
+    // <TotalBits=3>
     uint8_t func3;
-    // <TotalBits=4>
-    uint8_t rs1;
-    // <TotalBits=4>
-    uint8_t rs2;
-    // <TotalBits=6>
+    // <TotalBits=5>
+    REGISTER rs1;
+    // <TotalBits=5>
+    REGISTER rs2;
+    // <TotalBits=7>
     uint8_t func7;
 } R_INSTRUCTION;
 R_INSTRUCTION as_r_instruction(uint32_t instruction);
 
 typedef struct {
-    // <TotalBits=6>
-    uint8_t opcode;
-    // <TotalBits=4>
-    uint8_t rd;
-    // <TotalBits=2>
-    uint8_t func3;
-    // <TotalBits=4>
-    uint8_t rs1;
     // <TotalBits=7>
+    uint8_t opcode;
+    // <TotalBits=5>
+    REGISTER rd;
+    // <TotalBits=3>
+    uint8_t func3;
+    // <TotalBits=5>
+    REGISTER rs1;
+    // <TotalBits=8>
     int8_t imm;
 } I_INSTRUCTION;
 I_INSTRUCTION as_i_instruction(uint32_t instruction);
 
 typedef struct {
-    // <TotalBits=6>
+    // <TotalBits=7>
     uint8_t opcode;
-    // <TotalBits=2>
+    // <TotalBits=3>
     uint8_t func3;
-    // <TotalBits=4>
-    uint8_t rs1;
-    // <TotalBits=4>
-    uint8_t rs2;
-    // <TotalBits=10>
+    // <TotalBits=5>
+    REGISTER rs1;
+    // <TotalBits=5>
+    REGISTER rs2;
+    // <TotalBits=12>
     uint16_t imm;
 } S_INSTRUCTION;
 S_INSTRUCTION as_s_instruction(uint32_t instruction);
 
 typedef struct {
-    // <TotalBits=6>
+    // <TotalBits=7>
     uint8_t opcode;
-    // <TotalBits=4>
-    uint8_t rd;
-    // <TotalBits=19>
+    // <TotalBits=5>
+    REGISTER rd;
+    // <TotalBits=20>
     int32_t imm;
 } U_INSTRUCTION;
 U_INSTRUCTION as_u_instruction(uint32_t instruction);
 
 typedef struct {
-    // <TotalBits=6>
+    // <TotalBits=7>
     uint8_t opcode;
-    // <TotalBits=2>
+    // <TotalBits=3>
     uint8_t func3;
-    // <TotalBits=4>
-    uint8_t rs1;
-    // <TotalBits=4>
-    uint8_t rs2;
-    // <TotalBits=10>
+    // <TotalBits=5>
+    REGISTER rs1;
+    // <TotalBits=5>
+    REGISTER rs2;
+    // <TotalBits=12>
     uint16_t imm;
 } B_INSTRUCTION;
 B_INSTRUCTION as_b_instruction(uint32_t instruction);
 
 typedef struct {
-    // <TotalBits=6>
+    // <TotalBits=7>
     uint8_t opcode;
-    // <TotalBits=4>
-    uint8_t rd;
-    // <TotalBits=19>
+    // <TotalBits=5>
+    REGISTER rd;
+    // <TotalBits=20>
     uint32_t imm;
 } J_INSTRUCTION;
 J_INSTRUCTION as_j_instruction(uint32_t instruction);

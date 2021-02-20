@@ -171,6 +171,7 @@ instruction_types:
         - start: 0
           end: 6
     - name: rd
+      type: REGISTER
       signed: false
       bits:
         - start: 7
@@ -181,11 +182,13 @@ instruction_types:
         - start: 12
           end: 14
     - name: rs1
+      type: REGISTER
       signed: false
       bits:
         - start: 15
           end: 19
     - name: rs2
+      type: REGISTER
       signed: false
       bits:
         - start: 20
@@ -202,6 +205,7 @@ instruction_types:
         - start: 0
           end: 6
     - name: rd
+      type: REGISTER
       signed: false
       bits:
         - start: 7
@@ -212,6 +216,7 @@ instruction_types:
         - start: 12
           end: 14
     - name: rs1
+      type: REGISTER
       signed: false
       bits:
         - start: 15
@@ -234,11 +239,13 @@ instruction_types:
         - start: 12
           end: 14
     - name: rs1
+      type: REGISTER
       signed: false
       bits:
         - start: 15
           end: 19
     - name: rs2
+      type: REGISTER
       signed: false
       bits:
         - start: 20
@@ -257,6 +264,7 @@ instruction_types:
         - start: 0
           end: 6
     - name: rd
+      type: REGISTER
       signed: false
       bits:
         - start: 7
@@ -278,11 +286,13 @@ instruction_types:
         - start: 12
           end: 14
     - name: rs1
+      type: REGISTER
       signed: false
       bits:
         - start: 15
           end: 19
     - name: rs2
+      type: REGISTER
       signed: false
       bits:
         - start: 20
@@ -301,6 +311,7 @@ instruction_types:
         - start: 0
           end: 6
     - name: rd
+      type: REGISTER
       signed: false
       bits:
         - start: 7
@@ -310,3 +321,6 @@ instruction_types:
       bits:
         - start: 12
           end: 31
+known_types:
+  REGISTER:
+    total_bits: 5

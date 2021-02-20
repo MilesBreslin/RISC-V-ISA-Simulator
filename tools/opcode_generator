@@ -94,13 +94,20 @@ def c_struct_def(name):
         | concat_strings("\n")
         | indent
     )\n} \(name);";
+def c_define(name_params):
+    "#define \(name_params) \\\n\(
+        concat_strings("\\\n")
+        | indent
+    )";
 
 def count_bits:
     if .zeros == null then
-        (.end - .start)
+        (.end - .start + 1)
     else
         .zeros
     end;
+def count_total_bits:
+    map(count_bits) | add;
 def add_bits_offset(offset):
     (first | count_bits) as $first_bits_count
     | [ (first | .offset = offset) ]
@@ -123,21 +130,25 @@ def generate(file_type):
                     (
                         map(
                             .signed as $signed
-                            | (.bits | map(count_bits) | add) as $total_bits
+                            | (.bits | count_total_bits) as $total_bits
                             | {
                                 "key": .name,
                                 "value": (
-                                    $total_bits
-                                    | (if . < 8 then 8 else . end)
-                                    | log2
-                                    | ceil
-                                    | pow(2;.)
-                                    | "// <TotalBits=\($total_bits)>\n"
-                                    + if $signed == true then
-                                        "int\(.)_t"
+                                    if .type == null then
+                                        $total_bits
+                                        | (if . < 8 then 8 else . end)
+                                        | log2
+                                        | ceil
+                                        | pow(2;.)
+                                        | if $signed == true then
+                                            "int\(.)_t"
+                                        else
+                                            "uint\(.)_t"
+                                        end
                                     else
-                                        "uint\(.)_t"
+                                        .type
                                     end
+                                    | "// <TotalBits=\($total_bits)>\n\(.)"
                                 ),
                             }
                         )
@@ -149,37 +160,54 @@ def generate(file_type):
                 "code": (
                     [
                         "\($function_name) {",
-                        ("return (\($instruction_type_name)) \(
+                        ([
+                            "\($instruction_type_name) d = \(
+                                map(
+                                    .signed as $signed
+                                    | .name as $field_name
+                                    | .bits
+                                    | count_total_bits as $total_bits
+                                    | {
+                                        "name": "!\($field_name)",
+                                        "value": (add_bits_offset(0)
+                                            | map("// <Start=\(.start)> <End=\(.end)> <Length=\(count_bits)> <Offset=\(.offset)> <Zero=\(.zeros != null)>\n\(
+                                                if .zeros == null then
+                                                    "(get_word_bits(instruction, \(.start), \(.end)) << \(.offset))"
+                                                else
+                                                    0
+                                                end)"
+                                            ) + [ (if $signed then
+                                                    "// Signed <Bits=\($total_bits)>\n(\(
+                                                        "(instruction >> (\($total_bits) - 1)) == 0 ? 0 : (0xFFFFFFFF << \($total_bits))"
+                                                    ))"
+                                                else
+                                                    "// Unsigned\n0"
+                                                end)
+                                            ]
+                                            | "// <TotalBits=\($total_bits)>\n\(concat_strings("\n|\n"))"
+                                            | "(\n\(indent)\n)"
+                                        )
+                                    }
+                                )
+                                | from_entries
+                                | c_string
+                            );",
                             map(
-                                .signed as $signed
-                                | {
-                                    "key": "!\(.name)",
-                                    "value": "(\n\(
-                                        .bits
-                                        | (map(count_bits) | add) as $total_bits
-                                        | add_bits_offset(0)
-                                        | map("// <Start=\(.start)> <End=\(.end)> <Length=\(count_bits)> <Offset=\(.offset)> <Zero=\(.zeros != null)>\n\(
-                                            if .zeros == null then
-                                                "((instruction << \(.start)) & (0xFFFFFFFF >> (32 + \(.start) - \(.end))) << \(.offset))"
-                                            else
-                                                0
-                                            end)"
-                                        ) + [ (if $signed then
-                                                "// Signed <Bits=\($total_bits)>\n(\(
-                                                    "(instruction >> (\($total_bits) - 1)) == 0 ? 0 : (0xFFFFFFFF << \($total_bits))"
-                                                ))"
-                                            else
-                                                "// Unsigned\n0"
-                                            end)
-                                        ]
-                                        | "// <TotalBits=\($total_bits)>\n\(concat_strings("\n|\n"))"
-                                        | indent
-                                    )\n)",
-                                }
-                            )
-                            | from_entries
-                            | c_string
-                        );" | indent),
+                                (if .signed then 1 else 0 end) as $init_bits
+                                | (
+                                    .bits | map(count_bits) | add | . - $init_bits
+                                ) as $max_bits
+                                | ("FAIL(\"\($instruction_type_name).\(.name) decode error: size %d\", d.\(.name));" | indent) as $decode_failure
+                                | "if (d.\(.name) > (1 << \($max_bits)))\n\($decode_failure)"
+                                + (if .signed then
+                                        "\n"
+                                        + "if (d.\(.name) < -(1 << \($max_bits)) - 1)\n\($decode_failure)"
+                                    else
+                                        ""
+                                    end)
+                            )[],
+                            "return d;"
+                        ] | concat_strings("\n") | indent),
                         "}"
                     ]
                     | concat_strings("\n")
@@ -235,7 +263,8 @@ def generate(file_type):
             "#ifndef INSTRUCTIONS_H",
             "#define INSTRUCTIONS_H",
             "#include <stdbool.h>",
-            "#include <stdint.h>"
+            "#include <stdint.h>",
+            "#include \"simulator.h\""
         ] + . + [
             "#endif"
         ]
@@ -245,7 +274,14 @@ def generate(file_type):
                 "#include <stdbool.h>",
                 "#include <stdint.h>",
                 "#include \"core.h\"",
-                "#include \"instructions.h\""
+                "#include \"instructions.h\"",
+                "",
+                (
+                    [
+                        "((instruction << start) & (((uint32_t) ~0) >> (32 + start - end)))"
+                    ]
+                    | c_define("get_word_bits(instruction, start, end)")
+                )
             ] | concat_strings("\n"))
         ] + .
     end
