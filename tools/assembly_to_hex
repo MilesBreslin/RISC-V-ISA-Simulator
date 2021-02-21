@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+FAIL() {
+    echo "$@" >&2
+    exit 1
+}
+
+AS_CANDIDATES=(
+    riscv64-unknown-linux-gnu-gcc
+    /pkgs/riscv-gnu-toolchain/riscv-gnu-toolchain/bin/riscv64-unknown-linux-gnu-gcc
+)
+for i in "${AS_CANDIDATES[@]}" ; do
+    [ -n "$AS" ] && break
+    if which "$i" > /dev/null 2>/dev/null ; then
+        AS="$i"
+    fi
+done
+AS=${AS:-"riscv64-unknown-linux-gnu-gcc"}
+
+OBJDUMP_CANDIDATES=(
+    riscv64-unknown-linux-gnu-objdump
+    /pkgs/riscv-gnu-toolchain/riscv-gnu-toolchain/bin/riscv64-unknown-linux-gnu-objdump
+)
+for i in "${OBJDUMP_CANDIDATES[@]}" ; do
+    [ -n "$OBJDUMP" ] && break
+    if which "$i" > /dev/null 2>/dev/null ; then
+        OBJDUMP="$i"
+    fi
+done
+
+# Check for dependencies
+if [ -z "$AS" ] ; then
+    FAIL "Could not find a assembler"
+fi
+if [ -z "$OBJDUMP" ] ; then
+    FAIL "Could not find llvm-objdump"
+fi
+
+TMPDIR="$(mktemp -d)"
+echo "$*" > "$TMPDIR/lib.s"
+"$AS" -march=rv32i -mabi=ilp32 -fpic -c "$TMPDIR/lib.s" -o "$TMPDIR/lib.o"
+"$OBJDUMP" -d "$TMPDIR/lib.o" \
+    | sed 's/^ *//;/^[a-f0-9]*:/!d;s/  .*//;s/ //g;s/.*://;s/\t//g'
