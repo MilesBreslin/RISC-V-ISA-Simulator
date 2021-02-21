@@ -70,6 +70,7 @@ int main(int argc, char* argv[]) {
 
         simulator s;
         simulator_init(&s, simulation_size);
+        s.pc = pc_init;
 
         // Parse the file
         int line_no = 0;
