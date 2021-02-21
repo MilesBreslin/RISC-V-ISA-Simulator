@@ -278,7 +278,7 @@ def generate(file_type):
                 "",
                 (
                     [
-                        "((instruction << start) & (((uint32_t) ~0) >> (32 + start - end)))"
+                        "((instruction >> start) & (((uint32_t) ~0) >> (32 + start - end)))"
                     ]
                     | c_define("get_word_bits(instruction, start, end)")
                 )

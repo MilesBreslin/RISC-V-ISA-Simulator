@@ -7,7 +7,7 @@
 #include "instructions.h"
 
 #define get_word_bits(instruction, start, end) \
-    ((instruction << start) & (((uint32_t) ~0) >> (32 + start - end)))
+    ((instruction >> start) & (((uint32_t) ~0) >> (32 + start - end)))
 
 R_INSTRUCTION as_r_instruction(uint32_t instruction) {
     R_INSTRUCTION d = {
