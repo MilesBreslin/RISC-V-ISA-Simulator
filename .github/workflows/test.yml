@@ -30,3 +30,30 @@ jobs:
         run: gcc -c src/instructions.c
       - name: Fail if not up-to-date
         run: git status | grep clean
+  run-all-instruction-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Compile Instruction Tests
+        run: |
+          for i in tests/instructions/*.c ; do
+            make "${i/.c}" || true
+          done
+      - name: Run Instruction Tests
+        run: |
+          FAILING=0
+          for i in tests/instructions/*.c ; do
+            EXECUTABLE="${i/.c}"
+            if [ -x "$EXECUTABLE" ] ; then
+              if "$EXECUTABLE" ; then
+                echo "$EXECUTABLE: SUCCESS" >&2
+              else
+                echo "$EXECUTABLE: FAILURE" >&2
+                FAILING="$((FAILING+1))"
+              fi
+            else
+              echo "$EXECUTABLE: DOES NOT EXIST" >&2
+              FAILING="$((FAILING+1))"
+            fi
+          done
+          exit "$((FAILING>0))"
