@@ -226,12 +226,12 @@ def generate(file_type):
             | "bool \($is_function_name)(const \(.instruction_type)_INSTRUCTION* decoded_instruction)" as $is_function_prototype
             | {
                 "header": [
-                    ("const uint8_t \("OPCODE_\($operation_name)" | ascii_upcase) = \(.opcode);"),
+                    ("#define \("OPCODE_\($operation_name)" | ascii_upcase) \(.opcode);"),
                     (if .func3 != null then
-                        ("const uint8_t \("FUNC3_\($operation_name)" | ascii_upcase) = \(.func3);")
+                        ("#define \("FUNC3_\($operation_name)" | ascii_upcase) \(.func3);")
                     else empty end),
                     (if .func7 != null then
-                        ("const uint8_t \("FUNC7_\($operation_name)" | ascii_upcase) = \(.func7);")
+                        ("#define \("FUNC7_\($operation_name)" | ascii_upcase) \(.func7);")
                     else empty end),
 
                     ("\($is_function_prototype);")
