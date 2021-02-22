@@ -7,7 +7,7 @@
 #include "instructions.h"
 
 #define get_word_bits(instruction, start, end) \
-    ((instruction >> start) & (((uint32_t) ~0) >> (32 + start - end)))
+    ((instruction >> start) & (((uint32_t) ~0) >> (32 + start - end + 1)))
 
 R_INSTRUCTION as_r_instruction(uint32_t instruction) {
     R_INSTRUCTION d = {
@@ -268,11 +268,17 @@ B_INSTRUCTION as_b_instruction(uint32_t instruction) {
         ),
         .imm = (
             // <TotalBits=12>
-            // <Start=7> <End=11> <Length=5> <Offset=0> <Zero=false>
-            (get_word_bits(instruction, 7, 11) << 0)
+            // <Start=8> <End=11> <Length=4> <Offset=0> <Zero=false>
+            (get_word_bits(instruction, 8, 11) << 0)
             |
-            // <Start=25> <End=31> <Length=7> <Offset=5> <Zero=false>
-            (get_word_bits(instruction, 25, 31) << 5)
+            // <Start=25> <End=30> <Length=6> <Offset=4> <Zero=false>
+            (get_word_bits(instruction, 25, 30) << 4)
+            |
+            // <Start=7> <End=7> <Length=1> <Offset=10> <Zero=false>
+            (get_word_bits(instruction, 7, 7) << 10)
+            |
+            // <Start=31> <End=31> <Length=1> <Offset=11> <Zero=false>
+            (get_word_bits(instruction, 31, 31) << 11)
             |
             // Signed <LastBit=31>
             (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 11))
