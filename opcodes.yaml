@@ -282,12 +282,12 @@ instruction_types:
       signed: false
       bits:
         - start: 0
-          end: 7
+          end: 6
     - name: func3
       signed: false
       bits:
         - start: 12
-          end: 15
+          end: 14
     - name: rs1
       type: REGISTER
       signed: false

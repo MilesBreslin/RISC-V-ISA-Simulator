@@ -235,17 +235,17 @@ U_INSTRUCTION as_u_instruction(uint32_t instruction) {
 B_INSTRUCTION as_b_instruction(uint32_t instruction) {
     B_INSTRUCTION d = {
         .opcode = (
-            // <TotalBits=8>
-            // <Start=0> <End=7> <Length=8> <Offset=0> <Zero=false>
-            (get_word_bits(instruction, 0, 7) << 0)
+            // <TotalBits=7>
+            // <Start=0> <End=6> <Length=7> <Offset=0> <Zero=false>
+            (get_word_bits(instruction, 0, 6) << 0)
             |
             // Unsigned
             0
         ),
         .func3 = (
-            // <TotalBits=4>
-            // <Start=12> <End=15> <Length=4> <Offset=0> <Zero=false>
-            (get_word_bits(instruction, 12, 15) << 0)
+            // <TotalBits=3>
+            // <Start=12> <End=14> <Length=3> <Offset=0> <Zero=false>
+            (get_word_bits(instruction, 12, 14) << 0)
             |
             // Unsigned
             0
@@ -284,9 +284,9 @@ B_INSTRUCTION as_b_instruction(uint32_t instruction) {
             (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 11))
         )
     };
-    if (d.opcode > (1 << 8))
+    if (d.opcode > (1 << 7))
         FAIL("B_INSTRUCTION.opcode decode error: size %d", d.opcode);
-    if (d.func3 > (1 << 4))
+    if (d.func3 > (1 << 3))
         FAIL("B_INSTRUCTION.func3 decode error: size %d", d.func3);
     if (d.rs1 > (1 << 5))
         FAIL("B_INSTRUCTION.rs1 decode error: size %d", d.rs1);
