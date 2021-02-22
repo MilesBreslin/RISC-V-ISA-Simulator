@@ -304,9 +304,9 @@ instruction_types:
         - start: 25
           end: 30
         - start: 7
-          end: 8
+          end: 7
         - start: 31
-          end: 32
+          end: 31
   J:
     - name: opcode
       signed: false

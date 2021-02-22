@@ -14,22 +14,6 @@ jobs:
         run: make
       - name: Run example
         run: ./build/riscv_simulator --verbose --load-file example.mem
-  opcode-up-to-date:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install yq
-        run: |
-          pip3 install --user yq
-          curl -L 'https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64' > $HOME/.local/bin/jq
-          chmod +x $HOME/.local/bin/jq
-      - name: Regenerate the opcodes
-        run: |
-          PATH="$HOME/.local/bin:$PATH" bash ./tools/opcode_generator
-      - name: Compile generated code
-        run: gcc -c src/instructions.c
-      - name: Fail if not up-to-date
-        run: git status | grep clean
   run-all-instruction-tests:
     runs-on: ubuntu-latest
     steps:

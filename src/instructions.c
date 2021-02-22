@@ -7,7 +7,7 @@
 #include "instructions.h"
 
 #define get_word_bits(instruction, start, end) \
-    ((instruction >> start) & (((uint32_t) ~0) >> (32 + start - end)))
+    ((instruction >> start) & (((uint32_t) ~0) >> (32 + start - end + 1)))
 
 R_INSTRUCTION as_r_instruction(uint32_t instruction) {
     R_INSTRUCTION d = {
@@ -267,21 +267,21 @@ B_INSTRUCTION as_b_instruction(uint32_t instruction) {
             0
         ),
         .imm = (
-            // <TotalBits=14>
+            // <TotalBits=12>
             // <Start=8> <End=11> <Length=4> <Offset=0> <Zero=false>
             (get_word_bits(instruction, 8, 11) << 0)
             |
             // <Start=25> <End=30> <Length=6> <Offset=4> <Zero=false>
             (get_word_bits(instruction, 25, 30) << 4)
             |
-            // <Start=7> <End=8> <Length=2> <Offset=10> <Zero=false>
-            (get_word_bits(instruction, 7, 8) << 10)
+            // <Start=7> <End=7> <Length=1> <Offset=10> <Zero=false>
+            (get_word_bits(instruction, 7, 7) << 10)
             |
-            // <Start=31> <End=32> <Length=2> <Offset=12> <Zero=false>
-            (get_word_bits(instruction, 31, 32) << 12)
+            // <Start=31> <End=31> <Length=1> <Offset=11> <Zero=false>
+            (get_word_bits(instruction, 31, 31) << 11)
             |
-            // Signed <LastBit=32>
-            (((1 << 32) & instruction) == 0 ? 0 : ((~0) << 13))
+            // Signed <LastBit=31>
+            (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 11))
         )
     };
     if (d.opcode > (1 << 8))
@@ -292,9 +292,9 @@ B_INSTRUCTION as_b_instruction(uint32_t instruction) {
         FAIL("B_INSTRUCTION.rs1 decode error: size %d", d.rs1);
     if (d.rs2 > (1 << 5))
         FAIL("B_INSTRUCTION.rs2 decode error: size %d", d.rs2);
-    if (d.imm > (1 << 13))
+    if (d.imm > (1 << 11))
         FAIL("B_INSTRUCTION.imm decode error: size %d", d.imm);
-    if (d.imm < -(1 << 13) - 1)
+    if (d.imm < -(1 << 11) - 1)
         FAIL("B_INSTRUCTION.imm decode error: size %d", d.imm);
     return d;
 }
