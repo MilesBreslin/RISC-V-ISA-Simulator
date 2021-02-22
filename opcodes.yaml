@@ -278,12 +278,12 @@ instruction_types:
       signed: false
       bits:
         - start: 0
-          end: 6
+          end: 7
     - name: func3
       signed: false
       bits:
         - start: 12
-          end: 14
+          end: 15
     - name: rs1
       type: REGISTER
       signed: false
@@ -299,10 +299,14 @@ instruction_types:
     - name: imm
       signed: true
       bits:
-        - start: 7
+        - start: 8
           end: 11
         - start: 25
-          end: 31
+          end: 30
+        - start: 7
+          end: 8
+        - start: 31
+          end: 32
   J:
     - name: opcode
       signed: false

@@ -235,17 +235,17 @@ U_INSTRUCTION as_u_instruction(uint32_t instruction) {
 B_INSTRUCTION as_b_instruction(uint32_t instruction) {
     B_INSTRUCTION d = {
         .opcode = (
-            // <TotalBits=7>
-            // <Start=0> <End=6> <Length=7> <Offset=0> <Zero=false>
-            (get_word_bits(instruction, 0, 6) << 0)
+            // <TotalBits=8>
+            // <Start=0> <End=7> <Length=8> <Offset=0> <Zero=false>
+            (get_word_bits(instruction, 0, 7) << 0)
             |
             // Unsigned
             0
         ),
         .func3 = (
-            // <TotalBits=3>
-            // <Start=12> <End=14> <Length=3> <Offset=0> <Zero=false>
-            (get_word_bits(instruction, 12, 14) << 0)
+            // <TotalBits=4>
+            // <Start=12> <End=15> <Length=4> <Offset=0> <Zero=false>
+            (get_word_bits(instruction, 12, 15) << 0)
             |
             // Unsigned
             0
@@ -267,28 +267,34 @@ B_INSTRUCTION as_b_instruction(uint32_t instruction) {
             0
         ),
         .imm = (
-            // <TotalBits=12>
-            // <Start=7> <End=11> <Length=5> <Offset=0> <Zero=false>
-            (get_word_bits(instruction, 7, 11) << 0)
+            // <TotalBits=14>
+            // <Start=8> <End=11> <Length=4> <Offset=0> <Zero=false>
+            (get_word_bits(instruction, 8, 11) << 0)
             |
-            // <Start=25> <End=31> <Length=7> <Offset=5> <Zero=false>
-            (get_word_bits(instruction, 25, 31) << 5)
+            // <Start=25> <End=30> <Length=6> <Offset=4> <Zero=false>
+            (get_word_bits(instruction, 25, 30) << 4)
             |
-            // Signed <LastBit=31>
-            (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 11))
+            // <Start=7> <End=8> <Length=2> <Offset=10> <Zero=false>
+            (get_word_bits(instruction, 7, 8) << 10)
+            |
+            // <Start=31> <End=32> <Length=2> <Offset=12> <Zero=false>
+            (get_word_bits(instruction, 31, 32) << 12)
+            |
+            // Signed <LastBit=32>
+            (((1 << 32) & instruction) == 0 ? 0 : ((~0) << 13))
         )
     };
-    if (d.opcode > (1 << 7))
+    if (d.opcode > (1 << 8))
         FAIL("B_INSTRUCTION.opcode decode error: size %d", d.opcode);
-    if (d.func3 > (1 << 3))
+    if (d.func3 > (1 << 4))
         FAIL("B_INSTRUCTION.func3 decode error: size %d", d.func3);
     if (d.rs1 > (1 << 5))
         FAIL("B_INSTRUCTION.rs1 decode error: size %d", d.rs1);
     if (d.rs2 > (1 << 5))
         FAIL("B_INSTRUCTION.rs2 decode error: size %d", d.rs2);
-    if (d.imm > (1 << 11))
+    if (d.imm > (1 << 13))
         FAIL("B_INSTRUCTION.imm decode error: size %d", d.imm);
-    if (d.imm < -(1 << 11) - 1)
+    if (d.imm < -(1 << 13) - 1)
         FAIL("B_INSTRUCTION.imm decode error: size %d", d.imm);
     return d;
 }
