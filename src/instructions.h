@@ -51,7 +51,7 @@ typedef struct {
     // <TotalBits=5>
     REGISTER rs2;
     // <TotalBits=12>
-    uint16_t imm;
+    int16_t imm;
 } S_INSTRUCTION;
 S_INSTRUCTION as_s_instruction(uint32_t instruction);
 
@@ -75,7 +75,7 @@ typedef struct {
     // <TotalBits=5>
     REGISTER rs2;
     // <TotalBits=12>
-    uint16_t imm;
+    int16_t imm;
 } B_INSTRUCTION;
 B_INSTRUCTION as_b_instruction(uint32_t instruction);
 
@@ -85,7 +85,7 @@ typedef struct {
     // <TotalBits=5>
     REGISTER rd;
     // <TotalBits=20>
-    uint32_t imm;
+    int32_t imm;
 } J_INSTRUCTION;
 J_INSTRUCTION as_j_instruction(uint32_t instruction);
 
