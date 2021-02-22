@@ -250,7 +250,7 @@ instruction_types:
         - start: 20
           end: 24
     - name: imm
-      signed: false
+      signed: true
       bits:
         - start: 7
           end: 11
@@ -297,7 +297,7 @@ instruction_types:
         - start: 20
           end: 24
     - name: imm
-      signed: false
+      signed: true
       bits:
         - start: 7
           end: 11
@@ -316,7 +316,7 @@ instruction_types:
         - start: 7
           end: 11
     - name: imm
-      signed: false
+      signed: true
       bits:
         - start: 12
           end: 31
