@@ -224,7 +224,6 @@ instruction_types:
     - name: imm
       signed: true
       bits:
-        - zeros: 1
         - start: 20
           end: 31
   S:

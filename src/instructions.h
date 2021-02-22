@@ -36,7 +36,7 @@ typedef struct {
     uint8_t func3;
     // <TotalBits=5>
     REGISTER rs1;
-    // <TotalBits=13>
+    // <TotalBits=12>
     int16_t imm;
 } I_INSTRUCTION;
 I_INSTRUCTION as_i_instruction(uint32_t instruction);

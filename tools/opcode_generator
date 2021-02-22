@@ -176,9 +176,10 @@ def generate(file_type):
                                                 else
                                                     0
                                                 end)"
-                                            ) + [ (if $signed then
-                                                    "// Signed <Bits=\($total_bits)>\n(\(
-                                                        "(instruction >> (\($total_bits) - 1)) == 0 ? 0 : (0xFFFFFFFF << \($total_bits))"
+                                            ) + [ (last
+                                                | if $signed then
+                                                    "// Signed <LastBit=\(.end)>\n(\(
+                                                        "((1 << \(.end)) & instruction) == 0 ? 0 : (0xFFFFFFFF << \($total_bits))"
                                                     ))"
                                                 else
                                                     "// Unsigned\n0"
