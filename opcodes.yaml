@@ -225,7 +225,7 @@ instruction_types:
       signed: true
       bits:
         - zeros: 1
-        - start: 25
+        - start: 20
           end: 31
   S:
     - name: opcode
