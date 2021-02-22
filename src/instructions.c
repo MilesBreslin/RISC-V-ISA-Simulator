@@ -175,8 +175,8 @@ S_INSTRUCTION as_s_instruction(uint32_t instruction) {
             // <Start=25> <End=31> <Length=7> <Offset=5> <Zero=false>
             (get_word_bits(instruction, 25, 31) << 5)
             |
-            // Unsigned
-            0
+            // Signed <LastBit=31>
+            (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 11))
         )
     };
     if (d.opcode > (1 << 7))
@@ -187,7 +187,9 @@ S_INSTRUCTION as_s_instruction(uint32_t instruction) {
         FAIL("S_INSTRUCTION.rs1 decode error: size %d", d.rs1);
     if (d.rs2 > (1 << 5))
         FAIL("S_INSTRUCTION.rs2 decode error: size %d", d.rs2);
-    if (d.imm > (1 << 12))
+    if (d.imm > (1 << 11))
+        FAIL("S_INSTRUCTION.imm decode error: size %d", d.imm);
+    if (d.imm < -(1 << 11) - 1)
         FAIL("S_INSTRUCTION.imm decode error: size %d", d.imm);
     return d;
 }
@@ -272,8 +274,8 @@ B_INSTRUCTION as_b_instruction(uint32_t instruction) {
             // <Start=25> <End=31> <Length=7> <Offset=5> <Zero=false>
             (get_word_bits(instruction, 25, 31) << 5)
             |
-            // Unsigned
-            0
+            // Signed <LastBit=31>
+            (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 11))
         )
     };
     if (d.opcode > (1 << 7))
@@ -284,7 +286,9 @@ B_INSTRUCTION as_b_instruction(uint32_t instruction) {
         FAIL("B_INSTRUCTION.rs1 decode error: size %d", d.rs1);
     if (d.rs2 > (1 << 5))
         FAIL("B_INSTRUCTION.rs2 decode error: size %d", d.rs2);
-    if (d.imm > (1 << 12))
+    if (d.imm > (1 << 11))
+        FAIL("B_INSTRUCTION.imm decode error: size %d", d.imm);
+    if (d.imm < -(1 << 11) - 1)
         FAIL("B_INSTRUCTION.imm decode error: size %d", d.imm);
     return d;
 }
@@ -312,15 +316,17 @@ J_INSTRUCTION as_j_instruction(uint32_t instruction) {
             // <Start=12> <End=31> <Length=20> <Offset=0> <Zero=false>
             (get_word_bits(instruction, 12, 31) << 0)
             |
-            // Unsigned
-            0
+            // Signed <LastBit=31>
+            (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 19))
         )
     };
     if (d.opcode > (1 << 7))
         FAIL("J_INSTRUCTION.opcode decode error: size %d", d.opcode);
     if (d.rd > (1 << 5))
         FAIL("J_INSTRUCTION.rd decode error: size %d", d.rd);
-    if (d.imm > (1 << 20))
+    if (d.imm > (1 << 19))
+        FAIL("J_INSTRUCTION.imm decode error: size %d", d.imm);
+    if (d.imm < -(1 << 19) - 1)
         FAIL("J_INSTRUCTION.imm decode error: size %d", d.imm);
     return d;
 }
