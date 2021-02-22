@@ -115,7 +115,7 @@ I_INSTRUCTION as_i_instruction(uint32_t instruction) {
             (get_word_bits(instruction, 20, 31) << 0)
             |
             // Signed <LastBit=31>
-            (((1 << 31) & instruction) == 0 ? 0 : (0xFFFFFFFF << 12))
+            (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 11))
         )
     };
     if (d.opcode > (1 << 7))
@@ -216,7 +216,7 @@ U_INSTRUCTION as_u_instruction(uint32_t instruction) {
             (get_word_bits(instruction, 12, 31) << 0)
             |
             // Signed <LastBit=31>
-            (((1 << 31) & instruction) == 0 ? 0 : (0xFFFFFFFF << 20))
+            (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 19))
         )
     };
     if (d.opcode > (1 << 7))
