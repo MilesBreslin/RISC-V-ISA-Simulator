@@ -66,9 +66,9 @@ typedef struct {
 U_INSTRUCTION as_u_instruction(uint32_t instruction);
 
 typedef struct {
-    // <TotalBits=8>
+    // <TotalBits=7>
     uint8_t opcode;
-    // <TotalBits=4>
+    // <TotalBits=3>
     uint8_t func3;
     // <TotalBits=5>
     REGISTER rs1;
