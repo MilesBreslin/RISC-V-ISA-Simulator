@@ -110,15 +110,15 @@ I_INSTRUCTION as_i_instruction(uint32_t instruction) {
             0
         ),
         .imm = (
-            // <TotalBits=8>
+            // <TotalBits=13>
             // <Start=null> <End=null> <Length=1> <Offset=0> <Zero=true>
             0
             |
-            // <Start=25> <End=31> <Length=7> <Offset=1> <Zero=false>
-            (get_word_bits(instruction, 25, 31) << 1)
+            // <Start=20> <End=31> <Length=12> <Offset=1> <Zero=false>
+            (get_word_bits(instruction, 20, 31) << 1)
             |
-            // Signed <Bits=8>
-            ((instruction >> (8 - 1)) == 0 ? 0 : (0xFFFFFFFF << 8))
+            // Signed <Bits=13>
+            ((instruction >> (13 - 1)) == 0 ? 0 : (0xFFFFFFFF << 13))
         )
     };
     if (d.opcode > (1 << 7))
@@ -129,9 +129,9 @@ I_INSTRUCTION as_i_instruction(uint32_t instruction) {
         FAIL("I_INSTRUCTION.func3 decode error: size %d", d.func3);
     if (d.rs1 > (1 << 5))
         FAIL("I_INSTRUCTION.rs1 decode error: size %d", d.rs1);
-    if (d.imm > (1 << 7))
+    if (d.imm > (1 << 12))
         FAIL("I_INSTRUCTION.imm decode error: size %d", d.imm);
-    if (d.imm < -(1 << 7) - 1)
+    if (d.imm < -(1 << 12) - 1)
         FAIL("I_INSTRUCTION.imm decode error: size %d", d.imm);
     return d;
 }
