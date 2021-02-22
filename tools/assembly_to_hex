@@ -37,6 +37,7 @@ if [ -z "$OBJDUMP" ] ; then
 fi
 
 TMPDIR="$(mktemp -d)"
+trap "rm -r $TMPDIR" EXIT
 echo "$*" > "$TMPDIR/lib.s"
 "$AS" -march=rv32i -mabi=ilp32 -fpic -c "$TMPDIR/lib.s" -o "$TMPDIR/lib.o"
 "$OBJDUMP" -d "$TMPDIR/lib.o" \
