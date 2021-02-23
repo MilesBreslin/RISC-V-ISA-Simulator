@@ -47,6 +47,39 @@ void display_memory(simulator* s, uint32_t start_addr, uint32_t length) {
     printf("%s\n", line);
 }
 
+int read_file_to_memory(simulator* s, FILE *f) {
+    // Parse the file
+    int line_no = 0;
+    char line[255];
+    while (fgets(line, sizeof(line), f) != NULL) {
+
+        // Split the string into 
+        char* addr_ptr = line;
+        char* value_ptr;
+        if ((value_ptr = strchr(addr_ptr, ':')) != NULL) {
+            value_ptr[0] = 0;
+            value_ptr++;
+        } else
+            FAIL("Invalid line: %s", line);
+
+        // Parse address
+        uint32_t addr;
+        if (sscanf(addr_ptr, "%X", &addr) != 1)
+            FAIL("Invalid line: %s", line);
+
+        // Parse value
+        uint32_t value;
+        if (sscanf(value_ptr, "%X", &value) != 1)
+            FAIL("Invalid line: %s", line);
+
+        // Write the word into memory
+        write_word(s, addr, value);
+
+        line_no++;
+    }
+    return line_no;
+}
+
 // Disable pointer math warnings only for mem access functions
 #pragma GCC diagnostic ignored "-Wpointer-arith"
 

@@ -68,46 +68,21 @@ int main(int argc, char* argv[]) {
         if ((f = fopen(target_file, "r+")) == NULL)
             FAIL_SYS("Unable to open input file: %s", target_file);
 
+        // Initialize a simulator
         simulator s;
         simulator_init(&s, simulation_size);
         s.pc = pc_init;
 
-        // Parse the file
-        int line_no = 0;
-        char line[255];
-        while (fgets(line, sizeof(line), f) != NULL) {
-
-            // Split the string into 
-            char* addr_ptr = line;
-            char* value_ptr;
-            if ((value_ptr = strchr(addr_ptr, ':')) != NULL) {
-                value_ptr[0] = 0;
-                value_ptr++;
-            } else
-                FAIL("Invalid line: %s", line);
-
-            // Parse address
-            uint32_t addr;
-            if (sscanf(addr_ptr, "%X", &addr) != 1)
-                FAIL("Invalid line: %s", line);
-
-            // Parse value
-            uint32_t value;
-            if (sscanf(value_ptr, "%X", &value) != 1)
-                FAIL("Invalid line: %s", line);
-
-            write_word(&s, addr, value);
-
-            // Log to verbose information the parsed line
-            INFO("%04X (L%02d): %08X", addr, line_no, value);
-            line_no++;
-        }
-
-        if (line_no == 0)
+        // Read file and write its values to memory
+        int lines = read_file_to_memory(&s, f);
+        if (lines == 0)
             FAIL("File is empty");
-        
+
+        fclose(f);
+       
+        // Quick verbose display of the memory contents
         if (verbose)
-            display_memory(&s, 0, line_no);
+            display_memory(&s, 0, lines);
 
         /*Execution loop*/
         while (execute_simulation_step(&s)) { }
