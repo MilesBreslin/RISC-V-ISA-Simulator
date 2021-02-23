@@ -1,4 +1,5 @@
 #ifndef SIMULATOR_H
+#define SIMULATOR_H
 #include <stdint.h>
 
 typedef struct {
