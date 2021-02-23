@@ -47,8 +47,10 @@ if [ -n "$RUN" ] ; then
     if [ -n "$SIMULATION" ] ; then
         for i in tests/simulation/*.c ; do
             EXECUTABLE="${i/.c}"
+            EXECUTABLE_NAME="${EXECUTABLE/*\/}"
+            EXECUTABLE_DIR="${EXECUTABLE/"$EXECUTABLE_NAME"}"
             if [ -x "$EXECUTABLE" ] ; then
-                if "$EXECUTABLE" ; then
+                if (cd "$EXECUTABLE_DIR" ; "./$EXECUTABLE_NAME") ; then
                     echo "$EXECUTABLE: SUCCESS" >&2
                 else
                     echo "$EXECUTABLE: FAILURE" >&2
