@@ -268,8 +268,8 @@ B_INSTRUCTION as_b_instruction(uint32_t instruction) {
         ),
         .imm = (
             // <TotalBits=13>
-            // <Start=3> <End=3> <Length=1> <Offset=0> <Zero=false>
-            (get_word_bits(instruction, 3, 3) << 0)
+            // <Start=null> <End=null> <Length=1> <Offset=0> <Zero=true>
+            0
             |
             // <Start=8> <End=11> <Length=4> <Offset=1> <Zero=false>
             (get_word_bits(instruction, 8, 11) << 1)
