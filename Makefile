@@ -6,7 +6,7 @@ CFLAGS = -O2 -std=c99 -ggdb -Wall
 
 all: build/riscv_simulator
 
-build/riscv_simulator: src/main.o src/simulator.o
+build/riscv_simulator: src/main.o src/simulator.o src/instructions.o
 	@mkdir $(@D) 2>/dev/null || true
 	$(CC) $^ -o $@
 
