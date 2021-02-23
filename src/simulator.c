@@ -197,7 +197,10 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_addi_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: ADDI");
+        INFO("Instruction: ADDI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
+        write_register(s, i_instruction.rd,
+            (read_register(s, i_instruction.rs1) + i_instruction.imm)
+        );
         return true;
     }
     if (is_slti_instruction(&i_instruction)) {
