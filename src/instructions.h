@@ -74,7 +74,7 @@ typedef struct {
     REGISTER rs1;
     // <TotalBits=5>
     REGISTER rs2;
-    // <TotalBits=12>
+    // <TotalBits=13>
     int16_t imm;
 } B_INSTRUCTION;
 B_INSTRUCTION as_b_instruction(uint32_t instruction);
