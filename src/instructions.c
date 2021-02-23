@@ -267,21 +267,24 @@ B_INSTRUCTION as_b_instruction(uint32_t instruction) {
             0
         ),
         .imm = (
-            // <TotalBits=12>
-            // <Start=8> <End=11> <Length=4> <Offset=0> <Zero=false>
-            (get_word_bits(instruction, 8, 11) << 0)
+            // <TotalBits=13>
+            // <Start=null> <End=null> <Length=1> <Offset=0> <Zero=true>
+            0
             |
-            // <Start=25> <End=30> <Length=6> <Offset=4> <Zero=false>
-            (get_word_bits(instruction, 25, 30) << 4)
+            // <Start=8> <End=11> <Length=4> <Offset=1> <Zero=false>
+            (get_word_bits(instruction, 8, 11) << 1)
             |
-            // <Start=7> <End=7> <Length=1> <Offset=10> <Zero=false>
-            (get_word_bits(instruction, 7, 7) << 10)
+            // <Start=25> <End=30> <Length=6> <Offset=5> <Zero=false>
+            (get_word_bits(instruction, 25, 30) << 5)
             |
-            // <Start=31> <End=31> <Length=1> <Offset=11> <Zero=false>
-            (get_word_bits(instruction, 31, 31) << 11)
+            // <Start=7> <End=7> <Length=1> <Offset=11> <Zero=false>
+            (get_word_bits(instruction, 7, 7) << 11)
+            |
+            // <Start=31> <End=31> <Length=1> <Offset=12> <Zero=false>
+            (get_word_bits(instruction, 31, 31) << 12)
             |
             // Signed <LastBit=31>
-            (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 11))
+            (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 12))
         )
     };
     if (d.opcode > (1 << 7))
@@ -292,9 +295,9 @@ B_INSTRUCTION as_b_instruction(uint32_t instruction) {
         FAIL("B_INSTRUCTION.rs1 decode error: size %d", d.rs1);
     if (d.rs2 > (1 << 5))
         FAIL("B_INSTRUCTION.rs2 decode error: size %d", d.rs2);
-    if (d.imm > (1 << 11))
+    if (d.imm > (1 << 12))
         FAIL("B_INSTRUCTION.imm decode error: size %d", d.imm);
-    if (d.imm < -(1 << 11) - 1)
+    if (d.imm < -(1 << 12) - 1)
         FAIL("B_INSTRUCTION.imm decode error: size %d", d.imm);
     return d;
 }
