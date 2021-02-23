@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ] ; then
+    BUILD=1
+    RUN=1
+fi
+while [ -n "$1" ] ; do
+    eval "${1^^}=1"
+    shift
+done
+if [ -z "$SIMULATION" ] && [ -z "$INSTRUCTIONS" ] ; then
+    SIMULATION=1
+    INSTRUCTIONS=1
+fi
+
+if [ -n "$BUILD" ] ; then
+    if [ -n "$INSTRUCTIONS" ] ; then
+        for i in tests/instructions/*.c ; do
+            make "${i/.c}" || true
+        done
+    fi
+    if [ -n "$SIMULATION" ] ; then
+        for i in tests/simulation/*.c ; do
+            make "${i/.c}" || true
+        done
+    fi
+fi
+
+if [ -n "$RUN" ] ; then
+    FAILING=0
+    if [ -n "$INSTRUCTIONS" ] ; then
+        for i in tests/instructions/*.c ; do
+            EXECUTABLE="${i/.c}"
+            if [ -x "$EXECUTABLE" ] ; then
+                if "$EXECUTABLE" ; then
+                    echo "$EXECUTABLE: SUCCESS" >&2
+                else
+                    echo "$EXECUTABLE: FAILURE" >&2
+                    FAILING="$((FAILING+1))"
+                fi
+            else
+                echo "$EXECUTABLE: DOES NOT EXIST" >&2
+                FAILING="$((FAILING+1))"
+            fi
+        done
+    fi
+    if [ -n "$SIMULATION" ] ; then
+        for i in tests/simulation/*.c ; do
+            EXECUTABLE="${i/.c}"
+            if [ -x "$EXECUTABLE" ] ; then
+                if "$EXECUTABLE" ; then
+                    echo "$EXECUTABLE: SUCCESS" >&2
+                else
+                    echo "$EXECUTABLE: FAILURE" >&2
+                    FAILING="$((FAILING+1))"
+                fi
+            else
+                echo "$EXECUTABLE: DOES NOT EXIST" >&2
+                FAILING="$((FAILING+1))"
+            fi
+        done
+    fi
+    exit "$((FAILING>0))"
+fi
