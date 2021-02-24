@@ -6,7 +6,7 @@ int main() {
     if (!is_sw_instruction(&decoded))
         FAIL("Not a SW  instruction");
     VALUE_CHECK(decoded, imm, 5);
-    VALUE_CHECK(decoded, rd, REG_S5);
-    VALUE_CHECK(decoded, rs1, REG_A5);
+    VALUE_CHECK(decoded, rs1, REG_S6);
+    VALUE_CHECK(decoded, rs2, REG_A5);
     return 0;
 }
