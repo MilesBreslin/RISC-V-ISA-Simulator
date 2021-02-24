@@ -2,7 +2,7 @@
 int main() {
     // SB a5, 5(s5)
     uint32_t encoded = 0x00FB02A3;
-    I_INSTRUCTION decoded = is_s_instruction(encoded);
+    S_INSTRUCTION decoded = as_s_instruction(encoded);
     if (!is_sb_instruction(&decoded))
         FAIL("Not a SB  instruction");
     VALUE_CHECK(decoded, imm, 5);
