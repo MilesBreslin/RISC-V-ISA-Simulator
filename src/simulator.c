@@ -129,12 +129,19 @@ uint32_t read_register(simulator* s, REGISTER reg) {
         return 0;
     return s->reg[reg];
 }
+int32_t read_register_signed(simulator* s, REGISTER reg) {
+    uint32_t value = read_register(s, reg);
+    return *(int32_t*) (&value);
+}
 void write_register(simulator* s, REGISTER reg, uint32_t data) {
     if (reg > 32)
         FAIL("Invalid register write: %d", reg);
     if (reg == REG_ZERO)
         return;
     s->reg[reg] = data;
+}
+void write_register_signed(simulator* s, REGISTER reg, int32_t data) {
+    write_register(s, reg, *(uint32_t*) (&data));
 }
 
 // Make GCC refuse to compile if we use the wrong instruction type
@@ -211,7 +218,7 @@ bool execute_simulation_step(simulator* s) {
     }
     if (is_slti_instruction(&i_instruction)) {
         INFO("Instruction: SLTI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
-        if(((int32_t) read_register(s, i_instruction.rs1)) < i_instruction.imm) {
+        if(read_register_signed(s, i_instruction.rs1) < i_instruction.imm) {
             write_register(s, i_instruction.rd, 1);
         }        
         else {

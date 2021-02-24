@@ -59,7 +59,9 @@ int32_t read_sword(simulator *s, uint32_t addr);
 int16_t read_shword(simulator *s, uint32_t addr);
 int8_t read_sbyte(simulator *s, uint32_t addr);
 uint32_t read_register(simulator *s, REGISTER reg);
+int32_t read_register_signed(simulator *s, REGISTER reg);
 void write_register(simulator *s, REGISTER reg, uint32_t data);
+void write_register_signed(simulator *s, REGISTER reg, int32_t data);
 bool execute_simulation_step(simulator *s);
 
 #endif
