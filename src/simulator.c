@@ -156,16 +156,18 @@ bool execute_simulation_step(simulator* s) {
     U_INSTRUCTION u_instruction = as_u_instruction(encoded_instruction);
     B_INSTRUCTION b_instruction = as_b_instruction(encoded_instruction);
     J_INSTRUCTION j_instruction = as_j_instruction(encoded_instruction);
-    //Tysons attempt at the template  do not use! unsure of the use of func7!!
     if (is_add_instruction(&r_instruction)) {
-        INFO("Instruction: ADD %d %d %d %d", r_instruction.rd, r_instruction.rs1, r_instruction.rs2, r_instruction.func7);
+        INFO("Instruction: ADD %d %d %d", r_instruction.rd, r_instruction.rs1, r_instruction.rs2);
         write_registers(s, r_instruction.rd, 
-            (read_register(s, r_instruction.rs1) + r_instruction.func7)
+            (read_register(s, r_instruction.rs1) + r_instruction.rs2)
         );  
         return true;
     }
     if (is_sub_instruction(&r_instruction)) {
-        WARN("Unimplemented operation: SUB");
+        INFO("Instruction: SUB %d %d %d", r_instruction.rd, r_instruction.rs1, r_instruction.rs2);
+        write_registers(s, r_instruction.rd, 
+            (read_register(s, r_instruction.rs1) - r_instruction.rs2)
+        );  
         return true;
     }
     if (is_sll_instruction(&r_instruction)) {
