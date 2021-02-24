@@ -211,9 +211,12 @@ bool execute_simulation_step(simulator* s) {
     }
     if (is_slti_instruction(&i_instruction)) {
         INFO("Instruction: SLTI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
-        write_register(s, i_instruction.rd,
-            (read_register(s, i_instruction.rs1) + i_instruction.imm)
-        );
+        if(i_instruction.rs1 < i_instruction.imm) {
+            write_register(s, i_instruction.rd, 1);
+        };        
+        else {
+            write_register(s, i_instruction.rd, 0);
+        };
         return true;
     }
     if (is_sltiu_instruction(&i_instruction)) {
