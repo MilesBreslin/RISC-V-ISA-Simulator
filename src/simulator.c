@@ -160,6 +160,7 @@ bool execute_simulation_step(simulator* s) {
         WARN("Unimplemented operation: ADD");
         return true;
     }
+
     if (is_sub_instruction(&r_instruction)) {
         WARN("Unimplemented operation: SUB");
         return true;
@@ -204,35 +205,59 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_slti_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: SLTI");
+        INFO("Instruction: SLTI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
+        write_register(s, i_instruction.rd,
+            (read_register(s, i_instruction.rs1) + i_instruction.imm)
+        );
         return true;
     }
     if (is_sltiu_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: SLTIU");
+        INFO("Instruction: SLTIU %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
+        write_register(s, i_instruction.rd,
+            (read_register(s, i_instruction.rs1) + i_instruction.imm)
+        );
         return true;
     }
     if (is_xori_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: XORI");
+        INFO("Instruction: XORI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
+        write_register(s, i_instruction.rd,
+            (read_register(s, i_instruction.rs1) + i_instruction.imm)
+        );
         return true;
     }
     if (is_ori_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: ORI");
+        INFO("Instruction: ORI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
+        write_register(s, i_instruction.rd,
+            (read_register(s, i_instruction.rs1) + i_instruction.imm)
+        );
         return true;
     }
     if (is_andi_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: ANDI");
+        INFO("Instruction: ANDI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
+        write_register(s, i_instruction.rd,
+            (read_register(s, i_instruction.rs1) + i_instruction.imm)
+        );
         return true;
     }
     if (is_slli_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: SLLI");
+        INFO("Instruction: SLLI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
+        write_register(s, i_instruction.rd,
+            (read_register(s, i_instruction.rs1) + i_instruction.imm)
+        );
         return true;
     }
     if (is_srli_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: SRLI");
+        INFO("Instruction: SRLI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
+        write_register(s, i_instruction.rd,
+            (read_register(s, i_instruction.rs1) + i_instruction.imm)
+        );
         return true;
     }
     if (is_srai_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: SRAI");
+        INFO("Instruction: SRAI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
+        write_register(s, i_instruction.rd,
+            (read_register(s, i_instruction.rs1) + i_instruction.imm)
+        );
         return true;
     }
     if (is_beq_instruction(&b_instruction)) {
