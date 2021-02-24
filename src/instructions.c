@@ -559,7 +559,7 @@ bool is_lb_instruction(const I_INSTRUCTION* decoded_instruction) {
 
 bool is_lh_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_lh_instruction");
-    if (decoded_instruction->opcode != 0b0000111) return false;
+    if (decoded_instruction->opcode != 0b0000011) return false;
     if (decoded_instruction->func3 != 0b001) return false;
     return true;
 }
