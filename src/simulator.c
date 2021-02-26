@@ -127,7 +127,7 @@ uint32_t read_register(simulator* s, REGISTER reg) {
         return 0;
     int reg_reduced = reg - 1;      // REG_ZERO is not real
     if (reg_reduced > length(s->reg))
-        FAIL("Invalid register write: %d", reg);
+        FAIL("Invalid register read: %d", reg);
     return s->reg[reg_reduced];
 }
 int32_t read_register_signed(simulator* s, REGISTER reg) {
