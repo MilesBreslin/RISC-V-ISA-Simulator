@@ -305,7 +305,10 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_lw_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: LW");
+       INFO("Instruction: LW %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
+        write_register(s, i_instruction.rd,
+            read_word(s,(read_register(s, i_instruction.rs1) + i_instruction.imm))
+        );
         return true;
     }
     if (is_lbu_instruction(&i_instruction)) {
