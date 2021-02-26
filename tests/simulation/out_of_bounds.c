@@ -1,14 +1,8 @@
 #include "test_main.h"
 int simulation_run(simulator* s) {
-    verbose = false;
-    // ADDI zero, zero, 0xAA
-    uint32_t instruction = 0x0AA00013;
-    // Write a instruction to write to each RD
-    // ADDI REG_i, zero, 0xAA
+    // Write all registers
     for (int i = 0; i < 32; i++)
-        write_word(s, i*4, instruction + (i << 7));
-    // Execute until stopped
-    while (execute_simulation_step(s)) {}
+        write_register(s, i, 0xAA);
     // Read ZERO
     if (read_register(s, REG_ZERO) != 0)
         FAIL("REG_ZERO has unexpected value");

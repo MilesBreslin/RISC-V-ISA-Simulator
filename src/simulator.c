@@ -18,7 +18,7 @@ void simulator_destroy(simulator* s) {
     free(s->memory);
 }
 
-#define out_of_bounds_check(s, addr, data_type) (addr >= (((int64_t) s->mem_bytes) - sizeof(data_type)))
+#define out_of_bounds_check(s, addr, data_type) (addr > (((int64_t) s->mem_bytes) - sizeof(data_type)))
 
 void display_memory(simulator* s, uint32_t start_addr, uint32_t length) {
     // Check if address is out of bounds
