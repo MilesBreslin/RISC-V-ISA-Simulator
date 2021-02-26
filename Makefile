@@ -2,13 +2,13 @@
 CC = gcc
 
 # Compile-time flags
-CFLAGS = -O2 -std=c99 -ggdb -Wall
+CFLAGS = -O2 -std=c99 -ggdb -Wall -flto
 
 all: build/riscv_simulator
 
 build/riscv_simulator: src/main.o src/simulator.o src/instructions.o
 	@mkdir $(@D) 2>/dev/null || true
-	$(CC) $^ -o $@
+	$(CC) $^ $(CFLAGS) -o $@
 
 src/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
