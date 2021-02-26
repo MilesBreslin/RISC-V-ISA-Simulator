@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 typedef struct {
-    uint32_t reg[32];
+    uint32_t reg[31];
     uint32_t pc;
     void* memory;
     uint32_t mem_bytes;
