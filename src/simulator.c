@@ -358,5 +358,6 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
 
+    WARN("Unkown operation: %08X", encoded_instruction);
     return true;
 }
