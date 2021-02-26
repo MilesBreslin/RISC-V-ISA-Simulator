@@ -259,6 +259,39 @@ def generate(file_type):
             | concat_strings("\n")
         )
     )
+    + (
+        "int count_all_instruction_matches(uint32_t encoded_instruction)" as $count_function_proto
+        | {
+            "header": [
+                "\($count_function_proto);"
+            ],
+            "code": [
+                "\($count_function_proto) {\n\(
+                    [
+                        "int count = 0;"
+                    ] + (
+                        .instruction_types
+                        | to_entries
+                        | map(
+                            "\(.key)_INSTRUCTION" as $instruction_type
+                            | "\($instruction_type) \($instruction_type | ascii_downcase) = as_\(.key | ascii_downcase)_instruction(encoded_instruction);"
+                        )
+                    ) + (
+                        .operations
+                        | to_entries
+                        | map(
+                            "count += is_\(.key | ascii_downcase)_instruction(&\(.value.instruction_type | ascii_downcase)_instruction);"
+                        )
+                    ) + [
+                        "return count;"
+                    ]
+                    | concat_strings("\n")
+                    | indent
+                )\n}"
+            ]
+        }
+        | getpath([ file_type ])
+    )
     | if file_type == "header" then
         [
             "#ifndef INSTRUCTIONS_H",

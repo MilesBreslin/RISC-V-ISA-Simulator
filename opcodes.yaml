@@ -127,7 +127,7 @@ operations:
     func3: "0b000"
     instruction_type: I
   LH:
-    opcode: "0b0000111"
+    opcode: "0b0000011"
     func3: "0b001"
     instruction_type: I
   LW:

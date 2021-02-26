@@ -1,8 +1,9 @@
 #ifndef SIMULATOR_H
+#define SIMULATOR_H
 #include <stdint.h>
 
 typedef struct {
-    uint32_t reg[32];
+    uint32_t reg[31];
     uint32_t pc;
     void* memory;
     uint32_t mem_bytes;
@@ -47,6 +48,7 @@ typedef enum {
 void simulator_init(simulator *s, uint32_t mem_bytes);
 void simulator_destroy(simulator *s);
 void display_memory(simulator *s, uint32_t start_addr, uint32_t length);
+int read_file_to_memory(simulator *s, FILE *f);
 void write_word(simulator *s, uint32_t addr, uint32_t data);
 void write_hword(simulator *s, uint32_t addr, uint16_t data);
 void write_byte(simulator *s, uint32_t addr, uint8_t data);
@@ -57,7 +59,9 @@ int32_t read_sword(simulator *s, uint32_t addr);
 int16_t read_shword(simulator *s, uint32_t addr);
 int8_t read_sbyte(simulator *s, uint32_t addr);
 uint32_t read_register(simulator *s, REGISTER reg);
+int32_t read_register_signed(simulator *s, REGISTER reg);
 void write_register(simulator *s, REGISTER reg, uint32_t data);
+void write_register_signed(simulator *s, REGISTER reg, int32_t data);
 bool execute_simulation_step(simulator *s);
 
 #endif

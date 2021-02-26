@@ -216,7 +216,7 @@ bool is_jalr_instruction(const I_INSTRUCTION* decoded_instruction);
 #define FUNC3_LB 0b000;
 bool is_lb_instruction(const I_INSTRUCTION* decoded_instruction);
 
-#define OPCODE_LH 0b0000111;
+#define OPCODE_LH 0b0000011;
 #define FUNC3_LH 0b001;
 bool is_lh_instruction(const I_INSTRUCTION* decoded_instruction);
 
@@ -251,5 +251,7 @@ bool is_sbu_instruction(const S_INSTRUCTION* decoded_instruction);
 #define OPCODE_SHU 0b0100011;
 #define FUNC3_SHU 0b101;
 bool is_shu_instruction(const S_INSTRUCTION* decoded_instruction);
+
+int count_all_instruction_matches(uint32_t encoded_instruction);
 
 #endif

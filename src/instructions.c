@@ -559,7 +559,7 @@ bool is_lb_instruction(const I_INSTRUCTION* decoded_instruction) {
 
 bool is_lh_instruction(const I_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_lh_instruction");
-    if (decoded_instruction->opcode != 0b0000111) return false;
+    if (decoded_instruction->opcode != 0b0000011) return false;
     if (decoded_instruction->func3 != 0b001) return false;
     return true;
 }
@@ -618,4 +618,54 @@ bool is_shu_instruction(const S_INSTRUCTION* decoded_instruction) {
     if (decoded_instruction->opcode != 0b0100011) return false;
     if (decoded_instruction->func3 != 0b101) return false;
     return true;
+}
+
+int count_all_instruction_matches(uint32_t encoded_instruction) {
+    int count = 0;
+    R_INSTRUCTION r_instruction = as_r_instruction(encoded_instruction);
+    I_INSTRUCTION i_instruction = as_i_instruction(encoded_instruction);
+    S_INSTRUCTION s_instruction = as_s_instruction(encoded_instruction);
+    U_INSTRUCTION u_instruction = as_u_instruction(encoded_instruction);
+    B_INSTRUCTION b_instruction = as_b_instruction(encoded_instruction);
+    J_INSTRUCTION j_instruction = as_j_instruction(encoded_instruction);
+    count += is_add_instruction(&r_instruction);
+    count += is_sub_instruction(&r_instruction);
+    count += is_sll_instruction(&r_instruction);
+    count += is_slt_instruction(&r_instruction);
+    count += is_sltu_instruction(&r_instruction);
+    count += is_xor_instruction(&r_instruction);
+    count += is_srl_instruction(&r_instruction);
+    count += is_sra_instruction(&r_instruction);
+    count += is_or_instruction(&r_instruction);
+    count += is_and_instruction(&r_instruction);
+    count += is_addi_instruction(&i_instruction);
+    count += is_slti_instruction(&i_instruction);
+    count += is_sltiu_instruction(&i_instruction);
+    count += is_xori_instruction(&i_instruction);
+    count += is_ori_instruction(&i_instruction);
+    count += is_andi_instruction(&i_instruction);
+    count += is_slli_instruction(&i_instruction);
+    count += is_srli_instruction(&i_instruction);
+    count += is_srai_instruction(&i_instruction);
+    count += is_beq_instruction(&b_instruction);
+    count += is_bne_instruction(&b_instruction);
+    count += is_blt_instruction(&b_instruction);
+    count += is_bge_instruction(&b_instruction);
+    count += is_bltu_instruction(&b_instruction);
+    count += is_bgeu_instruction(&b_instruction);
+    count += is_lui_instruction(&u_instruction);
+    count += is_auipc_instruction(&u_instruction);
+    count += is_jal_instruction(&j_instruction);
+    count += is_jalr_instruction(&i_instruction);
+    count += is_lb_instruction(&i_instruction);
+    count += is_lh_instruction(&i_instruction);
+    count += is_lw_instruction(&i_instruction);
+    count += is_lbu_instruction(&i_instruction);
+    count += is_lhu_instruction(&i_instruction);
+    count += is_sb_instruction(&s_instruction);
+    count += is_sh_instruction(&s_instruction);
+    count += is_sw_instruction(&s_instruction);
+    count += is_sbu_instruction(&s_instruction);
+    count += is_shu_instruction(&s_instruction);
+    return count;
 }
