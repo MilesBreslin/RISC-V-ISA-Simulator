@@ -72,6 +72,7 @@ int main(int argc, char* argv[]) {
         simulator s;
         simulator_init(&s, simulation_size);
         s.pc = pc_init;
+        write_register(&s, REG_SP, sp_init);
 
         // Read file and write its values to memory
         int lines = read_file_to_memory(&s, f);
