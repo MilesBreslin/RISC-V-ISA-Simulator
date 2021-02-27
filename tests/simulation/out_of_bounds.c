@@ -1,15 +1,14 @@
 #include "test_main.h"
 int simulation_run(simulator* s) {
-    // Write all registers
-    for (int i = 0; i < 32; i++)
-        write_register(s, i, 0xAA);
-    // Read ZERO
-    if (read_register(s, REG_ZERO) != 0)
-        FAIL("REG_ZERO has unexpected value");
-    // Real all other registers
-    for (int i = 1; i < 32; i++) {
-        if (read_register(s, i) != 0xAA)
-            FAIL("REG_x%d has unexpected value", i);
-    }
+    uint32_t data = 1;
+    write_word(s, SIMULATION_SIZE - 4, data);
+    if (read_word(s, SIMULATION_SIZE - 4) != data)
+        FAIL("Data incorrect");
+    write_hword(s, SIMULATION_SIZE - 2, data);
+    if (read_hword(s, SIMULATION_SIZE - 2) != data)
+        FAIL("Data incorrect");
+    write_byte(s, SIMULATION_SIZE - 2, data);
+    if (read_byte(s, SIMULATION_SIZE - 2) != data)
+        FAIL("Data incorrect");
     return 0;
 }
