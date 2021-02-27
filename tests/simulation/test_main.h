@@ -10,10 +10,13 @@
 bool verbose = 1;
 
 #ifndef SIMULATION_SIZE
-#define SIMULATION_SIZE 1 << 20
+#define SIMULATION_SIZE (1 << 20)
 #endif
 #ifndef PC_INIT
 #define PC_INIT 0
+#endif
+#ifndef SP_INIT
+#define SP_INIT 0xFFFF
 #endif
 
 int simulation_run(simulator* s);
@@ -23,6 +26,7 @@ int main() {
     simulator s;
     simulator_init(&s, SIMULATION_SIZE);
     s.pc = 0;
+    write_register(&s, REG_SP, SP_INIT);
 
 #ifdef LOAD_FILE
     // Open file
