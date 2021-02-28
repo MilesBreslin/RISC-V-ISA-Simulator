@@ -230,8 +230,8 @@ bool execute_simulation_step(simulator* s) {
     }
     if (is_sltiu_instruction(&i_instruction)) {
         INFO("Instruction: SLTIU %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm_s);
-        if(read_register(s, i_instruction.rs1) < i_instruction.imm_u) { //This is supposed to sign 
-            write_register(s, i_instruction.rd, 1);                                             //extend then cast to int?
+        if(read_register(s, i_instruction.rs1) < i_instruction.imm_u) { 
+            write_register(s, i_instruction.rd, 1);                                            
         }        
         else {
             write_register(s, i_instruction.rd, 0);
@@ -239,9 +239,9 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_xori_instruction(&i_instruction)) {
-        INFO("Instruction: XORI %d %d %d", r_instruction.rd, r_instruction.rs1, r_instruction.rs2);
-        write_register(s, r_instruction.rd, 
-            read_register(s, r_instruction.rs1)^read_register_signed(s, r_instruction.rs2)
+        INFO("Instruction: XORI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm_s);
+        write_register(s, i_instruction.rd, 
+            read_register(s, i_instruction.rs1)^ (int32)i_instruction.imm_s)
         );
         return true;
     }
