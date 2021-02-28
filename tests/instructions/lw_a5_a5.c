@@ -5,7 +5,7 @@ int main() {
     I_INSTRUCTION decoded = as_i_instruction(encoded);
     if (!is_lw_instruction(&decoded))
         FAIL("Not an LW  instruction");
-    VALUE_CHECK(decoded, imm, 0);
+    VALUE_CHECK(decoded, imm_s, 0);
     VALUE_CHECK(decoded, rd, REG_A5);
     VALUE_CHECK(decoded, rs1, REG_A5);
     return 0;

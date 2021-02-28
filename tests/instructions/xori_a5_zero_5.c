@@ -5,7 +5,7 @@ int main() {
     I_INSTRUCTION decoded = as_i_instruction(encoded);
     if (!is_xori_instruction(&decoded))
         FAIL("Not an xori instruction");
-    VALUE_CHECK(decoded, imm, 5);
+    VALUE_CHECK(decoded, imm_s, 5);
     VALUE_CHECK(decoded, rd, REG_A5);
     VALUE_CHECK(decoded, rs1, REG_ZERO);
     return 0;
