@@ -78,7 +78,7 @@ int dump_memory_to_file(simulator* s, FILE* f, uint32_t start_addr, uint32_t len
 
 int dump_registers_to_file(simulator* s, FILE* f) {
     for (int i = 0; i < 32; i++) {
-        if (fprintf(f, "%08X: %08X\n", i, read_register(s, i)) <= 0) {
+        if (fprintf(f, "%s: %08X\n", register_to_name(i), read_register(s, i)) <= 0) {
             WARN_SYS("Register dump write error");
             return i;
         }
@@ -149,6 +149,80 @@ void write_register(simulator* s, REGISTER reg, uint32_t data) {
 }
 void write_register_signed(simulator* s, REGISTER reg, int32_t data) {
     write_register(s, reg, *(uint32_t*) (&data));
+}
+
+const char* register_to_name(REGISTER reg) {
+    #define GEN_REG_TO_NAME(value) if (reg == value) return #value
+    GEN_REG_TO_NAME(REG_ZERO);
+    GEN_REG_TO_NAME(REG_RA);
+    GEN_REG_TO_NAME(REG_SP);
+    GEN_REG_TO_NAME(REG_GP);
+    GEN_REG_TO_NAME(REG_TP);
+    GEN_REG_TO_NAME(REG_T0);
+    GEN_REG_TO_NAME(REG_T1);
+    GEN_REG_TO_NAME(REG_T2);
+    GEN_REG_TO_NAME(REG_FP);
+    GEN_REG_TO_NAME(REG_S1);
+    GEN_REG_TO_NAME(REG_A0);
+    GEN_REG_TO_NAME(REG_A1);
+    GEN_REG_TO_NAME(REG_A2);
+    GEN_REG_TO_NAME(REG_A3);
+    GEN_REG_TO_NAME(REG_A4);
+    GEN_REG_TO_NAME(REG_A5);
+    GEN_REG_TO_NAME(REG_A6);
+    GEN_REG_TO_NAME(REG_A7);
+    GEN_REG_TO_NAME(REG_S2);
+    GEN_REG_TO_NAME(REG_S3);
+    GEN_REG_TO_NAME(REG_S4);
+    GEN_REG_TO_NAME(REG_S5);
+    GEN_REG_TO_NAME(REG_S6);
+    GEN_REG_TO_NAME(REG_S7);
+    GEN_REG_TO_NAME(REG_S8);
+    GEN_REG_TO_NAME(REG_S9);
+    GEN_REG_TO_NAME(REG_S10);
+    GEN_REG_TO_NAME(REG_S11);
+    GEN_REG_TO_NAME(REG_T3);
+    GEN_REG_TO_NAME(REG_T4);
+    GEN_REG_TO_NAME(REG_T5);
+    GEN_REG_TO_NAME(REG_T6);
+    return "REG_INVALID";
+}
+REGISTER register_from_name(char* name) {
+    #define GEN_REG_FROM_NAME(value) if (strcmp(name, #value) == 0) return value;
+    GEN_REG_FROM_NAME(REG_ZERO);
+    GEN_REG_FROM_NAME(REG_RA);
+    GEN_REG_FROM_NAME(REG_SP);
+    GEN_REG_FROM_NAME(REG_GP);
+    GEN_REG_FROM_NAME(REG_TP);
+    GEN_REG_FROM_NAME(REG_T0);
+    GEN_REG_FROM_NAME(REG_T1);
+    GEN_REG_FROM_NAME(REG_T2);
+    GEN_REG_FROM_NAME(REG_FP);
+    GEN_REG_FROM_NAME(REG_S1);
+    GEN_REG_FROM_NAME(REG_A0);
+    GEN_REG_FROM_NAME(REG_A1);
+    GEN_REG_FROM_NAME(REG_A2);
+    GEN_REG_FROM_NAME(REG_A3);
+    GEN_REG_FROM_NAME(REG_A4);
+    GEN_REG_FROM_NAME(REG_A5);
+    GEN_REG_FROM_NAME(REG_A6);
+    GEN_REG_FROM_NAME(REG_A7);
+    GEN_REG_FROM_NAME(REG_S2);
+    GEN_REG_FROM_NAME(REG_S3);
+    GEN_REG_FROM_NAME(REG_S4);
+    GEN_REG_FROM_NAME(REG_S5);
+    GEN_REG_FROM_NAME(REG_S6);
+    GEN_REG_FROM_NAME(REG_S7);
+    GEN_REG_FROM_NAME(REG_S8);
+    GEN_REG_FROM_NAME(REG_S9);
+    GEN_REG_FROM_NAME(REG_S10);
+    GEN_REG_FROM_NAME(REG_S11);
+    GEN_REG_FROM_NAME(REG_T3);
+    GEN_REG_FROM_NAME(REG_T4);
+    GEN_REG_FROM_NAME(REG_T5);
+    GEN_REG_FROM_NAME(REG_T6);
+    WARN("Unknown register: %s", name);
+    return REG_ZERO;
 }
 
 // Make GCC refuse to compile if we use the wrong instruction type

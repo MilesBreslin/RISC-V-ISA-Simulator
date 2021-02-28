@@ -65,6 +65,8 @@ uint32_t read_register(simulator *s, REGISTER reg);
 int32_t read_register_signed(simulator *s, REGISTER reg);
 void write_register(simulator *s, REGISTER reg, uint32_t data);
 void write_register_signed(simulator *s, REGISTER reg, int32_t data);
+const char* register_to_name(REGISTER reg);
+REGISTER register_from_name(char* name);
 bool execute_simulation_step(simulator *s);
 
 #endif
