@@ -245,8 +245,11 @@ bool execute_simulation_step(simulator* s) {
         );
         return true;
     }
-    if (is_ori_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: ORI");
+    if (is_xor_instruction(&i_instruction)) {
+        INFO("Instruction: ORI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm_s);
+        write_register(s, i_instruction.rd, 
+            read_register(s, i_instruction.rs1)|((int32_t)i_instruction.imm_s)
+        );
         return true;
     }
     if (is_andi_instruction(&i_instruction)) {
