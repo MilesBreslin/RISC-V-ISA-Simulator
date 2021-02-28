@@ -241,7 +241,7 @@ bool execute_simulation_step(simulator* s) {
     if (is_xori_instruction(&i_instruction)) {
         INFO("Instruction: XORI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm_s);
         write_register(s, i_instruction.rd, 
-            read_register(s, i_instruction.rs1)^ (int32)i_instruction.imm_s)
+            read_register(s, i_instruction.rs1)^ (int32_t)i_instruction.imm_s)
         );
         return true;
     }
