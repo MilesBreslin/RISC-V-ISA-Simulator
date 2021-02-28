@@ -43,18 +43,24 @@ int read_file_to_memory(simulator* s, FILE *f) {
         } else
             FAIL("Invalid line: %s", line);
 
-        // Parse address
-        uint32_t addr;
-        if (sscanf(addr_ptr, "%X", &addr) != 1)
-            FAIL("Invalid line: %s", line);
-
         // Parse value
         uint32_t value;
         if (sscanf(value_ptr, "%X", &value) != 1)
             FAIL("Invalid line: %s", line);
 
-        // Write the word into memory
-        write_word(s, addr, value);
+        // If is a valid register, write to the register; else parse as an address
+        REGISTER reg;
+        if ((reg = register_from_name(addr_ptr)) < 32 && reg >= 0) {
+            write_register(s, reg, value);
+        } else {
+            // Parse address
+            uint32_t addr;
+            if (sscanf(addr_ptr, "%X", &addr) != 1)
+                FAIL("Invalid line: %s", line);
+
+            // Write the word into memory
+            write_word(s, addr, value);
+        }
 
         line_no++;
     }
@@ -197,6 +203,7 @@ REGISTER register_from_name(char* name) {
     GEN_REG_FROM_NAME(REG_T0);
     GEN_REG_FROM_NAME(REG_T1);
     GEN_REG_FROM_NAME(REG_T2);
+    GEN_REG_FROM_NAME(REG_S0);
     GEN_REG_FROM_NAME(REG_FP);
     GEN_REG_FROM_NAME(REG_S1);
     GEN_REG_FROM_NAME(REG_A0);
@@ -221,8 +228,7 @@ REGISTER register_from_name(char* name) {
     GEN_REG_FROM_NAME(REG_T4);
     GEN_REG_FROM_NAME(REG_T5);
     GEN_REG_FROM_NAME(REG_T6);
-    WARN("Unknown register: %s", name);
-    return REG_ZERO;
+    return -1;
 }
 
 // Make GCC refuse to compile if we use the wrong instruction type
