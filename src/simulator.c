@@ -257,7 +257,10 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_beq_instruction(&b_instruction)) {
-        WARN("Unimplemented operation: BEQ");
+        INFO("Instruction: BEQ %d %d %d", b_instruction.rs1, b_instruction.rs2, b_instruction.imm);
+        if(read_register(s, b_instruction.rs1) == read_register(s, b_instruction.rs2)){
+            s->pc = pc + (b_instruction.imm);
+        }
         return true;
     }
     if (is_bne_instruction(&b_instruction)) {
