@@ -90,32 +90,30 @@ int main(int argc, char* argv[]) {
             FAIL("File is empty");
 
         fclose(f);
-       
-        // Quick verbose display of the memory contents
-        if (verbose) {
-            printf("Memory\n");
-            display_memory(&s, 0, lines);
-            printf("Registers\n");
-            display_registers(&s);
-        }
 
         /*Execution loop*/
         while (execute_simulation_step(&s)) { }
 
         if (dump_mem_file) {
             FILE* mem_f;
-            if ((mem_f = fopen(dump_mem_file, "w+")) == NULL)
+            if (strcmp("-", dump_mem_file) == 0)
+                mem_f = stdout;
+            else if ((mem_f = fopen(dump_mem_file, "w+")) == NULL)
                 WARN_SYS("Unable to open dump mem file: %s", dump_mem_file);
-            else {
+
+            if (mem_f != NULL) {
                 dump_memory_to_file(&s, mem_f, 0, 0);
                 fclose(mem_f);
             }
         }
         if (dump_reg_file) {
             FILE* reg_f;
-            if ((reg_f = fopen(dump_reg_file, "w+")) == NULL)
+            if (strcmp("-", dump_reg_file) == 0)
+                reg_f = stdout;
+            else if ((reg_f = fopen(dump_reg_file, "w+")) == NULL)
                 WARN_SYS("Unable to open dump mem file: %s", dump_reg_file);
-            else {
+
+            if (reg_f != NULL) {
                 dump_registers_to_file(&s, reg_f);
                 fclose(reg_f);
             }
