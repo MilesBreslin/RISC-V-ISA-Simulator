@@ -225,7 +225,12 @@ instruction_types:
       bits:
         - start: 15
           end: 19
-    - name: imm
+    - name: imm_u
+      signed: false
+      bits:
+        - start: 20
+          end: 31
+    - name: imm_s
       signed: true
       bits:
         - start: 20
@@ -253,7 +258,14 @@ instruction_types:
       bits:
         - start: 20
           end: 24
-    - name: imm
+    - name: imm_u
+      signed: false
+      bits:
+        - start: 7
+          end: 11
+        - start: 25
+          end: 31
+    - name: imm_s
       signed: true
       bits:
         - start: 7
@@ -272,7 +284,12 @@ instruction_types:
       bits:
         - start: 7
           end: 11
-    - name: imm
+    - name: imm_u
+      signed: false
+      bits:
+        - start: 12
+          end: 31
+    - name: imm_s
       signed: true
       bits:
         - start: 12
@@ -300,7 +317,19 @@ instruction_types:
       bits:
         - start: 20
           end: 24
-    - name: imm
+    - name: imm_u
+      signed: false
+      bits:
+        - zeros: 1
+        - start: 8
+          end: 11
+        - start: 25
+          end: 30
+        - start: 7
+          end: 7
+        - start: 31
+          end: 31
+    - name: imm_s
       signed: true
       bits:
         - zeros: 1
@@ -324,7 +353,12 @@ instruction_types:
       bits:
         - start: 7
           end: 11
-    - name: imm
+    - name: imm_u
+      signed: false
+      bits:
+        - start: 12
+          end: 31
+    - name: imm_s
       signed: true
       bits:
         - start: 12
