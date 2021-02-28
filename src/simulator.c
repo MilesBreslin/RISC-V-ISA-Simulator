@@ -220,7 +220,7 @@ bool execute_simulation_step(simulator* s) {
     }
     if (is_slti_instruction(&i_instruction)) {
         INFO("Instruction: SLTI %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
-        if((read_register_signed(s, i_instruction.rs1)) < (read_register_signed(i_instruction.imm))) {
+        if(read_register_signed(s, i_instruction.rs1) < read_register_signed(i_instruction.imm)) {
             write_register(s, i_instruction.rd, 1);
         }        
         else {
@@ -230,7 +230,7 @@ bool execute_simulation_step(simulator* s) {
     }
     if (is_sltiu_instruction(&i_instruction)) {
         INFO("Instruction: SLTIU %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm);
-        if((read_register(s, i_instruction.rs1)) < (read_register_signed(i_instruction.imm))) { //This is supposed to sign 
+        if(read_register(s, i_instruction.rs1) < read_register_signed(i_instruction.imm)) { //This is supposed to sign 
             write_register(s, i_instruction.rd, 1);                                             //extend then cast to int?
         }        
         else {
@@ -242,8 +242,8 @@ bool execute_simulation_step(simulator* s) {
     if (is_xori_instruction(&i_instruction)) {
         INFO("Instruction: XORI %d %d %d", r_instruction.rd, r_instruction.rs1, r_instruction.rs2);
         write_register(s, r_instruction.rd, 
-            ((read_register(s, r_instruction.rs1))^(read_register_signed(s, r_instruction.rs2)))
-        };
+            (read_register(s, r_instruction.rs1)^read_register_signed(s, r_instruction.rs2));
+        }
         return true;
     }
     if (is_ori_instruction(&i_instruction)) {
