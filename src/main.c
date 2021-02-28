@@ -12,7 +12,7 @@
 bool verbose = 0;
 char* target_file = "prog.mem";
 uint32_t pc_init = 0x00000000;
-uint32_t sp_init = 0x0000FFFF;
+uint32_t sp_init = 0x0000FFF0;
 uint32_t simulation_size = 1 << 28;
 
 void usage(char* message, int err) {
