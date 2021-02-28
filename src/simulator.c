@@ -426,7 +426,9 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_jal_instruction(&j_instruction)) {
-        WARN("Unimplemented operation: JAL");
+        INFO("Instruction: JAL %d %d %d", j_instruction.rd, j_instruction.imm_s);
+        write_register(s, j_instruction.rd, pc + j_instruction.imm_s);
+            s->pc = pc + (j_instruction.imm_s);
         return true;
     }
     if (is_jalr_instruction(&i_instruction)) {
