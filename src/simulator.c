@@ -277,7 +277,7 @@ bool execute_simulation_step(simulator* s) {
     }
     if (is_bge_instruction(&b_instruction)) {
         INFO("Instruction: BGE %d %d %d", b_instruction.rs1, b_instruction.rs2, b_instruction.imm);
-        if(read_register(s, b_instruction.rs1) >= read_register(s, b_instruction.rs2)){
+        if(read_register_signed(s, b_instruction.rs1) >= read_register_signed(s, b_instruction.rs2)){
             s->pc = pc + (b_instruction.imm);
         }        return true;
     }
@@ -288,7 +288,10 @@ bool execute_simulation_step(simulator* s) {
         }        return true;
     }
     if (is_bgeu_instruction(&b_instruction)) {
-        WARN("Unimplemented operation: BGEU");
+        INFO("Instruction: BGEU %d %d %d", b_instruction.rs1, b_instruction.rs2, b_instruction.imm);
+        if(read_register(s, b_instruction.rs1) >= read_register(s, b_instruction.rs2)){
+            s->pc = pc + (b_instruction.imm);
+        }        return true;
         return true;
     }
     if (is_lui_instruction(&u_instruction)) {
