@@ -254,14 +254,6 @@ bool is_sh_instruction(const S_INSTRUCTION* decoded_instruction);
 #define FUNC3_SW 0b010;
 bool is_sw_instruction(const S_INSTRUCTION* decoded_instruction);
 
-#define OPCODE_SBU 0b0100011;
-#define FUNC3_SBU 0b100;
-bool is_sbu_instruction(const S_INSTRUCTION* decoded_instruction);
-
-#define OPCODE_SHU 0b0100011;
-#define FUNC3_SHU 0b101;
-bool is_shu_instruction(const S_INSTRUCTION* decoded_instruction);
-
 int count_all_instruction_matches(uint32_t encoded_instruction);
 
 #endif

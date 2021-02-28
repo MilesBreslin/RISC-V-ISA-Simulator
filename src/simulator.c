@@ -374,23 +374,27 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_sb_instruction(&s_instruction)) {
-        WARN("Unimplemented operation: SB");
+        INFO("Instruction: SB %d %d %d", s_instruction.rd, s_instruction.rs1, s_instruction.imm_s);
+        write_byte(s,
+            read_register(s, s_instruction.rs1) + s_instruction.imm_s,
+            read_register(s, s_instruction.rs2)
+        );
         return true;
     }
     if (is_sh_instruction(&s_instruction)) {
-        WARN("Unimplemented operation: SH");
+        INFO("Instruction: SH %d %d %d", s_instruction.rd, s_instruction.rs1, s_instruction.imm_s);
+        write_hword(s,
+            read_register(s, s_instruction.rs1) + s_instruction.imm_s,
+            read_register(s, s_instruction.rs2)
+        );
         return true;
     }
     if (is_sw_instruction(&s_instruction)) {
-        WARN("Unimplemented operation: SW");
-        return true;
-    }
-    if (is_sbu_instruction(&s_instruction)) {
-        WARN("Unimplemented operation: SBU");
-        return true;
-    }
-    if (is_shu_instruction(&s_instruction)) {
-        WARN("Unimplemented operation: SHU");
+        INFO("Instruction: SW %d %d %d", s_instruction.rd, s_instruction.rs1, s_instruction.imm_s);
+        write_word(s,
+            read_register(s, s_instruction.rs1) + s_instruction.imm_s,
+            read_register(s, s_instruction.rs2)
+        );
         return true;
     }
 

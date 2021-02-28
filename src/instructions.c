@@ -671,20 +671,6 @@ bool is_sw_instruction(const S_INSTRUCTION* decoded_instruction) {
     return true;
 }
 
-bool is_sbu_instruction(const S_INSTRUCTION* decoded_instruction) {
-    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_sbu_instruction");
-    if (decoded_instruction->opcode != 0b0100011) return false;
-    if (decoded_instruction->func3 != 0b100) return false;
-    return true;
-}
-
-bool is_shu_instruction(const S_INSTRUCTION* decoded_instruction) {
-    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_shu_instruction");
-    if (decoded_instruction->opcode != 0b0100011) return false;
-    if (decoded_instruction->func3 != 0b101) return false;
-    return true;
-}
-
 int count_all_instruction_matches(uint32_t encoded_instruction) {
     int count = 0;
     R_INSTRUCTION r_instruction = as_r_instruction(encoded_instruction);
@@ -730,7 +716,5 @@ int count_all_instruction_matches(uint32_t encoded_instruction) {
     count += is_sb_instruction(&s_instruction);
     count += is_sh_instruction(&s_instruction);
     count += is_sw_instruction(&s_instruction);
-    count += is_sbu_instruction(&s_instruction);
-    count += is_shu_instruction(&s_instruction);
     return count;
 }
