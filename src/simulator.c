@@ -214,7 +214,10 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_and_instruction(&r_instruction)) {
-        WARN("Unimplemented operation: AND");
+        INFO("Instruction: AND %d %d %d", r_instruction.rd, r_instruction.rs1, r_instruction.rs2);
+        write_register(s, r_instruction.rd, 
+            read_register(s, r_instruction.rs1) & r_instruction.rs2
+        );
         return true;
     }
     if (is_addi_instruction(&i_instruction)) {
