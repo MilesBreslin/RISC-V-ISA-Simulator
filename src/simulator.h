@@ -48,7 +48,10 @@ typedef enum {
 void simulator_init(simulator *s, uint32_t mem_bytes);
 void simulator_destroy(simulator *s);
 void display_memory(simulator *s, uint32_t start_addr, uint32_t length);
+void display_registers(simulator *s);
 int read_file_to_memory(simulator *s, FILE *f);
+int dump_memory_to_file(simulator *s, FILE *f, uint32_t start_addr, uint32_t length);
+int dump_registers_to_file(simulator *s, FILE *f);
 void write_word(simulator *s, uint32_t addr, uint32_t data);
 void write_hword(simulator *s, uint32_t addr, uint16_t data);
 void write_byte(simulator *s, uint32_t addr, uint8_t data);

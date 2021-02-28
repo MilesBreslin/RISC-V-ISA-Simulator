@@ -21,31 +21,11 @@ void simulator_destroy(simulator* s) {
 #define out_of_bounds_check(s, addr, data_type) (addr > (((int64_t) s->mem_bytes) - sizeof(data_type)))
 
 void display_memory(simulator* s, uint32_t start_addr, uint32_t length) {
-    // Check if address is out of bounds
-    if (out_of_bounds_check(s, start_addr, uint32_t)) {
-        WARN("Out of bounds memory display: %08X", start_addr);
-        return;
-    }
+    dump_memory_to_file(s, stdout, start_addr, length);
+}
 
-    // Ensure the length is in bounds
-    uint32_t actual_len = length;
-    if (start_addr + length > s->mem_bytes)
-        actual_len = start_addr - s->mem_bytes;
-
-    // Pretty table formatting
-    const char* line = "|---------------------|";
-    printf("%s\n", line);
-    printf("| %-8s | %-8s |\n", "Address", "Length");
-    printf("%s\n", line);
-
-    // Print all values
-    uint32_t addr = start_addr;
-    while (actual_len-- > 0) {
-        printf("| %08X | %08X | \n", addr, read_word(s, addr));
-        addr += 4;
-    }
-
-    printf("%s\n", line);
+void display_registers(simulator* s) {
+    dump_registers_to_file(s, stdout);
 }
 
 int read_file_to_memory(simulator* s, FILE *f) {
@@ -79,6 +59,31 @@ int read_file_to_memory(simulator* s, FILE *f) {
         line_no++;
     }
     return line_no;
+}
+
+int dump_memory_to_file(simulator* s, FILE* f, uint32_t start_addr, uint32_t length) {
+    uint32_t count = 0;
+    uint32_t addr = start_addr;
+    uint32_t end_addr = start_addr + (length * 4);
+    while (addr < end_addr && !out_of_bounds_check(s, addr, uint32_t)) {
+        if (fprintf(f, "%08X: %08X\n", addr, read_word(s, addr)) <= 0) {
+            WARN_SYS("Memory dump error");
+            return count;
+        }
+        addr += 4;
+        count++;
+    }
+    return count;
+}
+
+int dump_registers_to_file(simulator* s, FILE* f) {
+    for (int i = 0; i < 32; i++) {
+        if (fprintf(f, "%08X: %08X\n", i, read_register(s, i)) <= 0) {
+            WARN_SYS("Register dump write error");
+            return i;
+        }
+    }
+    return 32;
 }
 
 // Disable pointer math warnings only for mem access functions
