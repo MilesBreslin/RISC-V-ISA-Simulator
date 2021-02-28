@@ -151,6 +151,9 @@ void write_register_signed(simulator* s, REGISTER reg, int32_t data) {
 bool execute_simulation_step(simulator* s) {
     uint32_t pc = s->pc;
     s->pc += 4;
+
+    if (pc % 4 != 0)
+        WARN("PC is not aligned");
     
     // No need to check OOB, read_word returns 0 on invalid memory
     uint32_t encoded_instruction = read_word(s, pc);
@@ -158,6 +161,9 @@ bool execute_simulation_step(simulator* s) {
         INFO("Execution halted at PC: %08X", pc);
         return false;
     }
+
+    if (count_all_instruction_matches(encoded_instruction) > 1)
+        FAIL("Encoded instruction matches more than 1 operation");
 
     R_INSTRUCTION r_instruction = as_r_instruction(encoded_instruction);
     I_INSTRUCTION i_instruction = as_i_instruction(encoded_instruction);
@@ -374,7 +380,7 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_sb_instruction(&s_instruction)) {
-        INFO("Instruction: SB %d %d %d", s_instruction.rd, s_instruction.rs1, s_instruction.imm_s);
+        INFO("Instruction: SB %d %d %d", s_instruction.rs1, s_instruction.rs2, s_instruction.imm_s);
         write_byte(s,
             read_register(s, s_instruction.rs1) + s_instruction.imm_s,
             read_register(s, s_instruction.rs2)
@@ -382,7 +388,7 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_sh_instruction(&s_instruction)) {
-        INFO("Instruction: SH %d %d %d", s_instruction.rd, s_instruction.rs1, s_instruction.imm_s);
+        INFO("Instruction: SH %d %d %d", s_instruction.rs1, s_instruction.rs2, s_instruction.imm_s);
         write_hword(s,
             read_register(s, s_instruction.rs1) + s_instruction.imm_s,
             read_register(s, s_instruction.rs2)
@@ -390,7 +396,7 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_sw_instruction(&s_instruction)) {
-        INFO("Instruction: SW %d %d %d", s_instruction.rd, s_instruction.rs1, s_instruction.imm_s);
+        INFO("Instruction: SW %d %d %d", s_instruction.rs1, s_instruction.rs2, s_instruction.imm_s);
         write_word(s,
             read_register(s, s_instruction.rs1) + s_instruction.imm_s,
             read_register(s, s_instruction.rs2)
