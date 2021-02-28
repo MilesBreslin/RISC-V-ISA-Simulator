@@ -337,25 +337,31 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_lh_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: LH");
+        INFO("Instruction: LH %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm_s);
+        write_register(s, i_instruction.rd,
+            read_shword(s, read_register(s, i_instruction.rs1) + i_instruction.imm_s)
+        );
         return true;
     }
     if (is_lw_instruction(&i_instruction)) {
         INFO("Instruction: LW %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm_s);
         write_register(s, i_instruction.rd,
-            read_word(s,(read_register(s, i_instruction.rs1) + i_instruction.imm_s))
+            read_sword(s,(read_register(s, i_instruction.rs1) + i_instruction.imm_s))
         );
         return true;
     }
     if (is_lbu_instruction(&i_instruction)) {
-        INFO("Instruction: LBU %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm_s);
+        INFO("Instruction: LBU %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm_u);
         write_register(s, i_instruction.rd,
-            read_byte(s, read_register(s, i_instruction.rs1) + i_instruction.imm_s)
+            read_byte(s, read_register(s, i_instruction.rs1) + i_instruction.imm_u)
         );
         return true;
     }
     if (is_lhu_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: LHU");
+        INFO("Instruction: LHU %d %d %d", i_instruction.rd, i_instruction.rs1, i_instruction.imm_u);
+        write_register(s, i_instruction.rd,
+            read_hword(s, read_register(s, i_instruction.rs1) + i_instruction.imm_u)
+        );
         return true;
     }
     if (is_sb_instruction(&s_instruction)) {
