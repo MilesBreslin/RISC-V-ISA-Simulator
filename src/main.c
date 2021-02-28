@@ -11,14 +11,18 @@
 
 bool verbose = 0;
 char* target_file = "prog.mem";
+char* dump_mem_file = NULL;
+char* dump_reg_file = NULL;
 uint32_t pc_init = 0x00000000;
 uint32_t sp_init = 0x0000FFF0;
-uint32_t simulation_size = 1 << 28;
+uint32_t simulation_size = 1 << 16;
 
 void usage(char* message, int err) {
     FILE* fd = err == 0 ? stdout : stderr;
     fprintf(fd, "%s\n", message);
 
+    fprintf(fd, "--dump-memory <memory_file>        Dump memory to a file (default: \"%s\")\n", dump_mem_file);
+    fprintf(fd, "--dump-registers <register_file>    Dump registers to a file (default: \"%s\")\n", dump_reg_file);
     fprintf(fd, "--load-file <config_file>          Decoded runtime code (default: \"%s\")\n", target_file);
     fprintf(fd, "--pc-init <addr>                   Hexadecimal value to start the program counter (default: 0x00000000)\n");
     fprintf(fd, "--sp-init <addr>                   Decimal value to specify the stack address (default: 65535)\n");
@@ -36,6 +40,12 @@ int main(int argc, char* argv[]) {
         if (strcmp("--load-file", argv[i]) == 0) {
             i++;
             target_file = argv[i];
+        } else if (strcmp("--dump-memory", argv[i]) == 0) {
+            i++;
+            dump_mem_file = argv[i];
+        } else if (strcmp("--dump-registers", argv[i]) == 0) {
+            i++;
+            dump_reg_file = argv[i];
         } else if (strcmp("--pc-init", argv[i]) == 0) {
             i++;
             if ((err = sscanf(argv[i], "%X", &pc_init)) != 1) {
@@ -91,6 +101,26 @@ int main(int argc, char* argv[]) {
 
         /*Execution loop*/
         while (execute_simulation_step(&s)) { }
+
+        if (dump_mem_file) {
+            FILE* mem_f;
+            if ((mem_f = fopen(dump_mem_file, "w+")) == NULL)
+                WARN_SYS("Unable to open dump mem file: %s", dump_mem_file);
+            else {
+                dump_memory_to_file(&s, mem_f, 0, 0);
+                fclose(mem_f);
+            }
+        }
+        if (dump_reg_file) {
+            FILE* reg_f;
+            if ((reg_f = fopen(dump_reg_file, "w+")) == NULL)
+                WARN_SYS("Unable to open dump mem file: %s", dump_reg_file);
+            else {
+                dump_registers_to_file(&s, reg_f);
+                fclose(reg_f);
+            }
+        }
+        printf("Execution halted at PC: %08X", s.pc);
 
         simulator_destroy(&s);
         exit(EXIT_SUCCESS);

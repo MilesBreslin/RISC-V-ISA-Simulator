@@ -65,7 +65,7 @@ int dump_memory_to_file(simulator* s, FILE* f, uint32_t start_addr, uint32_t len
     uint32_t count = 0;
     uint32_t addr = start_addr;
     uint32_t end_addr = start_addr + (length * 4);
-    while (addr < end_addr && !out_of_bounds_check(s, addr, uint32_t)) {
+    while ((addr < end_addr || length == 0) && !out_of_bounds_check(s, addr, uint32_t)) {
         if (fprintf(f, "%08X: %08X\n", addr, read_word(s, addr)) <= 0) {
             WARN_SYS("Memory dump error");
             return count;
@@ -162,13 +162,17 @@ bool execute_simulation_step(simulator* s) {
     
     // No need to check OOB, read_word returns 0 on invalid memory
     uint32_t encoded_instruction = read_word(s, pc);
-    if (encoded_instruction == 0) {
-        INFO("Execution halted at PC: %08X", pc);
+    if (encoded_instruction == 0)
         return false;
-    }
 
-    if (count_all_instruction_matches(encoded_instruction) > 1)
-        FAIL("Encoded instruction matches more than 1 operation");
+    int instruction_matches = count_all_instruction_matches(encoded_instruction);
+    if (instruction_matches > 1) {
+        WARN("Encoded instruction matches more than 1 operation");
+        return true;
+    } else if (instruction_matches == 0) {
+        WARN("No known instruction for %08X", encoded_instruction);
+        return true;
+    }
 
     R_INSTRUCTION r_instruction = as_r_instruction(encoded_instruction);
     I_INSTRUCTION i_instruction = as_i_instruction(encoded_instruction);
@@ -409,6 +413,6 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
 
-    WARN("Unknown operation: %08X", encoded_instruction);
+    WARN("Unhandled operation: %08X", encoded_instruction);
     return true;
 }
