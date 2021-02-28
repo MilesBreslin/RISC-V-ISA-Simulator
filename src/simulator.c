@@ -258,7 +258,7 @@ bool execute_simulation_step(simulator* s) {
             read_register(s, i_instruction.rs1)&((int32_t)i_instruction.imm_s)
         );
         return true;
-
+    }
     if (is_slli_instruction(&i_instruction)) {
         WARN("Unimplemented operation: SLLI");
         return true;
