@@ -194,7 +194,7 @@ bool execute_simulation_step(simulator* s) {
     if (is_xor_instruction(&r_instruction)) {
         INFO("Instruction: XOR %d %d %d", r_instruction.rd, r_instruction.rs1, r_instruction.rs2);
         write_register(s, r_instruction.rd, 
-            (read_register(s, r_instruction.rs1)^ r_instruction.rs2)
+            read_register(s, r_instruction.rs1)^ r_instruction.rs2
         );
         return true;
     }
