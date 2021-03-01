@@ -1,1 +1,2 @@
-REG_A5: 0000000F
+# A0 is a return register and should contain the return value 
+REG_A0: 0000000F

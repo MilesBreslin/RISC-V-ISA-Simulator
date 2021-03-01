@@ -1,3 +1,4 @@
+# Derived from running tools/c_to_mem on tests/c_code/return_only.c
 0:	fe010113
 4:	00812e23
 8:	02010413
