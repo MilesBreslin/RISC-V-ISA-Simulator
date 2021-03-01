@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
             if (reg_f != stdout)
                 fclose(reg_f);
         }
-        printf("Execution halted at PC: %08X", s.pc);
+        printf("PC: %08X", s.pc);
 
         simulator_destroy(&s);
         exit(EXIT_SUCCESS);
