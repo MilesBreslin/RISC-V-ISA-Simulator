@@ -33,6 +33,9 @@ int read_file_to_memory(simulator* s, FILE *f) {
     int line_no = 0;
     char line[255];
     while (fgets(line, sizeof(line), f) != NULL) {
+        // Skip commented lines
+        if (line[0] == '#')
+            continue;
 
         // Split the string into 
         char* addr_ptr = line;
