@@ -12,3 +12,6 @@ c:	00500793
 28:	01c12403
 2c:	02010113
 30:	00008067
+# Set the return address to the address of 0 to prevent infinite loop
+REG_RA: 34
+34: 0
