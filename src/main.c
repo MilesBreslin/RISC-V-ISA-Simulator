@@ -16,17 +16,19 @@ char* dump_reg_file = NULL;
 uint32_t pc_init = 0x00000000;
 uint32_t sp_init = 0x0000FFF0;
 uint32_t simulation_size = 1 << 16;
+unsigned int instruction_limit = 0;
 
 void usage(char* message, int err) {
     FILE* fd = err == 0 ? stdout : stderr;
     fprintf(fd, "%s\n", message);
 
     fprintf(fd, "--dump-memory <memory_file>        Dump memory to a file (default: \"%s\")\n", dump_mem_file);
-    fprintf(fd, "--dump-registers <register_file>    Dump registers to a file (default: \"%s\")\n", dump_reg_file);
+    fprintf(fd, "--dump-registers <register_file>   Dump registers to a file (default: \"%s\")\n", dump_reg_file);
+    fprintf(fd, "--instruction-limit <count>        Limit the number of instructions executed (default: %u)\n", instruction_limit);
     fprintf(fd, "--load-file <config_file>          Decoded runtime code (default: \"%s\")\n", target_file);
     fprintf(fd, "--pc-init <addr>                   Hexadecimal value to start the program counter (default: %08X)\n", pc_init);
-    fprintf(fd, "--sp-init <addr>                   Decimal value to specify the stack address (default: %08X)\n", sp_init);
     fprintf(fd, "--simulation-size <bytes>          Decimal value to specify the stack address (default: %08X)\n", simulation_size);
+    fprintf(fd, "--sp-init <addr>                   Decimal value to specify the stack address (default: %08X)\n", sp_init);
     fprintf(fd, "--verbose                          Show extra verbose information\n");
 
     fprintf(fd, "--help                             Show this help dialog\n");
@@ -56,6 +58,11 @@ int main(int argc, char* argv[]) {
             i++;
             if ((err = sscanf(argv[i], "%X", &sp_init)) != 1) {
                 fprintf(stderr, "Invalid format for --sp-init\n");
+            }
+        } else if (strcmp("--instruction-limit", argv[i]) == 0) {
+            i++;
+            if ((err = sscanf(argv[i], "%d", &instruction_limit)) != 1) {
+                fprintf(stderr, "Invalid format for --instruction-limit\n");
             }
         } else if (strcmp("--simulation-size", argv[i]) == 0) {
             i++;
@@ -97,8 +104,11 @@ int main(int argc, char* argv[]) {
 
         fclose(f);
 
-        /*Execution loop*/
-        while (execute_simulation_step(&s)) { }
+        unsigned int exec_count = 0;
+        while (execute_simulation_step(&s)) {
+            if (instruction_limit > 0 && ++exec_count > instruction_limit)
+                FAIL("Instruction limit reached: %d", instruction_limit);
+        }
 
         if (dump_mem_file) {
             FILE* mem_f;
