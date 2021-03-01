@@ -422,7 +422,8 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_jalr_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: JALR");
+        write_register(s, i_instruction.rd, pc + 4);
+        s->pc = (read_register_signed(s,i_instruction.rs1) + i_instruction.imm_s) & ~1;
         return true;
     }
     if (is_lb_instruction(&i_instruction)) {
