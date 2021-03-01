@@ -22,3 +22,9 @@ jobs:
         run: ./tools/run_all_instruction_tests build
       - name: Run Instruction Tests
         run: ./tools/run_all_instruction_tests run
+  run-all-end-to-end-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run all end-to-end tests
+        run: ./tools/run_end_to_end_tests
