@@ -3,8 +3,8 @@ int simulation_run(simulator* s) {
     // Data payload
     uint32_t data1 = 0x00000005;
     uint32_t data2 = 0x00000006;
-    write_word(s, 18, data1);
-    write_word(s,1C, data2);
+    write_word(s, 0x18, data1);
+    write_word(s,0x1C, data2);
     write_register(s, REG_A6, 0x00000005);
     write_register(s, REG_A7, 0x00000009);
 
