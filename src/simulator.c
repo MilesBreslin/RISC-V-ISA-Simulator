@@ -249,10 +249,10 @@ bool execute_simulation_step(simulator* s) {
 
     int instruction_matches = count_all_instruction_matches(encoded_instruction);
     if (instruction_matches > 1) {
-        WARN("Encoded instruction matches more than 1 operation");
+        WARN("Instruction [%08X] %08X: Matches more than 1 instruction", pc, encoded_instruction);
         return true;
     } else if (instruction_matches == 0) {
-        WARN("No known instruction for %08X", encoded_instruction);
+        WARN("Instruction [%08X] %08X: No known instruction", pc, encoded_instruction);
         return true;
     }
 
