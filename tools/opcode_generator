@@ -261,9 +261,11 @@ def generate(file_type):
     )
     + (
         "int count_all_instruction_matches(uint32_t encoded_instruction)" as $count_function_proto
+        | "char* format_instruction(uint32_t encoded_instruction)" as $format_function_proto
         | {
             "header": [
-                "\($count_function_proto);"
+                "\($count_function_proto);",
+                "\($format_function_proto);"
             ],
             "code": [
                 "\($count_function_proto) {\n\(
@@ -287,10 +289,97 @@ def generate(file_type):
                     ]
                     | concat_strings("\n")
                     | indent
+                )\n}",
+                "\($format_function_proto) {\n\((
+                        .instruction_types
+                        | to_entries
+                        | map(
+                            "\(.key)_INSTRUCTION" as $instruction_type
+                            | "\($instruction_type) \($instruction_type | ascii_downcase) = as_\(.key | ascii_downcase)_instruction(encoded_instruction);"
+                        )
+                    ) + (
+                        .operations
+                        | to_entries
+                        | map(
+                            "if (is_\(.key | ascii_downcase)_instruction(&\(.value.instruction_type | ascii_downcase)_instruction)) return format_\(.key | ascii_downcase)_operation(&\(.value.instruction_type | ascii_downcase)_instruction);"
+                        )
+                    ) + [
+                        "return NULL;"
+                    ]
+                    | concat_strings("\n")
+                    | indent
                 )\n}"
             ]
         }
         | getpath([ file_type ])
+    )
+    + (
+        .instruction_types as $instruction_types
+        | .operations
+        | to_entries
+        | map(
+            "char* format_\(.key | ascii_downcase)_operation(\(.value.instruction_type)_INSTRUCTION* decoded_instruction)" as $format_proto
+            | {
+                "header": [
+                    "\($format_proto);"
+                ],
+                "code": [
+                    "\($format_proto) {\n\(
+                        [
+                            "if (!is_\(.key | ascii_downcase)_instruction(decoded_instruction)) return NULL;",
+                            "sprintf(format_memory, \"\(.key) \(
+                                (
+                                    .value.instruction_type as $instruction_type
+                                    | .value as $operation_fields
+                                    | $instruction_types
+                                    | getpath([ $instruction_type ])
+                                    | map(
+                                        .name as $field_name
+                                        | if ($operation_fields | getpath([ $field_name ])) then
+                                            [ ]
+                                        else
+                                            [ . ]
+                                        end
+                                    )
+                                    | add
+                                ) as $relevant_fields
+                                | [
+                                    ($relevant_fields | map(
+                                        "<\(.name)=\(if .type == "REGISTER" then
+                                            "%s"
+                                        else if .signed == true then
+                                            "%d"
+                                        else
+                                            "%u"
+                                        end
+                                        end)>"
+                                    ) | concat_strings(" ")),
+                                    "\",\n",
+                                    ($relevant_fields
+                                    | map(
+                                        "decoded_instruction->\(.name)" as $field_reference
+                                        | if .type == "REGISTER" then
+                                            "register_to_name(\($field_reference))"
+                                        else
+                                            $field_reference
+                                        end
+                                    )
+                                    | concat_strings(",\n")
+                                    | indent),
+                                    "\n"
+                                ]
+                                | concat_strings("")
+                            ));",
+                            "return format_memory;"
+                        ]
+                        | concat_strings("\n")
+                        | indent
+                    )\n}"
+                ]
+            }
+            | getpath([ file_type ])
+        )
+        | add
     )
     | if file_type == "header" then
         [
@@ -309,6 +398,8 @@ def generate(file_type):
                 "#include <stdint.h>",
                 "#include \"core.h\"",
                 "#include \"instructions.h\"",
+                "",
+                "char format_memory[64];",
                 "",
                 (
                     [

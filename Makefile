@@ -2,7 +2,7 @@
 CC = gcc
 
 # Compile-time flags
-CFLAGS = -O2 -std=c99 -ggdb -Wall -flto
+CFLAGS = -O3 -std=c99 -ggdb -Wall -flto
 
 all: build/riscv_simulator
 

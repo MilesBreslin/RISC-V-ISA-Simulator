@@ -256,4 +256,80 @@ bool is_sw_instruction(const S_INSTRUCTION* decoded_instruction);
 
 int count_all_instruction_matches(uint32_t encoded_instruction);
 
+char* format_instruction(uint32_t encoded_instruction);
+
+char* format_add_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_sub_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_sll_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_slt_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_sltu_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_xor_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_srl_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_sra_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_or_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_and_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_addi_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_slti_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_sltiu_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_xori_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_ori_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_andi_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_slli_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_srli_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_srai_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_beq_operation(B_INSTRUCTION* decoded_instruction);
+
+char* format_bne_operation(B_INSTRUCTION* decoded_instruction);
+
+char* format_blt_operation(B_INSTRUCTION* decoded_instruction);
+
+char* format_bge_operation(B_INSTRUCTION* decoded_instruction);
+
+char* format_bltu_operation(B_INSTRUCTION* decoded_instruction);
+
+char* format_bgeu_operation(B_INSTRUCTION* decoded_instruction);
+
+char* format_lui_operation(U_INSTRUCTION* decoded_instruction);
+
+char* format_auipc_operation(U_INSTRUCTION* decoded_instruction);
+
+char* format_jal_operation(J_INSTRUCTION* decoded_instruction);
+
+char* format_jalr_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_lb_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_lh_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_lw_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_lbu_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_lhu_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_sb_operation(S_INSTRUCTION* decoded_instruction);
+
+char* format_sh_operation(S_INSTRUCTION* decoded_instruction);
+
+char* format_sw_operation(S_INSTRUCTION* decoded_instruction);
+
 #endif

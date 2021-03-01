@@ -254,6 +254,8 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
 
+    INFO("Instruction: %s", format_instruction(encoded_instruction));
+
     R_INSTRUCTION r_instruction = as_r_instruction(encoded_instruction);
     I_INSTRUCTION i_instruction = as_i_instruction(encoded_instruction);
     S_INSTRUCTION s_instruction = as_s_instruction(encoded_instruction);
@@ -261,14 +263,12 @@ bool execute_simulation_step(simulator* s) {
     B_INSTRUCTION b_instruction = as_b_instruction(encoded_instruction);
     J_INSTRUCTION j_instruction = as_j_instruction(encoded_instruction);
     if (is_add_instruction(&r_instruction)) {
-        INFO("Instruction: ADD %s %s %s", register_to_name(r_instruction.rd), register_to_name(r_instruction.rs1), register_to_name(r_instruction.rs2));
         write_register(s, r_instruction.rd, 
             read_register(s, r_instruction.rs1) + read_register(s, r_instruction.rs2)
         );  
         return true;
     }
     if (is_sub_instruction(&r_instruction)) {
-        INFO("Instruction: SUB %s %s %s", register_to_name(r_instruction.rd), register_to_name(r_instruction.rs1), register_to_name(r_instruction.rs2));
         write_register(s, r_instruction.rd, 
             read_register(s, r_instruction.rs1)^ read_register(s, r_instruction.rs2)
         );  
@@ -287,14 +287,12 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_xor_instruction(&r_instruction)) {
-        INFO("Instruction: XOR %s %s %s", register_to_name(r_instruction.rd), register_to_name(r_instruction.rs1), register_to_name(r_instruction.rs2));
         write_register(s, r_instruction.rd, 
             read_register(s, r_instruction.rs1)^ read_register(s, r_instruction.rs2)
         );
         return true;
     }
     if (is_srl_instruction(&r_instruction)) {
-        WARN("Unimplemented operation: SRL");
         return true;
     }
     if (is_sra_instruction(&r_instruction)) {
@@ -302,28 +300,24 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_or_instruction(&r_instruction)) {
-        INFO("Instruction: OR %s %s %s", register_to_name(r_instruction.rd), register_to_name(r_instruction.rs1), register_to_name(r_instruction.rs2));
         write_register(s, r_instruction.rd, 
             read_register(s, r_instruction.rs1) | read_register(s, r_instruction.rs2)
         );
         return true;
     }
     if (is_and_instruction(&r_instruction)) {
-        INFO("Instruction: AND %s %s %s", register_to_name(r_instruction.rd), register_to_name(r_instruction.rs1), register_to_name(r_instruction.rs2));
         write_register(s, r_instruction.rd, 
             read_register(s, r_instruction.rs1) & read_register(s, r_instruction.rs2)
         );
         return true;
     }
     if (is_addi_instruction(&i_instruction)) {
-        INFO("Instruction: ADDI %s %s %d", register_to_name(i_instruction.rd), register_to_name(i_instruction.rs1), i_instruction.imm_s);
         write_register(s, i_instruction.rd,
             (read_register(s, i_instruction.rs1) + i_instruction.imm_s)
         );
         return true;
     }
     if (is_slti_instruction(&i_instruction)) {
-        INFO("Instruction: SLTI %s %s %d", register_to_name(i_instruction.rd), register_to_name(i_instruction.rs1), i_instruction.imm_s);
         if(read_register_signed(s, i_instruction.rs1) < read_register_signed(s, i_instruction.imm_s)) {
             write_register(s, i_instruction.rd, 1);
         }        
@@ -333,7 +327,6 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_sltiu_instruction(&i_instruction)) {
-        INFO("Instruction: SLTIU %s %s %d", register_to_name(i_instruction.rd), register_to_name(i_instruction.rs1), i_instruction.imm_s);
         if(read_register(s, i_instruction.rs1) < i_instruction.imm_u) { 
             write_register(s, i_instruction.rd, 1);                                            
         }        
@@ -343,21 +336,18 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_xori_instruction(&i_instruction)) {
-        INFO("Instruction: XORI %s %s %d", register_to_name(i_instruction.rd), register_to_name(i_instruction.rs1), i_instruction.imm_s);
         write_register(s, i_instruction.rd, 
             read_register(s, i_instruction.rs1)^ ((int32_t)i_instruction.imm_s)
         );
         return true;
     }
     if (is_ori_instruction(&i_instruction)) {
-        INFO("Instruction: ORI %s %s %d", register_to_name(i_instruction.rd), register_to_name(i_instruction.rs1), i_instruction.imm_s);
         write_register(s, i_instruction.rd, 
             read_register(s, i_instruction.rs1)|((int32_t)i_instruction.imm_s)
         );
         return true;
     }
     if (is_andi_instruction(&i_instruction)) {
-        INFO("Instruction: ANDI %s %s %d", register_to_name(i_instruction.rd), register_to_name(i_instruction.rs1), i_instruction.imm_s);
         write_register(s, i_instruction.rd, 
             read_register(s, i_instruction.rs1)&((int32_t)i_instruction.imm_s)
         );
@@ -376,42 +366,36 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_beq_instruction(&b_instruction)) {
-        INFO("Instruction: BEQ %d %d %d", b_instruction.rs1, b_instruction.rs2, b_instruction.imm_s);
         if(read_register(s, b_instruction.rs1) == read_register(s, b_instruction.rs2)){
             s->pc = pc + (b_instruction.imm_s);
         }
         return true;
     }
     if (is_bne_instruction(&b_instruction)) {
-        INFO("Instruction: BNE %d %d %d", b_instruction.rs1, b_instruction.rs2, b_instruction.imm_s);
         if(read_register(s, b_instruction.rs1) != read_register(s, b_instruction.rs2)){
             s->pc = pc + (b_instruction.imm_s);
         }
         return true;
     }
     if (is_blt_instruction(&b_instruction)) {
-        INFO("Instruction: BLT %d %d %d", b_instruction.rs1, b_instruction.rs2, b_instruction.imm_s);
         if(read_register_signed(s, b_instruction.rs1) < read_register_signed(s, b_instruction.rs2)){
             s->pc = pc + (b_instruction.imm_s);
         }
         return true;
     }
     if (is_bge_instruction(&b_instruction)) {
-        INFO("Instruction: BGE %d %d %d", b_instruction.rs1, b_instruction.rs2, b_instruction.imm_s);
         if(read_register_signed(s, b_instruction.rs1) >= read_register_signed(s, b_instruction.rs2)){
             s->pc = pc + (b_instruction.imm_s);
         }
         return true;
     }
     if (is_bltu_instruction(&b_instruction)) {
-        INFO("Instruction: BLTU %d %d %d", b_instruction.rs1, b_instruction.rs2, b_instruction.imm_s);
         if(read_register(s, b_instruction.rs1) < read_register(s, b_instruction.rs2)){
             s->pc = pc + (b_instruction.imm_s);
         }
         return true;
     }
     if (is_bgeu_instruction(&b_instruction)) {
-        INFO("Instruction: BGEU %d %d %d", b_instruction.rs1, b_instruction.rs2, b_instruction.imm_s);
         if(read_register(s, b_instruction.rs1) >= read_register(s, b_instruction.rs2)){
             s->pc = pc + (b_instruction.imm_s);
         }
@@ -426,7 +410,6 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_jal_instruction(&j_instruction)) {
-        INFO("Instruction: JAL %d %d %d", j_instruction.rd, j_instruction.imm_s);
         write_register(s, j_instruction.rd, pc + j_instruction.imm_s);
             s->pc = pc + (j_instruction.imm_s);
         return true;
@@ -436,42 +419,36 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_lb_instruction(&i_instruction)) {
-        INFO("Instruction: LB %s %s %d", register_to_name(i_instruction.rd), register_to_name(i_instruction.rs1), i_instruction.imm_s);
         write_register(s, i_instruction.rd,
             read_sbyte(s, read_register(s, i_instruction.rs1) + i_instruction.imm_s)
         );
         return true;
     }
     if (is_lh_instruction(&i_instruction)) {
-        INFO("Instruction: LH %s %s %d", register_to_name(i_instruction.rd), register_to_name(i_instruction.rs1), i_instruction.imm_s);
         write_register(s, i_instruction.rd,
             read_shword(s, read_register(s, i_instruction.rs1) + i_instruction.imm_s)
         );
         return true;
     }
     if (is_lw_instruction(&i_instruction)) {
-        INFO("Instruction: LW %s %s %d", register_to_name(i_instruction.rd), register_to_name(i_instruction.rs1), i_instruction.imm_s);
         write_register(s, i_instruction.rd,
             read_sword(s,(read_register(s, i_instruction.rs1) + i_instruction.imm_s))
         );
         return true;
     }
     if (is_lbu_instruction(&i_instruction)) {
-        INFO("Instruction: LBU %s %s %d", register_to_name(i_instruction.rd), register_to_name(i_instruction.rs1), i_instruction.imm_u);
         write_register(s, i_instruction.rd,
             read_byte(s, read_register(s, i_instruction.rs1) + i_instruction.imm_u)
         );
         return true;
     }
     if (is_lhu_instruction(&i_instruction)) {
-        INFO("Instruction: LHU %s %s %d", register_to_name(i_instruction.rd), register_to_name(i_instruction.rs1), i_instruction.imm_u);
         write_register(s, i_instruction.rd,
             read_hword(s, read_register(s, i_instruction.rs1) + i_instruction.imm_u)
         );
         return true;
     }
     if (is_sb_instruction(&s_instruction)) {
-        INFO("Instruction: SB %s %s %d", register_to_name(s_instruction.rs1), register_to_name(s_instruction.rs2), s_instruction.imm_s);
         write_byte(s,
             read_register(s, s_instruction.rs1) + s_instruction.imm_s,
             read_register(s, s_instruction.rs2)
@@ -479,7 +456,6 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_sh_instruction(&s_instruction)) {
-        INFO("Instruction: SH %s %s %d", register_to_name(s_instruction.rs1), register_to_name(s_instruction.rs2), s_instruction.imm_s);
         write_hword(s,
             read_register(s, s_instruction.rs1) + s_instruction.imm_s,
             read_register(s, s_instruction.rs2)
@@ -487,7 +463,6 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_sw_instruction(&s_instruction)) {
-        INFO("Instruction: SW %s %s %d", register_to_name(s_instruction.rs1), register_to_name(s_instruction.rs2), s_instruction.imm_s);
         write_word(s,
             read_register(s, s_instruction.rs1) + s_instruction.imm_s,
             read_register(s, s_instruction.rs2)
