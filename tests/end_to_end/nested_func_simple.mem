@@ -1,0 +1,36 @@
+# Derived from running tools/c_to_mem on tests/c_code/nested_func_simple.c
+0:	fd010113
+4:	02812623
+8:	03010413
+c:	fca42e23
+10:	fcb42c23
+14:	fdc42703
+18:	fd842783
+1c:	00f707b3
+20:	fef42623
+24:	fec42783
+28:	00078513
+2c:	02c12403
+30:	03010113
+34:	00008067
+38:	fe010113
+3c:	00112e23
+40:	00812c23
+44:	02010413
+48:	02400793
+4c:	fef42623
+50:	03f00793
+54:	fef42423
+58:	fe842583
+5c:	fec42503
+60:	00000097
+64:	000080e7
+68:	fea42223
+6c:	00000013
+70:	01c12083
+74:	01812403
+78:	02010113
+7c:	00008067
+# Set the return address to the address of 0 to prevent infinite loop
+REG_RA: 80
+80: 0
