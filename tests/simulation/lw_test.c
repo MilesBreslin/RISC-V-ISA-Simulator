@@ -4,7 +4,7 @@
 #include "test_main.h"
 int simulation_run(simulator* s) {
     // LW a5, a5
-    write_word(s, 0, 0x0007A783);
+    write_word(s, 0, 0x00052503);
     if (!execute_simulation_step(s))
         FAIL("Simulation stopped unexpectedly");
     //unit32_t value = read_register(s, REG_A5);
