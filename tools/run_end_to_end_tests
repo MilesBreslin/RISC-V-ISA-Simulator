@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+IFS=$'\n'
+
+make
+
+DIR=tests/end_to_end
+
+FAILURES=0
+for i in "$DIR"/*.mem ; do
+    echo "$i"
+    FILENAME="$(basename "$i")"
+    NO_EXT="${FILENAME/.mem}"
+    CHECK_FILE="$DIR/$NO_EXT.check"
+    if [ -e "$CHECK_FILE" ] ; then
+        OUTFILE="$(mktemp)"
+        ./build/riscv_simulator \
+                --verbose \
+                --load-file "$i" \
+                --dump-memory - \
+                --dump-registers - \
+                > "$OUTFILE"
+        SUCCESS=1
+        for line in $(<"$CHECK_FILE") ; do
+            if [ -n "$line" ] && !grep "$line" "$OUTFILE" > /dev/null 2>/dev/null ; then
+                echo "'$line' not found"
+                SUCCESS=0
+                break
+            fi
+        done
+        if ((SUCCESS==0)) ; then
+            FAILURES=$((FAILURES+1))
+            echo "$i: FAILURE"
+        else
+            echo "$i: SUCCESS"
+        fi
+        rm "$OUTFILE"
+    else
+        echo "$CHECK_FILE not found" >&2
+        FAILURES=$((FAILURES+1))
+    fi
+done
