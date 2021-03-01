@@ -14,15 +14,18 @@ for i in "$DIR"/*.mem ; do
     CHECK_FILE="$DIR/$NO_EXT.check"
     if [ -e "$CHECK_FILE" ] ; then
         OUTFILE="$(mktemp)"
+        sedfilter='s/./\U&/g;s/^0*//;s/ //g;s/:0*/:/'
         ./build/riscv_simulator \
-                --verbose \
-                --load-file "$i" \
-                --dump-memory - \
-                --dump-registers - \
-                > "$OUTFILE"
+            --verbose \
+            --load-file "$i" \
+            --dump-memory - \
+            --dump-registers - \
+            | sed "$sedfilter" \
+            > "$OUTFILE"
         SUCCESS=1
         for line in $(<"$CHECK_FILE") ; do
-            if [ -n "$line" ] && !grep "$line" "$OUTFILE" > /dev/null 2>/dev/null ; then
+            filtered_line="$(<<<"$line" sed "$sedfilter")"
+            if [ -n "$line" ] && !grep "^$line$" "$OUTFILE" > /dev/null 2>/dev/null ; then
                 echo "'$line' not found"
                 SUCCESS=0
                 break
