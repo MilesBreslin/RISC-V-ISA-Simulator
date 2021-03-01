@@ -8,6 +8,7 @@ on:
 jobs:
   compile:
     runs-on: ubuntu-latest
+    timeout-minutes: 1
     steps:
       - uses: actions/checkout@v2
       - name: Compile the program
@@ -16,6 +17,7 @@ jobs:
         run: ./build/riscv_simulator --verbose --load-file example.mem
   run-all-instruction-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v2
       - name: Compile Instruction Tests
@@ -24,6 +26,7 @@ jobs:
         run: ./tools/run_all_instruction_tests run
   run-all-end-to-end-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v2
       - name: Run all end-to-end tests
