@@ -254,7 +254,7 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
 
-    INFO("Instruction: %s", format_instruction(encoded_instruction));
+    INFO("Instruction %08X: %s", encoded_instruction, format_instruction(encoded_instruction));
 
     R_INSTRUCTION r_instruction = as_r_instruction(encoded_instruction);
     I_INSTRUCTION i_instruction = as_i_instruction(encoded_instruction);
