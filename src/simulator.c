@@ -55,7 +55,7 @@ int read_file_to_memory(simulator* s, FILE *f) {
         REGISTER reg;
         if ((reg = register_from_name(addr_ptr)) < 32 && reg >= 0) {
             write_register(s, reg, value);
-        } if (strcmp("PC", addr_ptr) == 0) {
+        } else if (strcmp("PC", addr_ptr) == 0) {
             s->pc = value;
         } else {
             // Parse address
