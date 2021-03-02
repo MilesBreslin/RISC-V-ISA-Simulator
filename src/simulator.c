@@ -419,7 +419,7 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_auipc_instruction(&u_instruction)) {
-        WARN("Unimplemented operation: AUIPC");
+        write_register(s, u_instruction.rd, pc + (u_instruction.imm_u<<12));
         return true;
     }
     if (is_jal_instruction(&j_instruction)) {
