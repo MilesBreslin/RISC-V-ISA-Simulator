@@ -114,8 +114,9 @@ int main(int argc, char* argv[]) {
                 FAIL("Instruction limit reached: %d", instruction_limit);
         }
 
+
+        FILE* mem_f;
         if (dump_mem_file) {
-            FILE* mem_f;
             if (strcmp("-", dump_mem_file) == 0)
                 mem_f = stdout;
             else if ((mem_f = fopen(dump_mem_file, "w+")) == NULL)
@@ -124,13 +125,13 @@ int main(int argc, char* argv[]) {
             if (mem_f != NULL)
                 dump_memory_to_file(&s, mem_f, 0, 0, ignore_zeros);
 
-            if (mem_f != stdout)
+            if (mem_f != stdout && strcmp(dump_mem_file, dump_reg_file) != 0)
                 fclose(mem_f);
         }
         if (dump_reg_file) {
             FILE* reg_f;
-            if (strcmp("-", dump_reg_file) == 0)
-                reg_f = stdout;
+            if (strcmp(dump_mem_file, dump_reg_file) == 0)
+                reg_f = mem_f;
             else if ((reg_f = fopen(dump_reg_file, "w+")) == NULL)
                 WARN_SYS("Unable to open dump mem file: %s", dump_reg_file);
 
