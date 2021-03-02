@@ -135,7 +135,7 @@ int main(int argc, char* argv[]) {
         }
         if (dump_reg_file && strlen(dump_reg_file) > 0) {
             FILE* reg_f;
-            if (strcmp(dump_mem_file, dump_reg_file) == 0)
+            if (dump_mem_file && strcmp(dump_mem_file, dump_reg_file) == 0)
                 reg_f = mem_f;
             else if ((reg_f = fopen(dump_reg_file, "w+")) == NULL)
                 WARN_SYS("Unable to open dump mem file: %s", dump_reg_file);
