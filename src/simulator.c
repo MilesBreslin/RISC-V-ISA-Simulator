@@ -20,12 +20,12 @@ void simulator_destroy(simulator* s) {
 
 #define out_of_bounds_check(s, addr, data_type) (addr > (((int64_t) s->mem_bytes) - sizeof(data_type)))
 
-void display_memory(simulator* s, uint32_t start_addr, uint32_t length) {
-    dump_memory_to_file(s, stdout, start_addr, length);
+void display_memory(simulator* s, uint32_t start_addr, uint32_t length, bool ignore_zeros) {
+    dump_memory_to_file(s, stdout, start_addr, length, ignore_zeros);
 }
 
-void display_registers(simulator* s) {
-    dump_registers_to_file(s, stdout);
+void display_registers(simulator* s, bool ignore_zeros) {
+    dump_registers_to_file(s, stdout, ignore_zeros);
 }
 
 int read_file_to_memory(simulator* s, FILE *f) {
@@ -72,12 +72,13 @@ int read_file_to_memory(simulator* s, FILE *f) {
     return line_no;
 }
 
-int dump_memory_to_file(simulator* s, FILE* f, uint32_t start_addr, uint32_t length) {
+int dump_memory_to_file(simulator* s, FILE* f, uint32_t start_addr, uint32_t length, bool ignore_zeros) {
     uint32_t count = 0;
     uint32_t addr = start_addr;
     uint32_t end_addr = start_addr + (length * 4);
     while ((addr < end_addr || length == 0) && !out_of_bounds_check(s, addr, uint32_t)) {
-        if (fprintf(f, "%08X: %08X\n", addr, read_word(s, addr)) <= 0) {
+        uint32_t value = read_word(s, addr);
+        if ((value != 0 || !ignore_zeros) && fprintf(f, "%08X: %08X\n", addr, value) <= 0) {
             WARN_SYS("Memory dump error");
             return count;
         }
@@ -87,9 +88,12 @@ int dump_memory_to_file(simulator* s, FILE* f, uint32_t start_addr, uint32_t len
     return count;
 }
 
-int dump_registers_to_file(simulator* s, FILE* f) {
+int dump_registers_to_file(simulator* s, FILE* f, bool ignore_zeros) {
     for (int i = 0; i < 32; i++) {
-        if (fprintf(f, "%s: %08X\n", register_to_name(i), read_register(s, i)) <= 0) {
+        uint32_t value = read_register(s, i);
+        if (value == 0 && ignore_zeros)
+            continue;
+        if (fprintf(f, "%s: %08X\n", register_to_name(i), value) <= 0) {
             WARN_SYS("Register dump write error");
             return i;
         }
