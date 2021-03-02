@@ -10,7 +10,7 @@
 
 
 bool verbose = 0;
-char* target_file = "prog.mem";
+char* target_file = "program.mem";
 char* dump_mem_file = NULL;
 char* dump_reg_file = NULL;
 uint32_t pc_init = 0x00000000;
