@@ -12,7 +12,7 @@
 bool verbose = 0;
 char* target_file = "program.mem";
 char* dump_mem_file = NULL;
-char* dump_reg_file = NULL;
+char* dump_reg_file = "-";
 uint32_t pc_init = 0x00000000;
 uint32_t sp_init = 65536;
 uint32_t simulation_size = 1 << 17;
@@ -121,7 +121,7 @@ int main(int argc, char* argv[]) {
 
 
         FILE* mem_f;
-        if (dump_mem_file) {
+        if (dump_mem_file && strlen(dump_mem_file) > 0) {
             if (strcmp("-", dump_mem_file) == 0)
                 mem_f = stdout;
             else if ((mem_f = fopen(dump_mem_file, "w+")) == NULL)
@@ -133,7 +133,7 @@ int main(int argc, char* argv[]) {
             if (mem_f != stdout && strcmp(dump_mem_file, dump_reg_file) != 0)
                 fclose(mem_f);
         }
-        if (dump_reg_file) {
+        if (dump_reg_file && strlen(dump_reg_file) > 0) {
             FILE* reg_f;
             if (strcmp(dump_mem_file, dump_reg_file) == 0)
                 reg_f = mem_f;
