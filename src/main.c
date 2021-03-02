@@ -40,6 +40,11 @@ void usage(char* message, int err) {
 int main(int argc, char* argv[]) {
     int err;
 
+    if (argc <= 1) {
+        WARN("No arguments specified");
+        WARN("Use the --help flag to see usage information");
+    }
+
     // Parse Input Arguments
     for (int i = 1 ; i < argc ; i++) {
         if (strcmp("--load-file", argv[i]) == 0) {
