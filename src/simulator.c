@@ -110,6 +110,7 @@ int dump_registers_to_file(simulator* s, FILE* f) {
     if (addr % sizeof(data_type) != 0) {\
         WARN("Unaligned memory write access: %08X", addr);\
     }\
+    INFO("Write %s: [%08X] %08X", #data_type, addr, data);\
     *((data_type*) (s->memory + addr)) = data;\
 }
 
@@ -151,6 +152,7 @@ int32_t read_register_signed(simulator* s, REGISTER reg) {
     return *(int32_t*) (&value);
 }
 void write_register(simulator* s, REGISTER reg, uint32_t data) {
+    INFO("Write: [%s] %08X", register_to_name(reg), data);
     if (reg == REG_ZERO)
         return;
     int reg_reduced = reg - 1;      // REG_ZERO is not real
