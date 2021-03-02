@@ -14,8 +14,8 @@ char* target_file = "program.mem";
 char* dump_mem_file = NULL;
 char* dump_reg_file = NULL;
 uint32_t pc_init = 0x00000000;
-uint32_t sp_init = 0x0000FFF0;
-uint32_t simulation_size = 1 << 16;
+uint32_t sp_init = 65536;
+uint32_t simulation_size = 1 << 17;
 unsigned int instruction_limit = 0;
 bool ignore_zeros = false;
 
