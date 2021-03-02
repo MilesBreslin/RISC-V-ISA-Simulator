@@ -26,11 +26,11 @@ void usage(char* message, int err) {
     fprintf(fd, "--dump-memory <memory_file>        Dump memory to a file (default: \"%s\")\n", dump_mem_file);
     fprintf(fd, "--dump-registers <register_file>   Dump registers to a file (default: \"%s\")\n", dump_reg_file);
     fprintf(fd, "--ignore-zeros                     Memory/Register dumps will ignore zeros\n");
-    fprintf(fd, "--instruction-limit <count>        Limit the number of instructions executed (default: %u)\n", instruction_limit);
+    fprintf(fd, "--instruction-limit <count>        Decimal limit for the number of instructions executed (default: %u)\n", instruction_limit);
     fprintf(fd, "--load-file <config_file>          Decoded runtime code (default: \"%s\")\n", target_file);
     fprintf(fd, "--pc-init <addr>                   Hexadecimal value to start the program counter (default: %08X)\n", pc_init);
-    fprintf(fd, "--simulation-size <bytes>          Decimal value to specify the stack address (default: %08X)\n", simulation_size);
-    fprintf(fd, "--sp-init <addr>                   Decimal value to specify the stack address (default: %08X)\n", sp_init);
+    fprintf(fd, "--simulation-size <bytes>          Hexadecimal value to specify the memory available to the simulator (default: %08X)\n", simulation_size);
+    fprintf(fd, "--sp-init <addr>                   Hexadecimal value to specify the stack address (default: %08X)\n", sp_init);
     fprintf(fd, "--verbose                          Show extra verbose information\n");
 
     fprintf(fd, "--help                             Show this help dialog\n");
