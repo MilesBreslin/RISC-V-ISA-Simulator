@@ -7,7 +7,7 @@
 #include "../../src/core.h"
 #include "../../src/simulator.h"
 #include "../../src/instructions.h"
-bool verbose = 1;
+bool verbose = false;
 
 #ifndef SIMULATION_SIZE
 #define SIMULATION_SIZE (1 << 20)
