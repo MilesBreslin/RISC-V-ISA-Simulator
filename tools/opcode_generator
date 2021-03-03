@@ -399,7 +399,7 @@ def generate(file_type):
                 "#include \"core.h\"",
                 "#include \"instructions.h\"",
                 "",
-                "char format_memory[64];",
+                "char format_memory[128];",
                 "",
                 (
                     [
