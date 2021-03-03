@@ -10,7 +10,7 @@
 
 void simulator_init(simulator* s, uint32_t mem_bytes) {
     memset(s, 0, sizeof(*s));
-    s->memory = malloc(mem_bytes);
+    s->memory = calloc(mem_bytes, sizeof(uint8_t));
     s->mem_bytes = mem_bytes;
 }
 
