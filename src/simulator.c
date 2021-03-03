@@ -518,19 +518,27 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_mul_instruction(&r_instruction)) {
-        WARN("Unimplemented operation: MUL");
+        write_register_signed(s, r_instruction.rd,
+            (((int64_t)read_register(s, r_instruction.rs1) * (int64_t)read_register(s, r_instruction.rs2))% 32)
+        ); 
         return true;
     }
     if (is_mulh_instruction(&r_instruction)) {
-        WARN("Unimplemented operation: MULH");
+        write_register_signed(s, r_instruction.rd,
+            (0xfffffff00000000 && ((int64_t)read_register_signed(s, r_instruction.rs1) * (int64_t)read_register_signed(s, r_instruction.rs2)))
+        ); 
         return true;
     }
     if (is_mulhsu_instruction(&r_instruction)) {
-        WARN("Unimplemented operation: MULHSU");
+        write_register_signed(s, r_instruction.rd,
+            (0xffffffff00000000 && ((int64_t)read_register_signed(s, r_instruction.rs1) * (uint64_t)read_register(s, r_instruction.rs2)))
+        ); 
         return true;
     }
     if (is_mulhu_instruction(&r_instruction)) {
-        WARN("Unimplemented operation: MULHU");
+        write_register(s, r_instruction.rd,
+            (0xffffffff00000000 && ((uint64_t)read_register(s, r_instruction.rs1) && (uint64_t)read_register(s, r_instruction.rs2)))
+        ); 
         return true;
     }
     if (is_div_instruction(&r_instruction)) {
