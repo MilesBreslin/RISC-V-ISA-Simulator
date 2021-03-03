@@ -517,6 +517,38 @@ bool execute_simulation_step(simulator* s) {
         );
         return true;
     }
+    if (is_mul_instruction(&r_instruction)) {
+        WARN("Unimplemented operation: MUL");
+        return true;
+    }
+    if (is_mulh_instruction(&r_instruction)) {
+        WARN("Unimplemented operation: MULH");
+        return true;
+    }
+    if (is_mulhsu_instruction(&r_instruction)) {
+        WARN("Unimplemented operation: MULHSU");
+        return true;
+    }
+    if (is_mulhu_instruction(&r_instruction)) {
+        WARN("Unimplemented operation: MULHU");
+        return true;
+    }
+    if (is_div_instruction(&r_instruction)) {
+        WARN("Unimplemented operation: DIV");
+        return true;
+    }
+    if (is_divu_instruction(&r_instruction)) {
+        WARN("Unimplemented operation: DIVU");
+        return true;
+    }
+    if (is_rem_instruction(&r_instruction)) {
+        WARN("Unimplemented operation: REM");
+        return true;
+    }
+    if (is_remu_instruction(&r_instruction)) {
+        WARN("Unimplemented operation: REMU");
+        return true;
+    }
     if (is_ecall_instruction(&i_instruction)) {
         if (i_instruction.imm_u == 1)
             WARN("Unimplemented operation: EBREAK");

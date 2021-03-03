@@ -262,6 +262,46 @@ bool is_sw_instruction(const S_INSTRUCTION* decoded_instruction);
 #define FUNC3_ECALL 0b000;
 bool is_ecall_instruction(const I_INSTRUCTION* decoded_instruction);
 
+#define OPCODE_MUL 0b0110011;
+#define FUNC3_MUL 0b000;
+#define FUNC7_MUL 0b0000001;
+bool is_mul_instruction(const R_INSTRUCTION* decoded_instruction);
+
+#define OPCODE_MULH 0b0110011;
+#define FUNC3_MULH 0b001;
+#define FUNC7_MULH 0b0000001;
+bool is_mulh_instruction(const R_INSTRUCTION* decoded_instruction);
+
+#define OPCODE_MULHSU 0b0110011;
+#define FUNC3_MULHSU 0b010;
+#define FUNC7_MULHSU 0b0000001;
+bool is_mulhsu_instruction(const R_INSTRUCTION* decoded_instruction);
+
+#define OPCODE_MULHU 0b0110011;
+#define FUNC3_MULHU 0b011;
+#define FUNC7_MULHU 0b0000001;
+bool is_mulhu_instruction(const R_INSTRUCTION* decoded_instruction);
+
+#define OPCODE_DIV 0b0110011;
+#define FUNC3_DIV 0b100;
+#define FUNC7_DIV 0b0000001;
+bool is_div_instruction(const R_INSTRUCTION* decoded_instruction);
+
+#define OPCODE_DIVU 0b0110011;
+#define FUNC3_DIVU 0b101;
+#define FUNC7_DIVU 0b0000001;
+bool is_divu_instruction(const R_INSTRUCTION* decoded_instruction);
+
+#define OPCODE_REM 0b0110011;
+#define FUNC3_REM 0b110;
+#define FUNC7_REM 0b0000001;
+bool is_rem_instruction(const R_INSTRUCTION* decoded_instruction);
+
+#define OPCODE_REMU 0b0110011;
+#define FUNC3_REMU 0b111;
+#define FUNC7_REMU 0b0000001;
+bool is_remu_instruction(const R_INSTRUCTION* decoded_instruction);
+
 int count_all_instruction_matches(uint32_t encoded_instruction);
 
 char* format_instruction(uint32_t encoded_instruction);
@@ -341,5 +381,21 @@ char* format_sh_operation(S_INSTRUCTION* decoded_instruction);
 char* format_sw_operation(S_INSTRUCTION* decoded_instruction);
 
 char* format_ecall_operation(I_INSTRUCTION* decoded_instruction);
+
+char* format_mul_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_mulh_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_mulhsu_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_mulhu_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_div_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_divu_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_rem_operation(R_INSTRUCTION* decoded_instruction);
+
+char* format_remu_operation(R_INSTRUCTION* decoded_instruction);
 
 #endif

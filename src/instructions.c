@@ -692,6 +692,70 @@ bool is_ecall_instruction(const I_INSTRUCTION* decoded_instruction) {
     return true;
 }
 
+bool is_mul_instruction(const R_INSTRUCTION* decoded_instruction) {
+    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_mul_instruction");
+    if (decoded_instruction->opcode != 0b0110011) return false;
+    if (decoded_instruction->func3 != 0b000) return false;
+    if (decoded_instruction->func7 != 0b0000001) return false;
+    return true;
+}
+
+bool is_mulh_instruction(const R_INSTRUCTION* decoded_instruction) {
+    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_mulh_instruction");
+    if (decoded_instruction->opcode != 0b0110011) return false;
+    if (decoded_instruction->func3 != 0b001) return false;
+    if (decoded_instruction->func7 != 0b0000001) return false;
+    return true;
+}
+
+bool is_mulhsu_instruction(const R_INSTRUCTION* decoded_instruction) {
+    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_mulhsu_instruction");
+    if (decoded_instruction->opcode != 0b0110011) return false;
+    if (decoded_instruction->func3 != 0b010) return false;
+    if (decoded_instruction->func7 != 0b0000001) return false;
+    return true;
+}
+
+bool is_mulhu_instruction(const R_INSTRUCTION* decoded_instruction) {
+    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_mulhu_instruction");
+    if (decoded_instruction->opcode != 0b0110011) return false;
+    if (decoded_instruction->func3 != 0b011) return false;
+    if (decoded_instruction->func7 != 0b0000001) return false;
+    return true;
+}
+
+bool is_div_instruction(const R_INSTRUCTION* decoded_instruction) {
+    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_div_instruction");
+    if (decoded_instruction->opcode != 0b0110011) return false;
+    if (decoded_instruction->func3 != 0b100) return false;
+    if (decoded_instruction->func7 != 0b0000001) return false;
+    return true;
+}
+
+bool is_divu_instruction(const R_INSTRUCTION* decoded_instruction) {
+    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_divu_instruction");
+    if (decoded_instruction->opcode != 0b0110011) return false;
+    if (decoded_instruction->func3 != 0b101) return false;
+    if (decoded_instruction->func7 != 0b0000001) return false;
+    return true;
+}
+
+bool is_rem_instruction(const R_INSTRUCTION* decoded_instruction) {
+    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_rem_instruction");
+    if (decoded_instruction->opcode != 0b0110011) return false;
+    if (decoded_instruction->func3 != 0b110) return false;
+    if (decoded_instruction->func7 != 0b0000001) return false;
+    return true;
+}
+
+bool is_remu_instruction(const R_INSTRUCTION* decoded_instruction) {
+    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_remu_instruction");
+    if (decoded_instruction->opcode != 0b0110011) return false;
+    if (decoded_instruction->func3 != 0b111) return false;
+    if (decoded_instruction->func7 != 0b0000001) return false;
+    return true;
+}
+
 int count_all_instruction_matches(uint32_t encoded_instruction) {
     int count = 0;
     R_INSTRUCTION r_instruction = as_r_instruction(encoded_instruction);
@@ -738,6 +802,14 @@ int count_all_instruction_matches(uint32_t encoded_instruction) {
     count += is_sh_instruction(&s_instruction);
     count += is_sw_instruction(&s_instruction);
     count += is_ecall_instruction(&i_instruction);
+    count += is_mul_instruction(&r_instruction);
+    count += is_mulh_instruction(&r_instruction);
+    count += is_mulhsu_instruction(&r_instruction);
+    count += is_mulhu_instruction(&r_instruction);
+    count += is_div_instruction(&r_instruction);
+    count += is_divu_instruction(&r_instruction);
+    count += is_rem_instruction(&r_instruction);
+    count += is_remu_instruction(&r_instruction);
     return count;
 }
 
@@ -786,6 +858,14 @@ char* format_instruction(uint32_t encoded_instruction) {
     if (is_sh_instruction(&s_instruction)) return format_sh_operation(&s_instruction);
     if (is_sw_instruction(&s_instruction)) return format_sw_operation(&s_instruction);
     if (is_ecall_instruction(&i_instruction)) return format_ecall_operation(&i_instruction);
+    if (is_mul_instruction(&r_instruction)) return format_mul_operation(&r_instruction);
+    if (is_mulh_instruction(&r_instruction)) return format_mulh_operation(&r_instruction);
+    if (is_mulhsu_instruction(&r_instruction)) return format_mulhsu_operation(&r_instruction);
+    if (is_mulhu_instruction(&r_instruction)) return format_mulhu_operation(&r_instruction);
+    if (is_div_instruction(&r_instruction)) return format_div_operation(&r_instruction);
+    if (is_divu_instruction(&r_instruction)) return format_divu_operation(&r_instruction);
+    if (is_rem_instruction(&r_instruction)) return format_rem_operation(&r_instruction);
+    if (is_remu_instruction(&r_instruction)) return format_remu_operation(&r_instruction);
     return NULL;
 }
 
@@ -1190,6 +1270,86 @@ char* format_ecall_operation(I_INSTRUCTION* decoded_instruction) {
         register_to_name(decoded_instruction->rs1),
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
+    );
+    return format_memory;
+}
+
+char* format_mul_operation(R_INSTRUCTION* decoded_instruction) {
+    if (!is_mul_instruction(decoded_instruction)) return NULL;
+    sprintf(format_memory, "MUL <rd=%s> <rs1=%s> <rs2=%s>",
+        register_to_name(decoded_instruction->rd),
+        register_to_name(decoded_instruction->rs1),
+        register_to_name(decoded_instruction->rs2)
+    );
+    return format_memory;
+}
+
+char* format_mulh_operation(R_INSTRUCTION* decoded_instruction) {
+    if (!is_mulh_instruction(decoded_instruction)) return NULL;
+    sprintf(format_memory, "MULH <rd=%s> <rs1=%s> <rs2=%s>",
+        register_to_name(decoded_instruction->rd),
+        register_to_name(decoded_instruction->rs1),
+        register_to_name(decoded_instruction->rs2)
+    );
+    return format_memory;
+}
+
+char* format_mulhsu_operation(R_INSTRUCTION* decoded_instruction) {
+    if (!is_mulhsu_instruction(decoded_instruction)) return NULL;
+    sprintf(format_memory, "MULHSU <rd=%s> <rs1=%s> <rs2=%s>",
+        register_to_name(decoded_instruction->rd),
+        register_to_name(decoded_instruction->rs1),
+        register_to_name(decoded_instruction->rs2)
+    );
+    return format_memory;
+}
+
+char* format_mulhu_operation(R_INSTRUCTION* decoded_instruction) {
+    if (!is_mulhu_instruction(decoded_instruction)) return NULL;
+    sprintf(format_memory, "MULHU <rd=%s> <rs1=%s> <rs2=%s>",
+        register_to_name(decoded_instruction->rd),
+        register_to_name(decoded_instruction->rs1),
+        register_to_name(decoded_instruction->rs2)
+    );
+    return format_memory;
+}
+
+char* format_div_operation(R_INSTRUCTION* decoded_instruction) {
+    if (!is_div_instruction(decoded_instruction)) return NULL;
+    sprintf(format_memory, "DIV <rd=%s> <rs1=%s> <rs2=%s>",
+        register_to_name(decoded_instruction->rd),
+        register_to_name(decoded_instruction->rs1),
+        register_to_name(decoded_instruction->rs2)
+    );
+    return format_memory;
+}
+
+char* format_divu_operation(R_INSTRUCTION* decoded_instruction) {
+    if (!is_divu_instruction(decoded_instruction)) return NULL;
+    sprintf(format_memory, "DIVU <rd=%s> <rs1=%s> <rs2=%s>",
+        register_to_name(decoded_instruction->rd),
+        register_to_name(decoded_instruction->rs1),
+        register_to_name(decoded_instruction->rs2)
+    );
+    return format_memory;
+}
+
+char* format_rem_operation(R_INSTRUCTION* decoded_instruction) {
+    if (!is_rem_instruction(decoded_instruction)) return NULL;
+    sprintf(format_memory, "REM <rd=%s> <rs1=%s> <rs2=%s>",
+        register_to_name(decoded_instruction->rd),
+        register_to_name(decoded_instruction->rs1),
+        register_to_name(decoded_instruction->rs2)
+    );
+    return format_memory;
+}
+
+char* format_remu_operation(R_INSTRUCTION* decoded_instruction) {
+    if (!is_remu_instruction(decoded_instruction)) return NULL;
+    sprintf(format_memory, "REMU <rd=%s> <rs1=%s> <rs2=%s>",
+        register_to_name(decoded_instruction->rd),
+        register_to_name(decoded_instruction->rs1),
+        register_to_name(decoded_instruction->rs2)
     );
     return format_memory;
 }
