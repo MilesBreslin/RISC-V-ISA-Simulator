@@ -288,7 +288,9 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_sll_instruction(&r_instruction)) {
-        WARN("Unimplemented operation: SLL");
+       write_register(s, r_instruction.rd, 
+           read_register(s, r_instruction.rs1) << (read_register(s, r_instruction.rs2) %32)
+       );
         return true;
     }
     if (is_slt_instruction(&r_instruction)) {
@@ -306,10 +308,16 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_srl_instruction(&r_instruction)) {
+        write_register(s, r_instruction.rd, 
+            read_register(s, r_instruction.rs1) >> (read_register(s, r_instruction.rs2) %32)
+       );
         return true;
+
     }
     if (is_sra_instruction(&r_instruction)) {
-        WARN("Unimplemented operation: SRA");
+        write_register_signed(s, r_instruction.rd, 
+            read_register_signed(s, r_instruction.rs1) >> (read_register(s, r_instruction.rs2) %32)
+       );
         return true;
     }
     if (is_or_instruction(&r_instruction)) {
