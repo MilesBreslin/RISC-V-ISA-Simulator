@@ -197,7 +197,7 @@ operations:
     instruction_type: R
   REMU:
     opcode: "0b0110011"
-    func3: "0b"111"
+    func3: "0b111"
     func7: "0b0000001"
     instruction_type: R
 # bits are a list of chunks of bits
