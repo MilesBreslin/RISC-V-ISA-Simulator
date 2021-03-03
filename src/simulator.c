@@ -367,7 +367,7 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_slli_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: SLLI");
+        write_register(s, i_instruction.rd, (read_register(s,i_instruction.rs1)) << (0x01f & i_instruction.imm_u));
         return true;
     }
     if (is_srli_instruction(&i_instruction)) {
