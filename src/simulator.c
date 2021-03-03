@@ -74,7 +74,7 @@ int read_file_to_memory(simulator* s, FILE *f) {
             // Write the word into memory
             if (value_length <= 2)
                 write_byte(s, addr, value);
-            else if (strlen(value_ptr) <= 4)
+            else if (value_length <= 4)
                 write_hword(s, addr, value);
             else
                 write_word(s, addr, value);
