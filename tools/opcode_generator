@@ -338,7 +338,11 @@ def generate(file_type):
                                         | if ($operation_fields | getpath([ $field_name ])) then
                                             [ ]
                                         else
-                                            [ . ]
+                                            if .name | startswith("func") then
+                                                [ ]
+                                            else
+                                                [ . ]
+                                            end
                                         end
                                     )
                                     | add

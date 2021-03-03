@@ -891,10 +891,9 @@ char* format_and_operation(R_INSTRUCTION* decoded_instruction) {
 
 char* format_addi_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_addi_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "ADDI <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "ADDI <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
@@ -903,10 +902,9 @@ char* format_addi_operation(I_INSTRUCTION* decoded_instruction) {
 
 char* format_slti_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_slti_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "SLTI <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "SLTI <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
@@ -915,10 +913,9 @@ char* format_slti_operation(I_INSTRUCTION* decoded_instruction) {
 
 char* format_sltiu_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_sltiu_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "SLTIU <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "SLTIU <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
@@ -927,10 +924,9 @@ char* format_sltiu_operation(I_INSTRUCTION* decoded_instruction) {
 
 char* format_xori_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_xori_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "XORI <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "XORI <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
@@ -939,10 +935,9 @@ char* format_xori_operation(I_INSTRUCTION* decoded_instruction) {
 
 char* format_ori_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_ori_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "ORI <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "ORI <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
@@ -951,10 +946,9 @@ char* format_ori_operation(I_INSTRUCTION* decoded_instruction) {
 
 char* format_andi_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_andi_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "ANDI <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "ANDI <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
@@ -963,10 +957,9 @@ char* format_andi_operation(I_INSTRUCTION* decoded_instruction) {
 
 char* format_slli_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_slli_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "SLLI <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "SLLI <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
@@ -1093,10 +1086,9 @@ char* format_jal_operation(J_INSTRUCTION* decoded_instruction) {
 
 char* format_jalr_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_jalr_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "JALR <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "JALR <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
@@ -1105,10 +1097,9 @@ char* format_jalr_operation(I_INSTRUCTION* decoded_instruction) {
 
 char* format_lb_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_lb_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "LB <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "LB <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
@@ -1117,10 +1108,9 @@ char* format_lb_operation(I_INSTRUCTION* decoded_instruction) {
 
 char* format_lh_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_lh_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "LH <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "LH <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
@@ -1129,10 +1119,9 @@ char* format_lh_operation(I_INSTRUCTION* decoded_instruction) {
 
 char* format_lw_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_lw_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "LW <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "LW <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
@@ -1141,10 +1130,9 @@ char* format_lw_operation(I_INSTRUCTION* decoded_instruction) {
 
 char* format_lbu_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_lbu_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "LBU <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "LBU <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
@@ -1153,10 +1141,9 @@ char* format_lbu_operation(I_INSTRUCTION* decoded_instruction) {
 
 char* format_lhu_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_lhu_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "LHU <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "LHU <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
@@ -1198,10 +1185,9 @@ char* format_sw_operation(S_INSTRUCTION* decoded_instruction) {
 
 char* format_ecall_operation(I_INSTRUCTION* decoded_instruction) {
     if (!is_ecall_instruction(decoded_instruction)) return NULL;
-    sprintf(format_memory, "ECALL <rd=%s> <rs1=%s> <func7=%u> <imm_u=%u> <imm_s=%d>",
+    sprintf(format_memory, "ECALL <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rd),
         register_to_name(decoded_instruction->rs1),
-        decoded_instruction->func7,
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );
