@@ -519,25 +519,25 @@ bool execute_simulation_step(simulator* s) {
     }
     if (is_mul_instruction(&r_instruction)) {
         write_register_signed(s, r_instruction.rd,
-            (((int64_t)read_register(s, r_instruction.rs1) * (int64_t)read_register(s, r_instruction.rs2))% 32)
+            ((int64_t)read_register(s, r_instruction.rs1) * (int64_t)read_register(s, r_instruction.rs2))
         ); 
         return true;
     }
     if (is_mulh_instruction(&r_instruction)) {
         write_register_signed(s, r_instruction.rd,
-            (0xfffffff00000000 && ((int64_t)read_register_signed(s, r_instruction.rs1) * (int64_t)read_register_signed(s, r_instruction.rs2)))
+            (((int64_t)read_register_signed(s, r_instruction.rs1) * (int64_t)read_register_signed(s, r_instruction.rs2))>> 32)
         ); 
         return true;
     }
     if (is_mulhsu_instruction(&r_instruction)) {
         write_register_signed(s, r_instruction.rd,
-            (0xffffffff00000000 && ((int64_t)read_register_signed(s, r_instruction.rs1) * (uint64_t)read_register(s, r_instruction.rs2)))
+            (((int64_t)read_register_signed(s, r_instruction.rs1) * (uint64_t)read_register(s, r_instruction.rs2))>> 32)
         ); 
         return true;
     }
     if (is_mulhu_instruction(&r_instruction)) {
         write_register(s, r_instruction.rd,
-            (0xffffffff00000000 && ((uint64_t)read_register(s, r_instruction.rs1) && (uint64_t)read_register(s, r_instruction.rs2)))
+            (((uint64_t)read_register(s, r_instruction.rs1) * (uint64_t)read_register(s, r_instruction.rs2)) >> 32)
         ); 
         return true;
     }
