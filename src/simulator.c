@@ -508,6 +508,7 @@ bool execute_simulation_step(simulator* s) {
                 WARN("Unimplemented syscall: READ");
                 break;
             case 64:
+                INFO("ECALL: write");
                 uint32_t fd = read_register(s, REG_A0);
                 uint32_t addr = read_register(s, REG_A1);
                 uint32_t length = read_register(s, REG_A2);
@@ -519,7 +520,7 @@ bool execute_simulation_step(simulator* s) {
                     fprintf(fds[fd], "%-*s", length, &((uint8_t*) s->memory)[addr]);
                 return true;
             case 94:
-                INFO("ecall exit");
+                INFO("ECALL: exit");
                 return false;
             default:
                 WARN("Unknown syscall: %d", syscall);
