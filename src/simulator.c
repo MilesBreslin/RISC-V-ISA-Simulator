@@ -491,6 +491,10 @@ bool execute_simulation_step(simulator* s) {
         );
         return true;
     }
+    if (is_ecall_instruction(&i_instruction)) {
+        WARN("Unimplemented operation: ECALL");
+        return true;
+    }
 
     WARN("Unhandled operation: %08X", encoded_instruction);
     return true;

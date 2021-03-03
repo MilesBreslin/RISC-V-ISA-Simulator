@@ -254,6 +254,10 @@ bool is_sh_instruction(const S_INSTRUCTION* decoded_instruction);
 #define FUNC3_SW 0b010;
 bool is_sw_instruction(const S_INSTRUCTION* decoded_instruction);
 
+#define OPCODE_ECALL 0b1110011;
+#define FUNC3_ECALL 0b000;
+bool is_ecall_instruction(const I_INSTRUCTION* decoded_instruction);
+
 int count_all_instruction_matches(uint32_t encoded_instruction);
 
 char* format_instruction(uint32_t encoded_instruction);
@@ -331,5 +335,7 @@ char* format_sb_operation(S_INSTRUCTION* decoded_instruction);
 char* format_sh_operation(S_INSTRUCTION* decoded_instruction);
 
 char* format_sw_operation(S_INSTRUCTION* decoded_instruction);
+
+char* format_ecall_operation(I_INSTRUCTION* decoded_instruction);
 
 #endif

@@ -673,6 +673,13 @@ bool is_sw_instruction(const S_INSTRUCTION* decoded_instruction) {
     return true;
 }
 
+bool is_ecall_instruction(const I_INSTRUCTION* decoded_instruction) {
+    if (decoded_instruction == NULL) FAIL("Received NULL pointer on is_ecall_instruction");
+    if (decoded_instruction->opcode != 0b1110011) return false;
+    if (decoded_instruction->func3 != 0b000) return false;
+    return true;
+}
+
 int count_all_instruction_matches(uint32_t encoded_instruction) {
     int count = 0;
     R_INSTRUCTION r_instruction = as_r_instruction(encoded_instruction);
@@ -718,6 +725,7 @@ int count_all_instruction_matches(uint32_t encoded_instruction) {
     count += is_sb_instruction(&s_instruction);
     count += is_sh_instruction(&s_instruction);
     count += is_sw_instruction(&s_instruction);
+    count += is_ecall_instruction(&i_instruction);
     return count;
 }
 
@@ -765,6 +773,7 @@ char* format_instruction(uint32_t encoded_instruction) {
     if (is_sb_instruction(&s_instruction)) return format_sb_operation(&s_instruction);
     if (is_sh_instruction(&s_instruction)) return format_sh_operation(&s_instruction);
     if (is_sw_instruction(&s_instruction)) return format_sw_operation(&s_instruction);
+    if (is_ecall_instruction(&i_instruction)) return format_ecall_operation(&i_instruction);
     return NULL;
 }
 
@@ -1156,6 +1165,17 @@ char* format_sw_operation(S_INSTRUCTION* decoded_instruction) {
     sprintf(format_memory, "SW <rs1=%s> <rs2=%s> <imm_u=%u> <imm_s=%d>",
         register_to_name(decoded_instruction->rs1),
         register_to_name(decoded_instruction->rs2),
+        decoded_instruction->imm_u,
+        decoded_instruction->imm_s
+    );
+    return format_memory;
+}
+
+char* format_ecall_operation(I_INSTRUCTION* decoded_instruction) {
+    if (!is_ecall_instruction(decoded_instruction)) return NULL;
+    sprintf(format_memory, "ECALL <rd=%s> <rs1=%s> <imm_u=%u> <imm_s=%d>",
+        register_to_name(decoded_instruction->rd),
+        register_to_name(decoded_instruction->rs1),
         decoded_instruction->imm_u,
         decoded_instruction->imm_s
     );

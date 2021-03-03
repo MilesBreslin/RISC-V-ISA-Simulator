@@ -154,6 +154,10 @@ operations:
     opcode: "0b0100011"
     func3: "0b010"
     instruction_type: S
+  ECALL:
+    opcode: "0b1110011"
+    func3: "0b000"
+    instruction_type: I
 # bits are a list of chunks of bits
 # The bits are concatenated together in the order listed here.
 # The bits are defined inclusively (start and end bits are included).
