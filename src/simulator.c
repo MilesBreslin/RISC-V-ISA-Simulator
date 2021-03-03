@@ -379,12 +379,15 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_srli_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: SRLI");
+        if(!(i_instruction.imm_u>>10)){
+            write_register(s, i_instruction.rd, (read_register(s,i_instruction.rs1)) >> (0x01f & i_instruction.imm_u));
+        }
         return true;
     }
     if (is_srai_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: SRAI");
-        return true;
+        if((i_instruction.imm_u>>10)){
+            write_register(s, i_instruction.rd, (read_register_signed(s,i_instruction.rs1)) >> (0x01f & i_instruction.imm_u));
+        }        return true;
     }
     if (is_beq_instruction(&b_instruction)) {
         if(read_register(s, b_instruction.rs1) == read_register(s, b_instruction.rs2)){

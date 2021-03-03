@@ -181,12 +181,12 @@ bool is_slli_instruction(const I_INSTRUCTION* decoded_instruction);
 
 #define OPCODE_SRLI 0b0010011;
 #define FUNC3_SRLI 0b101;
-#define FUNC7_SRLI 0b0100000;
+#define FUNC7_SRLI 0b0000000;
 bool is_srli_instruction(const I_INSTRUCTION* decoded_instruction);
 
 #define OPCODE_SRAI 0b0010011;
 #define FUNC3_SRAI 0b101;
-#define FUNC7_SRAI 0b0000000;
+#define FUNC7_SRAI 0b0100000;
 bool is_srai_instruction(const I_INSTRUCTION* decoded_instruction);
 
 #define OPCODE_BEQ 0b1100011;
