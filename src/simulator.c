@@ -505,10 +505,9 @@ bool execute_simulation_step(simulator* s) {
             };
             switch (syscall) {
             case 63:
-                INFO("Unimplemented syscall: READ");
+                WARN("Unimplemented syscall: READ");
                 break;
             case 64:
-                INFO("Unimplemented syscall: WRITE");
                 uint32_t fd = read_register(s, REG_A0);
                 uint32_t addr = read_register(s, REG_A1);
                 uint32_t length = read_register(s, REG_A2);
@@ -520,7 +519,7 @@ bool execute_simulation_step(simulator* s) {
                 INFO("ecall exit");
                 return false;
             default:
-                INFO("Unknown syscall: %d", syscall);
+                WARN("Unknown syscall: %d", syscall);
                 break;
             }
         }
