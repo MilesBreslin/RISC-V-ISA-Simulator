@@ -63,8 +63,21 @@ int read_file_to_memory(simulator* s, FILE *f) {
             if (sscanf(addr_ptr, "%X", &addr) != 1)
                 FAIL("Invalid line: %s", line);
 
+            // Get the length of only the value string's valid characters
+            int value_length = 0;
+            for (int i = 0; i < strlen(value_ptr) ; i++)
+                if ((value_ptr[i] >= '0' && value_ptr[i] <= '9')
+                    || (value_ptr[i] >= 'a' && value_ptr[i] <= 'f')
+                    || (value_ptr[i] >= 'A' && value_ptr[i] <= 'F'))
+                    value_length++;
+
             // Write the word into memory
-            write_word(s, addr, value);
+            if (value_length <= 2)
+                write_byte(s, addr, value);
+            else if (strlen(value_ptr) <= 4)
+                write_hword(s, addr, value);
+            else
+                write_word(s, addr, value);
         }
 
         line_no++;
