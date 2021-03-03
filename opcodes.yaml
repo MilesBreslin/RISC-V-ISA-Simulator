@@ -160,6 +160,46 @@ operations:
     opcode: "0b1110011"
     func3: "0b000"
     instruction_type: I
+  MUL:
+    opcode: "0b0110011"
+    func3: "0b000"
+    func7: "0b0000001"
+    instruction_type: R
+  MULH:
+    opcode: "0b0110011"
+    func3: "0b001"
+    func7: "0b0000001"
+    instruction_type: R
+  MULHSU:
+    opcode: "0b0110011"
+    func3: "0b010"
+    func7: "0b0000001"
+    instruction_type: R
+  MULHU:
+    opcode: "0b0110011"
+    func3: "0b011"
+    func7: "0b0000001"
+    instruction_type: R
+  DIV:
+    opcode: "0b0110011"
+    func3: "0b100"
+    func7: "0b0000001"
+    instruction_type: R
+  DIVU:
+    opcode: "0b0110011"
+    func3: "0b101"
+    func7: "0b0000001"
+    instruction_type: R
+  REM:
+    opcode: "0b0110011"
+    func3: "0b110"
+    func7: "0b0000001"
+    instruction_type: R
+  REMU:
+    opcode: "0b0110011"
+    func3: "0b"111"
+    func7: "0b0000001"
+    instruction_type: R
 # bits are a list of chunks of bits
 # The bits are concatenated together in the order listed here.
 # The bits are defined inclusively (start and end bits are included).
