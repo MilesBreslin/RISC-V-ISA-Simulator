@@ -492,7 +492,38 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_ecall_instruction(&i_instruction)) {
-        WARN("Unimplemented operation: ECALL");
+        if (i_instruction.imm_u == 1)
+            WARN("Unimplemented operation: EBREAK");
+        else if (i_instruction.imm_u != 0)
+            WARN("Unexpected imm value for ECALL");
+        else {
+            uint32_t syscall = read_register(s, REG_A7);
+            FILE* fds[] = {
+                stdin,
+                stdout,
+                stderr,
+            };
+            switch (syscall) {
+            case 63:
+                INFO("Unimplemented syscall: READ");
+                break;
+            case 64:
+                INFO("Unimplemented syscall: WRITE");
+                uint32_t fd = read_register(s, REG_A0);
+                uint32_t addr = read_register(s, REG_A1);
+                uint32_t length = read_register(s, REG_A2);
+                if (addr + length + 1 > s->mem_bytes)
+                    length = s->mem_bytes - addr;
+                if (fd <= length(fds))
+                    fprintf(fds[fd], "%-*s", length, &((uint8_t*) s->memory)[addr]);
+            case 94:
+                INFO("ecall exit");
+                return false;
+            default:
+                INFO("Unknown syscall: %d", syscall);
+                break;
+            }
+        }
         return true;
     }
 
