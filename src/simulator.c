@@ -511,10 +511,13 @@ bool execute_simulation_step(simulator* s) {
                 uint32_t fd = read_register(s, REG_A0);
                 uint32_t addr = read_register(s, REG_A1);
                 uint32_t length = read_register(s, REG_A2);
-                if (addr + length + 1 > s->mem_bytes)
+                if (addr > s->mem_bytes)
+                    return true;
+                if (addr + length > s->mem_bytes)
                     length = s->mem_bytes - addr;
                 if (fd <= length(fds))
                     fprintf(fds[fd], "%-*s", length, &((uint8_t*) s->memory)[addr]);
+                return true;
             case 94:
                 INFO("ecall exit");
                 return false;
