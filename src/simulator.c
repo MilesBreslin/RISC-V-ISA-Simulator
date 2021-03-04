@@ -519,13 +519,13 @@ bool execute_simulation_step(simulator* s) {
     }
     if (is_mul_instruction(&r_instruction)) {
         write_register_signed(s, r_instruction.rd,
-            ((int64_t)read_register(s, r_instruction.rs1) * (int64_t)read_register(s, r_instruction.rs2))
+            (((int64_t)read_register_signed(s, r_instruction.rs1) * (int64_t)read_register_signed(s, r_instruction.rs2)) & 0x00000000FFFFFFFF)
         ); 
         return true;
     }
     if (is_mulh_instruction(&r_instruction)) {
         int64_t value = ((int64_t)read_register_signed(s, r_instruction.rs1) * (int64_t)read_register_signed(s, r_instruction.rs2));
-        write_register_signed(s, r_instruction.rd, value);
+        write_register_signed(s, r_instruction.rd, value>>32);
         return true;
     }
     if (is_mulhsu_instruction(&r_instruction)) {
