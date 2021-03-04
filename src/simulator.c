@@ -530,7 +530,7 @@ bool execute_simulation_step(simulator* s) {
     }
     if (is_mulhsu_instruction(&r_instruction)) {
         write_register_signed(s, r_instruction.rd,
-            (((int64_t)read_register_signed(s, r_instruction.rs1) * (uint64_t)read_register(s, r_instruction.rs2))>> 16)
+            (((int64_t)read_register_signed(s, r_instruction.rs1) * (uint64_t)read_register(s, r_instruction.rs2))>> 32)
         ); 
         return true;
     }
