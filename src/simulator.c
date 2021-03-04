@@ -542,19 +542,27 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_div_instruction(&r_instruction)) {
-        WARN("Unimplemented operation: DIV");
+        write_register(s, r_instruction.rd,
+            (read_register_signed(s, r_instruction.rs1) / read_register_signed(s, r_instruction.rs2))
+        );
         return true;
     }
     if (is_divu_instruction(&r_instruction)) {
-        WARN("Unimplemented operation: DIVU");
+        write_register(s, r_instruction.rd,
+            (read_register(s, r_instruction.rs1) / read_register(s, r_instruction.rs2)) 
+        );
         return true;
     }
     if (is_rem_instruction(&r_instruction)) {
-        WARN("Unimplemented operation: REM");
+        write_register(s, r_instruction.rd,
+            (read_register_signed(s, r_instruction.rs1) % read_register_signed(s, r_instruction.rs2))
+        );
         return true;
     }
     if (is_remu_instruction(&r_instruction)) {
-        WARN("Unimplemented operation: REMU");
+        write_register(s, r_instruction.rd,
+            (read_register(s, r_instruction.rs1) % read_register(s, r_instruction.rs2))
+        );
         return true;
     }
     if (is_ecall_instruction(&i_instruction)) {
