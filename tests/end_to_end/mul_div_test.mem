@@ -1,7 +1,7 @@
 #Load know values to registers t0-t4 VALUES ARE HEX
-REG_T0: 6
-REG_T1: 9
-REG_T2: 3
+REG_T0:9 
+REG_T1:2
+REG_T2:3
 REG_T3:00afffaf
 REG_T4:0000ffff
 REG_T5:ffff0000
@@ -18,4 +18,4 @@ c:0262aa33
 1c:0263fc33
 20:0263ccb3
 24:03de1d33
-28:03eebdb3 
+28:03ee8db3 

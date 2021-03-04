@@ -542,10 +542,20 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_div_instruction(&r_instruction)) {
-        write_register(s, r_instruction.rd,
+        if(read_register_signed(s, r_instruction.rs2) == 0){
+            write_register_signed(s, r_instruction.rd, 0xffffffff);
+        return true;
+        }
+        if(read_register_signed(s, r_instruction.rs2) == -1) {
+            write_register_signed(s, r_instruction.rd, read_register_signed(s, r_instruction.rs1));
+        return true;
+        }
+        else {
+        write_register_signed(s, r_instruction.rd, 
             (read_register_signed(s, r_instruction.rs1) / read_register_signed(s, r_instruction.rs2))
         );
         return true;
+        }
     }
     if (is_divu_instruction(&r_instruction)) {
         write_register(s, r_instruction.rd,
