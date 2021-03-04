@@ -4,7 +4,8 @@ int simulation_run(simulator* s) {
     write_register(s, REG_T0, 9);
     write_register(s, REG_T1, 2);
     write_word(s, 0, 0x026284b3);
-    execute_simulation_step(s);
+    if(!execute_simulation_step(s))
+        FAIL("program ended prematurely");
     uint32_t value = read_register(s, REG_A5);
     if (value != 18) 
         FAIL("Expected 18, got %d", value);
