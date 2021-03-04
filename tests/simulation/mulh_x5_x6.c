@@ -7,7 +7,7 @@ int simulation_run(simulator* s) {
     if(!execute_simulation_step(s))
         FAIL("program ended prematurely");
     uint32_t value = read_register(s, REG_S1);
-    if (value != 0) 
-        FAIL("Expected 0, got %d", value);
+    if (value != 429025) 
+        FAIL("Expected 429025, got %d", value);
     return 0;
 }
