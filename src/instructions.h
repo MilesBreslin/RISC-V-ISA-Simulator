@@ -94,10 +94,10 @@ typedef struct {
     uint8_t opcode;
     // <TotalBits=5>
     REGISTER rd;
-    // <TotalBits=21>
-    uint32_t imm_u;
-    // <TotalBits=21>
-    int32_t imm_s;
+    // <TotalBits=15>
+    uint16_t imm_u;
+    // <TotalBits=15>
+    int16_t imm_s;
 } J_INSTRUCTION;
 J_INSTRUCTION as_j_instruction(uint32_t instruction);
 
