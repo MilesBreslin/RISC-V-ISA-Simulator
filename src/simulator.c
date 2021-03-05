@@ -362,7 +362,7 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_slti_instruction(&i_instruction)) {
-        if(read_register_signed(s, i_instruction.rs1) < read_register_signed(s, i_instruction.imm_s)) {
+        if(read_register_signed(s, i_instruction.rs1) < i_instruction.imm_s) {
             write_register(s, i_instruction.rd, 1);
         }        
         else {
