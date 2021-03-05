@@ -449,7 +449,9 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_lui_instruction(&u_instruction)) {
-        write_register(s, u_instruction.rd, (read_register(s,u_instruction.rd)) + (u_instruction.imm_u<<12));
+        write_register(s, u_instruction.rd, 
+            u_instruction.imm_u << 12
+        );
         return true;
     }
     if (is_auipc_instruction(&u_instruction)) {
