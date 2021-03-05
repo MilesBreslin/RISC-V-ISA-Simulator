@@ -21,7 +21,7 @@ for i in "$DIR"/*.mem ; do
             --load-file "$i" \
             --dump-memory - \
             --dump-registers - \
-            --instruction-limit 1000 \
+            --instruction-limit 10000000 \
             > "$OUTFILE" \
             || SUCCESS=0
         if [ "$SUCCESS" == 1 ] ; then
