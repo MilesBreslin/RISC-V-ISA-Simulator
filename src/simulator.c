@@ -488,13 +488,13 @@ bool execute_simulation_step(simulator* s) {
     }
     if (is_lbu_instruction(&i_instruction)) {
         write_register(s, i_instruction.rd,
-            read_byte(s, read_register(s, i_instruction.rs1) + i_instruction.imm_u)
+            read_byte(s, read_register(s, i_instruction.rs1) + i_instruction.imm_s)
         );
         return true;
     }
     if (is_lhu_instruction(&i_instruction)) {
         write_register(s, i_instruction.rd,
-            read_hword(s, read_register(s, i_instruction.rs1) + i_instruction.imm_u)
+            read_hword(s, read_register(s, i_instruction.rs1) + i_instruction.imm_s)
         );
         return true;
     }
