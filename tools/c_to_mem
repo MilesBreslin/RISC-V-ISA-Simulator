@@ -38,7 +38,7 @@ set -e
 
 "$CC" -march=rv32i -mabi=ilp32 -fpic -ggdb -O0 -c "$TARGET" -o "$BASEFILENAME.o"
 "$LD" "$BASEFILENAME.o" -o "$BASEFILENAME"
-"$OBJDUMP" -d "$BASEFILENAME" \
+"$OBJDUMP" -D "$BASEFILENAME" \
     | sed 's/^ *//;/^[a-f0-9]*:/!d;s/  .*//;s/ //g' \
     > "$BASEFILENAME.mem"
 "$OBJDUMP" -d "$BASEFILENAME" \
