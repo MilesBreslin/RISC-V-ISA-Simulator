@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
             }
         } else if (strcmp("--instruction-limit", argv[i]) == 0) {
             i++;
-            if ((err = sscanf(argv[i], "%d", &instruction_limit)) != 1) {
+            if ((err = sscanf(argv[i], "%u", &instruction_limit)) != 1) {
                 fprintf(stderr, "Invalid format for --instruction-limit\n");
             }
         } else if (strcmp("--ignore-zeros", argv[i]) == 0) {
