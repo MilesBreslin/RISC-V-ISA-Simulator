@@ -388,55 +388,61 @@ J_INSTRUCTION as_j_instruction(uint32_t instruction) {
             0
         ),
         .imm_u = (
-            // <TotalBits=15>
+            // <TotalBits=21>
             // <Start=null> <End=null> <Length=1> <Offset=0> <Zero=true>
             0
             |
             // <Start=21> <End=24> <Length=4> <Offset=1> <Zero=false>
             (get_word_bits(instruction, 21, 24) << 1)
             |
-            // <Start=20> <End=20> <Length=1> <Offset=5> <Zero=false>
-            (get_word_bits(instruction, 20, 20) << 5)
+            // <Start=25> <End=30> <Length=6> <Offset=5> <Zero=false>
+            (get_word_bits(instruction, 25, 30) << 5)
             |
-            // <Start=12> <End=19> <Length=8> <Offset=6> <Zero=false>
-            (get_word_bits(instruction, 12, 19) << 6)
+            // <Start=20> <End=20> <Length=1> <Offset=11> <Zero=false>
+            (get_word_bits(instruction, 20, 20) << 11)
             |
-            // <Start=31> <End=31> <Length=1> <Offset=14> <Zero=false>
-            (get_word_bits(instruction, 31, 31) << 14)
+            // <Start=12> <End=19> <Length=8> <Offset=12> <Zero=false>
+            (get_word_bits(instruction, 12, 19) << 12)
+            |
+            // <Start=31> <End=31> <Length=1> <Offset=20> <Zero=false>
+            (get_word_bits(instruction, 31, 31) << 20)
             |
             // Unsigned
             0
         ),
         .imm_s = (
-            // <TotalBits=15>
+            // <TotalBits=21>
             // <Start=null> <End=null> <Length=1> <Offset=0> <Zero=true>
             0
             |
             // <Start=21> <End=24> <Length=4> <Offset=1> <Zero=false>
             (get_word_bits(instruction, 21, 24) << 1)
             |
-            // <Start=20> <End=20> <Length=1> <Offset=5> <Zero=false>
-            (get_word_bits(instruction, 20, 20) << 5)
+            // <Start=25> <End=30> <Length=6> <Offset=5> <Zero=false>
+            (get_word_bits(instruction, 25, 30) << 5)
             |
-            // <Start=12> <End=19> <Length=8> <Offset=6> <Zero=false>
-            (get_word_bits(instruction, 12, 19) << 6)
+            // <Start=20> <End=20> <Length=1> <Offset=11> <Zero=false>
+            (get_word_bits(instruction, 20, 20) << 11)
             |
-            // <Start=31> <End=31> <Length=1> <Offset=14> <Zero=false>
-            (get_word_bits(instruction, 31, 31) << 14)
+            // <Start=12> <End=19> <Length=8> <Offset=12> <Zero=false>
+            (get_word_bits(instruction, 12, 19) << 12)
+            |
+            // <Start=31> <End=31> <Length=1> <Offset=20> <Zero=false>
+            (get_word_bits(instruction, 31, 31) << 20)
             |
             // Signed <LastBit=31>
-            (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 14))
+            (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 20))
         )
     };
     if (d.opcode > (1 << 7))
         FAIL("J_INSTRUCTION.opcode decode error: size %d", d.opcode);
     if (d.rd > (1 << 5))
         FAIL("J_INSTRUCTION.rd decode error: size %d", d.rd);
-    if (d.imm_u > (1 << 15))
+    if (d.imm_u > (1 << 21))
         FAIL("J_INSTRUCTION.imm_u decode error: size %d", d.imm_u);
-    if (d.imm_s > (1 << 14))
+    if (d.imm_s > (1 << 20))
         FAIL("J_INSTRUCTION.imm_s decode error: size %d", d.imm_s);
-    if (d.imm_s < -(1 << 14) - 1)
+    if (d.imm_s < -(1 << 20) - 1)
         FAIL("J_INSTRUCTION.imm_s decode error: size %d", d.imm_s);
     return d;
 }

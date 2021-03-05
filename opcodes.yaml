@@ -402,6 +402,8 @@ instruction_types:
         - zeros: 1
         - start: 21
           end: 24
+        - start: 25
+          end: 30
         - start: 20
           end: 20
         - start: 12
@@ -414,6 +416,8 @@ instruction_types:
         - zeros: 1
         - start: 21
           end: 24
+        - start: 25
+          end: 30
         - start: 20
           end: 20
         - start: 12
