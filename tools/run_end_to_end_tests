@@ -17,7 +17,6 @@ for i in "$DIR"/*.mem ; do
         sedfilter='s/./\U&/g;s/^0*//;s/ //g;s/:0*/:/;s/#.*//'
         SUCCESS=1
         ./build/riscv_simulator \
-            --verbose \
             --load-file "$i" \
             --dump-memory - \
             --dump-registers - \
