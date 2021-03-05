@@ -296,19 +296,19 @@ bool execute_simulation_step(simulator* s) {
     }
     if (is_sub_instruction(&r_instruction)) {
         write_register(s, r_instruction.rd, 
-            read_register(s, r_instruction.rs1)^ read_register(s, r_instruction.rs2)
+            read_register(s, r_instruction.rs1) - read_register(s, r_instruction.rs2)
         );  
         return true;
     }
     if (is_sll_instruction(&r_instruction)) {
-       write_register(s, r_instruction.rd, 
-           read_register(s, r_instruction.rs1) << (read_register(s, r_instruction.rs2) %32)
-       );
+        write_register(s, r_instruction.rd, 
+            read_register(s, r_instruction.rs1) << (read_register(s, r_instruction.rs2) %32)
+        );
         return true;
     }
     if (is_slt_instruction(&r_instruction)) {
         if(read_register_signed(s, r_instruction.rs1) < read_register_signed(s, r_instruction.rs2)){
-           write_register(s, r_instruction.rd, 1);
+            write_register(s, r_instruction.rd, 1);
         }
         else {
             write_register(s, r_instruction.rd, 0);
@@ -317,7 +317,7 @@ bool execute_simulation_step(simulator* s) {
     }
     if (is_sltu_instruction(&r_instruction)) {
         if(read_register(s, r_instruction.rs1) < read_register(s, r_instruction.rs2)){
-           write_register(s, r_instruction.rd, 1);
+            write_register(s, r_instruction.rd, 1);
         }
         else {
             write_register(s, r_instruction.rd, 0);
@@ -333,14 +333,13 @@ bool execute_simulation_step(simulator* s) {
     if (is_srl_instruction(&r_instruction)) {
         write_register(s, r_instruction.rd, 
             read_register(s, r_instruction.rs1) >> (read_register(s, r_instruction.rs2) %32)
-       );
+        );
         return true;
-
     }
     if (is_sra_instruction(&r_instruction)) {
         write_register_signed(s, r_instruction.rd, 
             read_register_signed(s, r_instruction.rs1) >> (read_register(s, r_instruction.rs2) %32)
-       );
+        );
         return true;
     }
     if (is_or_instruction(&r_instruction)) {
@@ -402,15 +401,16 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_srli_instruction(&i_instruction)) {
-        if(!(i_instruction.imm_u>>10)){
-            write_register(s, i_instruction.rd, (read_register(s,i_instruction.rs1)) >> (0x01f & i_instruction.imm_u));
-        }
+        write_register(s, i_instruction.rd,
+            (read_register(s,i_instruction.rs1)) >> (0x01f & i_instruction.imm_u)
+        );
         return true;
     }
     if (is_srai_instruction(&i_instruction)) {
-        if((i_instruction.imm_u>>10)){
-            write_register(s, i_instruction.rd, (read_register_signed(s,i_instruction.rs1)) >> (0x01f & i_instruction.imm_u));
-        }        return true;
+        write_register(s, i_instruction.rd,
+            (read_register_signed(s,i_instruction.rs1)) >> (0x01f & i_instruction.imm_u)
+        );
+        return true;
     }
     if (is_beq_instruction(&b_instruction)) {
         if(read_register(s, b_instruction.rs1) == read_register(s, b_instruction.rs2)){
@@ -459,8 +459,8 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_jal_instruction(&j_instruction)) {
-        write_register(s, j_instruction.rd, pc + j_instruction.imm_s);
-            s->pc = pc + (j_instruction.imm_s);
+        write_register(s, j_instruction.rd, pc + 4);
+        s->pc = pc + j_instruction.imm_s;
         return true;
     }
     if (is_jalr_instruction(&i_instruction)) {
@@ -521,7 +521,7 @@ bool execute_simulation_step(simulator* s) {
     }
     if (is_mul_instruction(&r_instruction)) {
         write_register_signed(s, r_instruction.rd,
-            (((int64_t)read_register_signed(s, r_instruction.rs1) * (int64_t)read_register_signed(s, r_instruction.rs2)) & 0x00000000FFFFFFFF)
+            ((int64_t)read_register_signed(s, r_instruction.rs1) * (int64_t)read_register_signed(s, r_instruction.rs2))
         ); 
         return true;
     }
@@ -543,20 +543,15 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_div_instruction(&r_instruction)) {
-        if(read_register_signed(s, r_instruction.rs2) == 0){
+        if(read_register_signed(s, r_instruction.rs2) == 0)
             write_register_signed(s, r_instruction.rd, 0xffffffff);
-        return true;
-        }
-        if(read_register_signed(s, r_instruction.rs2) == -1) {
+        else if (read_register_signed(s, r_instruction.rs2) == -1)
             write_register_signed(s, r_instruction.rd, read_register_signed(s, r_instruction.rs1));
+        else
+            write_register_signed(s, r_instruction.rd, 
+                (read_register_signed(s, r_instruction.rs1) / read_register_signed(s, r_instruction.rs2))
+            );
         return true;
-        }
-        else {
-        write_register_signed(s, r_instruction.rd, 
-            (read_register_signed(s, r_instruction.rs1) / read_register_signed(s, r_instruction.rs2))
-        );
-        return true;
-        }
     }
     if (is_divu_instruction(&r_instruction)) {
         write_register(s, r_instruction.rd,

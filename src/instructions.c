@@ -388,31 +388,37 @@ J_INSTRUCTION as_j_instruction(uint32_t instruction) {
             0
         ),
         .imm_u = (
-            // <TotalBits=20>
-            // <Start=12> <End=31> <Length=20> <Offset=0> <Zero=false>
-            (get_word_bits(instruction, 12, 31) << 0)
+            // <TotalBits=21>
+            // <Start=null> <End=null> <Length=1> <Offset=0> <Zero=true>
+            0
+            |
+            // <Start=12> <End=31> <Length=20> <Offset=1> <Zero=false>
+            (get_word_bits(instruction, 12, 31) << 1)
             |
             // Unsigned
             0
         ),
         .imm_s = (
-            // <TotalBits=20>
-            // <Start=12> <End=31> <Length=20> <Offset=0> <Zero=false>
-            (get_word_bits(instruction, 12, 31) << 0)
+            // <TotalBits=21>
+            // <Start=null> <End=null> <Length=1> <Offset=0> <Zero=true>
+            0
+            |
+            // <Start=12> <End=31> <Length=20> <Offset=1> <Zero=false>
+            (get_word_bits(instruction, 12, 31) << 1)
             |
             // Signed <LastBit=31>
-            (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 19))
+            (((1 << 31) & instruction) == 0 ? 0 : ((~0) << 20))
         )
     };
     if (d.opcode > (1 << 7))
         FAIL("J_INSTRUCTION.opcode decode error: size %d", d.opcode);
     if (d.rd > (1 << 5))
         FAIL("J_INSTRUCTION.rd decode error: size %d", d.rd);
-    if (d.imm_u > (1 << 20))
+    if (d.imm_u > (1 << 21))
         FAIL("J_INSTRUCTION.imm_u decode error: size %d", d.imm_u);
-    if (d.imm_s > (1 << 19))
+    if (d.imm_s > (1 << 20))
         FAIL("J_INSTRUCTION.imm_s decode error: size %d", d.imm_s);
-    if (d.imm_s < -(1 << 19) - 1)
+    if (d.imm_s < -(1 << 20) - 1)
         FAIL("J_INSTRUCTION.imm_s decode error: size %d", d.imm_s);
     return d;
 }

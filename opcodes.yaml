@@ -399,11 +399,13 @@ instruction_types:
     - name: imm_u
       signed: false
       bits:
+        - zeros: 1
         - start: 12
           end: 31
     - name: imm_s
       signed: true
       bits:
+        - zeros: 1
         - start: 12
           end: 31
 known_types:
