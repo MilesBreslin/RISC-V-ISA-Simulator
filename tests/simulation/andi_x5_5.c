@@ -2,7 +2,7 @@
 int simulation_run(simulator* s) {
     // ANDI  S0, T0, 5 
     write_register(s, REG_T0, 5);
-    write_word(s, 0, 0x0052f493);
+    write_word(s, 0, 0x0052f413);
 
     if(!execute_simulation_step(s))
         FAIL("program ended prematurely");
