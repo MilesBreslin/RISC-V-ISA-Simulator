@@ -33,3 +33,4 @@ tests/c_code/%.mem: tests/c_code/%.c
 
 clean:
 	-rm -rf src/*.o tests/*/*.o build
+	-git clean -dfX
