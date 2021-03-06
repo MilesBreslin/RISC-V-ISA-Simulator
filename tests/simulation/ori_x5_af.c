@@ -9,13 +9,13 @@ int simulation_run(simulator* s) {
 
     uint32_t value = read_register(s, REG_S0);
     if (value != -10) 
-        FAIL("Expected 5, got %d", value);
+        FAIL("Expected -10, got %d", value);
 
 
     execute_simulation_step(s);
 
     value = read_register(s, REG_S0);
-    if (value != (0xFFFFFFFF & -5)) 
-        FAIL("Expected 5, got %d", value);
+    if (value != 10)) 
+        FAIL("Expected 10, got %d", value);
     return 0;
 }
