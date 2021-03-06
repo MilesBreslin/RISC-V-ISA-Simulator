@@ -391,9 +391,9 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_andi_instruction(&i_instruction)) {
-        write_register(s, i_instruction.rd, 
-            read_register(s, i_instruction.rs1)&((int32_t)i_instruction.imm_s)
-        );
+        uint32_t imm_value = (read_register_signed(s, i_instruction.rs1)&((int32_t)i_instruction.imm_s));
+        printf("The immediate value is : %d ", imm_value);
+        write_register_signed(s, i_instruction.rd, imm_value);
         return true;
     }
     if (is_slli_instruction(&i_instruction)) {
