@@ -8,7 +8,7 @@ int simulation_run(simulator* s) {
     execute_simulation_step(s);
 
     uint32_t value = read_register(s, REG_S0);
-    if (value != 10) 
+    if (value != -10) 
         FAIL("Expected 5, got %d", value);
 
 
