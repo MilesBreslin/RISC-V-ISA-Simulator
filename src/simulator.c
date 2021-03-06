@@ -191,7 +191,6 @@ const char* register_to_name(REGISTER reg) {
     GEN_REG_TO_NAME(REG_T0);
     GEN_REG_TO_NAME(REG_T1);
     GEN_REG_TO_NAME(REG_T2);
-    GEN_REG_TO_NAME(REG_S0);
     GEN_REG_TO_NAME(REG_FP);
     GEN_REG_TO_NAME(REG_S1);
     GEN_REG_TO_NAME(REG_A0);
