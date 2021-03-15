@@ -617,7 +617,7 @@ bool execute_simulation_step(simulator* s) {
                 if (addr + length > s->mem_bytes)
                     length = s->mem_bytes - addr;
                 if (fd <= length(fds))
-                    write_reg(s, REG_A0,
+                    write_register(s, REG_A0,
                         fprintf(fds[fd], "%-*s", length, &((uint8_t*) s->memory)[addr])
                     );
                 return true;
