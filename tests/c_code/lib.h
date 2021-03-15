@@ -46,6 +46,7 @@ void print_int(int x) {
 
 void ecall_exit() {
     __asm__ (
+        "addi a0, zero, 0;"
         "addi a7, zero, 94;"
         "ecall;"
     );
