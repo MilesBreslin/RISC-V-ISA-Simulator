@@ -162,14 +162,25 @@ int main(int argc, char* argv[]) {
                         if (argc > 1)
                             ignore_zeros = strcmp("--ignore-zeros", argv[1]) == 0;
                         dump_memory_to_file(&s, stdout, 0, 0, ignore_zeros);
-                    } else if (strcmp(argv[0], "quit") == 0) {
+                    } else if (strcmp(argv[0], "write") == 0) {
+                        if (argc != 3) {
+                            printf("Invalid usage");
+                            printf("write <addr/reg> <value>\n");
+                        } else {
+                            if (write_mem_str(&s, argv[1], argv[2]) != 0)
+                                printf("Invalid format");
+                        }
+                    } else if (strcmp(argv[0], "quit") == 0) || (strcmp(argv[0], "exit") == 0) {
                         cont = 0;
                         break;
                     } else {
                         printf("Usage:\n");
                         printf("dump_memory [--ignore-zeros]\n");
                         printf("dump_registers [--ignore-zeros]\n");
+                        printf("exit\n");
                         printf("next <count>\n");
+                        printf("quit\n");
+                        printf("write <addr/reg> <value>\n");
                     }
                 }
             }
