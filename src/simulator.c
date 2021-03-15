@@ -605,8 +605,21 @@ bool execute_simulation_step(simulator* s) {
             };
             switch (syscall) {
             case 63:
-                WARN("Unimplemented syscall: READ");
-                break;
+                {
+                    WARN("ECALL: READ");
+                    uint32_t fd = read_register(s, REG_A0);
+                    uint32_t addr = read_register(s, REG_A1);
+                    uint32_t length = read_register(s, REG_A2);
+                    if (addr > s->mem_bytes)
+                        return true;
+                    if (addr + length > s->mem_bytes)
+                        length = s->mem_bytes - addr;
+                    if (fd <= length(fds))
+                        write_register(s, REG_A0,
+                            fread(&((uint8_t*) s->memory)[addr], sizeof(uint8_t), length, fds[fd])
+                        );
+                    return true;
+                }
             case 64:
                 INFO("ECALL: write");
                 uint32_t fd = read_register(s, REG_A0);
@@ -623,6 +636,7 @@ bool execute_simulation_step(simulator* s) {
                 return true;
             case 94:
                 INFO("ECALL: exit");
+                s->return_code = read_register(s, REG_A0);
                 return false;
             default:
                 WARN("Unknown syscall: %d", syscall);

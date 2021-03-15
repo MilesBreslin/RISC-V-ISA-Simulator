@@ -7,6 +7,7 @@ typedef struct {
     uint32_t pc;
     void* memory;
     uint32_t mem_bytes;
+    int return_code;
 } simulator;
 
 typedef enum {

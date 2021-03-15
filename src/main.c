@@ -230,9 +230,9 @@ int main(int argc, char* argv[]) {
         }
         printf("PC: %08X\n", s.pc);
 
+        int return_code = s.return_code;
         simulator_destroy(&s);
-        exit(EXIT_SUCCESS);
-        printf("Shouldn't see this if execution halted\n"); //There to prove that the sim actually halts
+        exit(return_code);
     } else {
         usage("Target file not specified", 1);
     }
