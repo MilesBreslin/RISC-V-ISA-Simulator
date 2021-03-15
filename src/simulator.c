@@ -46,43 +46,49 @@ int read_file_to_memory(simulator* s, FILE *f) {
         } else
             FAIL("Invalid line: %s", line);
 
-        // Parse value
-        uint32_t value;
-        if (sscanf(value_ptr, "%X", &value) != 1)
+        if (write_mem_str(s, addr_ptr, value_ptr) != 0)
             FAIL("Invalid line: %s", line);
-
-        // If is a valid register, write to the register; else parse as an address
-        REGISTER reg;
-        if ((reg = register_from_name(addr_ptr)) < 32 && reg >= 0) {
-            write_register(s, reg, value);
-        } else if (strcmp("PC", addr_ptr) == 0) {
-            s->pc = value;
-        } else {
-            // Parse address
-            uint32_t addr;
-            if (sscanf(addr_ptr, "%X", &addr) != 1)
-                FAIL("Invalid line: %s", line);
-
-            // Get the length of only the value string's valid characters
-            int value_length = 0;
-            for (int i = 0; i < strlen(value_ptr) ; i++)
-                if ((value_ptr[i] >= '0' && value_ptr[i] <= '9')
-                    || (value_ptr[i] >= 'a' && value_ptr[i] <= 'f')
-                    || (value_ptr[i] >= 'A' && value_ptr[i] <= 'F'))
-                    value_length++;
-
-            // Write the word into memory
-            if (value_length <= 2)
-                write_byte(s, addr, value);
-            else if (value_length <= 4)
-                write_hword(s, addr, value);
-            else
-                write_word(s, addr, value);
-        }
 
         line_no++;
     }
     return line_no;
+}
+
+int write_mem_str(simulator* s, char* addr_ptr, char* value_ptr) {
+    // Parse value
+    uint32_t value;
+    if (sscanf(value_ptr, "%X", &value) != 1)
+        return -2;
+
+    // If is a valid register, write to the register; else parse as an address
+    REGISTER reg;
+    if ((reg = register_from_name(addr_ptr)) < 32 && reg >= 0) {
+        write_register(s, reg, value);
+    } else if (strcmp("PC", addr_ptr) == 0) {
+        s->pc = value;
+    } else {
+        // Parse address
+        uint32_t addr;
+        if (sscanf(addr_ptr, "%X", &addr) != 1)
+            return -1;
+
+        // Get the length of only the value string's valid characters
+        int value_length = 0;
+        for (int i = 0; i < strlen(value_ptr) ; i++)
+            if ((value_ptr[i] >= '0' && value_ptr[i] <= '9')
+                || (value_ptr[i] >= 'a' && value_ptr[i] <= 'f')
+                || (value_ptr[i] >= 'A' && value_ptr[i] <= 'F'))
+                value_length++;
+
+        // Write the word into memory
+        if (value_length <= 2)
+            write_byte(s, addr, value);
+        else if (value_length <= 4)
+            write_hword(s, addr, value);
+        else
+            write_word(s, addr, value);
+    }
+    return 0;
 }
 
 int dump_memory_to_file(simulator* s, FILE* f, uint32_t start_addr, uint32_t length, bool ignore_zeros) {
