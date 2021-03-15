@@ -164,13 +164,25 @@ int main(int argc, char* argv[]) {
                         dump_memory_to_file(&s, stdout, 0, 0, ignore_zeros);
                     } else if (strcmp(argv[0], "write") == 0) {
                         if (argc != 3) {
-                            printf("Invalid usage");
+                            printf("Invalid usage\n");
                             printf("write <addr/reg> <value>\n");
                         } else {
                             if (write_mem_str(&s, argv[1], argv[2]) != 0)
-                                printf("Invalid format");
+                                printf("Invalid format\n");
                         }
-                    } else if (strcmp(argv[0], "quit") == 0) || (strcmp(argv[0], "exit") == 0) {
+                    } else if (strcmp(argv[0], "read") == 0) {
+                        if (argc != 2) {
+                            printf("Invalid usage\n");
+                            printf("read <addr/reg>\n");
+                        } else {
+                            uint32_t value;
+                            char* addr = argv[1];
+                            if (read_mem_str(&s, addr, &value) != 0)
+                                printf("Invalid format\n");
+                            else
+                                printf("%s: %08X\n", addr, value);
+                        }
+                    } else if ((strcmp(argv[0], "quit") == 0) || (strcmp(argv[0], "exit") == 0)) {
                         cont = 0;
                         break;
                     } else {
@@ -180,6 +192,7 @@ int main(int argc, char* argv[]) {
                         printf("exit\n");
                         printf("next <count>\n");
                         printf("quit\n");
+                        printf("read <addr/reg>\n");
                         printf("write <addr/reg> <value>\n");
                     }
                 }

@@ -91,6 +91,21 @@ int write_mem_str(simulator* s, char* addr_ptr, char* value_ptr) {
     return 0;
 }
 
+int read_mem_str(simulator* s, char* addr_ptr, uint32_t* value) {
+    REGISTER reg;
+    if ((reg = register_from_name(addr_ptr)) < 32 && reg >= 0) {
+        *value = read_register(s, reg);
+    } else if (strcmp("PC", addr_ptr) == 0) {
+        *value = s->pc;
+    } else {
+        uint32_t addr;
+        if (sscanf(addr_ptr, "%X", &addr) != 1)
+            return -1;
+        *value = read_word(s, addr);
+    }
+    return 0;
+}
+
 int dump_memory_to_file(simulator* s, FILE* f, uint32_t start_addr, uint32_t length, bool ignore_zeros) {
     uint32_t count = 0;
     uint32_t addr = start_addr;

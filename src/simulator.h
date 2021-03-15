@@ -51,6 +51,7 @@ void display_memory(simulator *s, uint32_t start_addr, uint32_t length, bool ign
 void display_registers(simulator *s, bool ignore_zeros);
 int read_file_to_memory(simulator *s, FILE *f);
 int write_mem_str(simulator* s, char* addr_ptr, char* value_ptr);
+int read_mem_str(simulator* s, char* addr_ptr, uint32_t* value);
 int dump_memory_to_file(simulator *s, FILE *f, uint32_t start_addr, uint32_t length, bool ignore_zeros);
 int dump_registers_to_file(simulator *s, FILE *f, bool ignore_zeros);
 void write_word(simulator *s, uint32_t addr, uint32_t data);
