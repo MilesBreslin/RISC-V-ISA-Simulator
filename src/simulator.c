@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -239,7 +240,14 @@ const char* register_to_name(REGISTER reg) {
     return "REG_INVALID";
 }
 REGISTER register_from_name(char* name) {
-    #define GEN_REG_FROM_NAME(value) if (strcmp(name, #value) == 0) return value;
+    // Convert to uppercase
+    char name_parsed[10] = { 0 };
+    if (strlen(name) >= length(name_parsed))
+        return -1;
+    for (int i = 0; i < strlen(name); i++)
+        name_parsed[i] = toupper(name[i]);
+    
+    #define GEN_REG_FROM_NAME(value) if (strcmp(name_parsed, #value) == 0) return value;
     GEN_REG_FROM_NAME(REG_ZERO);
     GEN_REG_FROM_NAME(REG_RA);
     GEN_REG_FROM_NAME(REG_SP);
