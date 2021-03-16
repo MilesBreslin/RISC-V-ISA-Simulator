@@ -391,7 +391,7 @@ bool execute_simulation_step(simulator* s) {
         return true;
     }
     if (is_sltiu_instruction(&i_instruction)) {
-        if(read_register(s, i_instruction.rs1) < i_instruction.imm_u) { 
+        if(read_register(s, i_instruction.rs1) < (uint32_t) ((int32_t) i_instruction.imm_s)) { 
             write_register(s, i_instruction.rd, 1);                                            
         }        
         else {
