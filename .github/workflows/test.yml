@@ -2,7 +2,7 @@ name: Compile Test
 on:
   push:
     branches:
-      - '*'
+      - 'test_github_workflow'
   workflow_dispatch:
 
 jobs:

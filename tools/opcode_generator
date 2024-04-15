@@ -198,7 +198,7 @@ def generate(file_type):
             | "bool \($is_function_name)(const \(.instruction_type)_INSTRUCTION* decoded_instruction)" as $is_function_prototype
             | {
                 "header": [
-                    ("const uint8_t \("OPCODE_\($operation_name)" | ascii_upcase) = \(.opcode);"),
+                    ("const uint8_t \("OP0_\($operation_name)" | ascii_upcase) = \(.op0);"),
                     (if .func3 != null then
                         ("const uint8_t \("FUNC3_\($operation_name)" | ascii_upcase) = \(.func3);")
                     else empty end),
