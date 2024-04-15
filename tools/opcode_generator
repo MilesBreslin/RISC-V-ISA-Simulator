@@ -227,7 +227,7 @@ def generate(file_type):
             | "bool \($is_function_name)(const \(.instruction_type)_INSTRUCTION* decoded_instruction)" as $is_function_prototype
             | {
                 "header": [
-                    ("#define \("OPCODE_\($operation_name)" | ascii_upcase) \(.opcode);"),
+                    ("#define \("OPCODE_\($operation_name)" | ascii_upcase) \(.op0);"),
                     (if .func3 != null then
                         ("#define \("FUNC3_\($operation_name)" | ascii_upcase) \(.func3);")
                     else empty end),
