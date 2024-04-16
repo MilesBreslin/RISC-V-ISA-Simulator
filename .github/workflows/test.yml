@@ -8,9 +8,37 @@ on:
 jobs:
   compile:
     runs-on: ubuntu-latest
+    timeout-minutes: 1
     steps:
       - uses: actions/checkout@v2
       - name: Compile the program
         run: make
       - name: Run example
         run: ./build/riscv_simulator --verbose --load-file example.mem
+  run-all-instruction-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v2
+      - name: Compile Instruction Tests
+        run: ./tools/run_all_instruction_tests build
+      - name: Run Instruction Tests
+        run: ./tools/run_all_instruction_tests run
+  run-all-end-to-end-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run all end-to-end tests
+        run: ./tools/run_end_to_end_tests
+  valgrind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install valgrind
+        run: sudo apt-get install -y valgrind
+      - name: Compile the program
+        run: make
+      - name: Run example
+        run: "valgrind ./build/riscv_simulator --verbose --load-file example.mem 2>&1 | grep 'ERROR SUMMARY: 0 errors'"

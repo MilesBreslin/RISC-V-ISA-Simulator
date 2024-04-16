@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+IFS=$'\n'
+
+make
+
+DIR=tests/end_to_end
+
+FAILURES=0
+for i in "$DIR"/*.mem ; do
+    FILENAME="$(basename "$i")"
+    NO_EXT="${FILENAME/.mem}"
+    CHECK_FILE="$DIR/$NO_EXT.check"
+    if [ -e "$CHECK_FILE" ] ; then
+        OUTFILE="$(mktemp)"
+        sedfilter='s/./\U&/g;s/^0*//;s/ //g;s/:0*/:/;s/#.*//'
+        SUCCESS=1
+        ./build/riscv_simulator \
+            --load-file "$i" \
+            --dump-memory - \
+            --dump-registers - \
+            --instruction-limit 10000000 \
+            > "$OUTFILE" \
+            || SUCCESS=0
+        if [ "$SUCCESS" == 1 ] ; then
+            sed -i "$sedfilter" "$OUTFILE"
+            for line in $(<"$CHECK_FILE") ; do
+                filtered_line="$(<<<"$line" sed "$sedfilter")"
+                if [ -n "$filtered_line" ] && ! grep "^$filtered_line$" "$OUTFILE" >/dev/null 2>/dev/null ; then
+                    echo "'$line' not found"
+                    SUCCESS=0
+                    break
+                fi
+            done
+        fi
+        if ((SUCCESS!=1)) ; then
+            FAILURES=$((FAILURES+1))
+            echo "$i: FAILURE"
+        else
+            echo "$i: SUCCESS"
+        fi
+        rm "$OUTFILE"
+    else
+        echo "$CHECK_FILE not found" >&2
+        FAILURES=$((FAILURES+1))
+    fi
+done
+if ((FAILURES>0)) ; then
+    exit 1
+else
+    exit 0
+fi

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+DIR="$(mktemp -d)"
+COVERED_FILE="$DIR/covered.txt"
+TOTAL_FILE="$DIR/complete.txt"
+
+set -e
+
+make 2>&1
+
+echo "### All" >&2
+yq -r '.operations | to_entries | map(.key)[]' opcodes.yaml |\
+    sort -u | tee "$TOTAL_FILE" >&2
+
+echo "### Covered" >&2
+for i in tests/end_to_end/*.mem ; do
+    ./build/riscv_simulator \
+        --load-file "$i" --verbose 2>&1 |\
+        sed '/Instruction/!d;s/.*: //;s/ .*//;/Instruction/d'
+done | sort -u | tee "$COVERED_FILE" >&2
+
+echo "### Missing" >&2
+
+diff --color=always "$TOTAL_FILE" "$COVERED_FILE" |\
+    sed '/< /!d;s/< //'
+
+rm -rf "$DIR"

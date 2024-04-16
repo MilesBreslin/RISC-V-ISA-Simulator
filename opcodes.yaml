@@ -1,0 +1,429 @@
+operations:
+  ADD:
+    opcode: "0b0110011"
+    func3: "0b000"
+    func7: "0b0000000"
+    instruction_type: R
+  SUB:
+    opcode: "0b0110011"
+    func3: "0b000"
+    func7: "0b0100000"
+    instruction_type: R
+  SLL:
+    opcode: "0b0110011"
+    func3: "0b001"
+    func7: "0b0000000"
+    instruction_type: R
+  SLT:
+    opcode: "0b0110011"
+    func3: "0b010"
+    func7: "0b0000000"
+    instruction_type: R
+  SLTU:
+    opcode: "0b0110011"
+    func3: "0b011"
+    func7: "0b0000000"
+    instruction_type: R
+  XOR:
+    opcode: "0b0110011"
+    func3: "0b100"
+    func7: "0b0000000"
+    instruction_type: R
+  SRL:
+    opcode: "0b0110011"
+    func3: "0b101"
+    func7: "0b0000000"
+    instruction_type: R
+  SRA:
+    opcode: "0b0110011"
+    func3: "0b101"
+    func7: "0b0100000"
+    instruction_type: R
+  OR:
+    opcode: "0b0110011"
+    func3: "0b110"
+    func7: "0b0000000"
+    instruction_type: R
+  AND:
+    opcode: "0b0110011"
+    func3: "0b111"
+    func7: "0b0000000"
+    instruction_type: R
+  ADDI:
+    opcode: "0b0010011"
+    func3: "0b000"
+    instruction_type: I
+  SLTI:
+    opcode: "0b0010011"
+    func3: "0b010"
+    instruction_type: I
+  SLTIU:
+    opcode: "0b0010011"
+    func3: "0b011"
+    instruction_type: I
+  XORI:
+    opcode: "0b0010011"
+    func3: "0b100"
+    instruction_type: I
+  ORI:
+    opcode: "0b0010011"
+    func3: "0b110"
+    instruction_type: I
+  ANDI:
+    opcode: "0b0010011"
+    func3: "0b111"
+    instruction_type: I
+  SLLI:
+    opcode: "0b0010011"
+    func3: "0b001"
+    instruction_type: I
+  SRLI:
+    opcode: "0b0010011"
+    func3: "0b101"
+    func7: "0b0000000"
+    instruction_type: I
+  SRAI:
+    opcode: "0b0010011"
+    func3: "0b101"
+    func7: "0b0100000"
+    instruction_type: I
+  BEQ:
+    opcode: "0b1100011"
+    func3: "0b000"
+    instruction_type: B
+  BNE:
+    opcode: "0b1100011"
+    func3: "0b001"
+    instruction_type: B
+  BLT:
+    opcode: "0b1100011"
+    func3: "0b100"
+    instruction_type: B
+  BGE:
+    opcode: "0b1100011"
+    func3: "0b101"
+    instruction_type: B
+  BLTU:
+    opcode: "0b1100011"
+    func3: "0b110"
+    instruction_type: B
+  BGEU:
+    opcode: "0b1100011"
+    func3: "0b111"
+    instruction_type: B
+  LUI:
+    opcode: "0b0110111"
+    instruction_type: U
+  AUIPC:
+    opcode: "0b0010111"
+    instruction_type: U
+  JAL:
+    opcode: "0b1101111"
+    instruction_type: J
+  JALR:
+    opcode: "0b1100111"
+    func3: "0b0"
+    instruction_type: I
+  LB:
+    opcode: "0b0000011"
+    func3: "0b000"
+    instruction_type: I
+  LH:
+    opcode: "0b0000011"
+    func3: "0b001"
+    instruction_type: I
+  LW:
+    opcode: "0b0000011"
+    func3: "0b010"
+    instruction_type: I
+  LBU:
+    opcode: "0b0000011"
+    func3: "0b100"
+    instruction_type: I
+  LHU:
+    opcode: "0b0000011"
+    func3: "0b101"
+    instruction_type: I
+  SB:
+    opcode: "0b0100011"
+    func3: "0b000"
+    instruction_type: S
+  SH:
+    opcode: "0b0100011"
+    func3: "0b001"
+    instruction_type: S
+  SW:
+    opcode: "0b0100011"
+    func3: "0b010"
+    instruction_type: S
+  ECALL:
+    opcode: "0b1110011"
+    func3: "0b000"
+    instruction_type: I
+  MUL:
+    opcode: "0b0110011"
+    func3: "0b000"
+    func7: "0b0000001"
+    instruction_type: R
+  MULH:
+    opcode: "0b0110011"
+    func3: "0b001"
+    func7: "0b0000001"
+    instruction_type: R
+  MULHSU:
+    opcode: "0b0110011"
+    func3: "0b010"
+    func7: "0b0000001"
+    instruction_type: R
+  MULHU:
+    opcode: "0b0110011"
+    func3: "0b011"
+    func7: "0b0000001"
+    instruction_type: R
+  DIV:
+    opcode: "0b0110011"
+    func3: "0b100"
+    func7: "0b0000001"
+    instruction_type: R
+  DIVU:
+    opcode: "0b0110011"
+    func3: "0b101"
+    func7: "0b0000001"
+    instruction_type: R
+  REM:
+    opcode: "0b0110011"
+    func3: "0b110"
+    func7: "0b0000001"
+    instruction_type: R
+  REMU:
+    opcode: "0b0110011"
+    func3: "0b111"
+    func7: "0b0000001"
+    instruction_type: R
+# bits are a list of chunks of bits
+# The bits are concatenated together in the order listed here.
+# The bits are defined inclusively (start and end bits are included).
+# You may also instead of specifying a start and end bit, specify how
+# many zero bits there are.
+instruction_types:
+  R:
+    - name: opcode
+      signed: false
+      bits:
+        - start: 0
+          end: 6
+    - name: rd
+      type: REGISTER
+      signed: false
+      bits:
+        - start: 7
+          end: 11
+    - name: func3
+      signed: false
+      bits:
+        - start: 12
+          end: 14
+    - name: rs1
+      type: REGISTER
+      signed: false
+      bits:
+        - start: 15
+          end: 19
+    - name: rs2
+      type: REGISTER
+      signed: false
+      bits:
+        - start: 20
+          end: 24
+    - name: func7
+      signed: false
+      bits:
+        - start: 25
+          end: 31
+  I:
+    - name: opcode
+      signed: false
+      bits:
+        - start: 0
+          end: 6
+    - name: rd
+      type: REGISTER
+      signed: false
+      bits:
+        - start: 7
+          end: 11
+    - name: func3
+      signed: false
+      bits:
+        - start: 12
+          end: 14
+    - name: rs1
+      type: REGISTER
+      signed: false
+      bits:
+        - start: 15
+          end: 19
+    - name: func7
+      signed: false
+      bits:
+        - start: 25
+          end: 31
+    - name: imm_u
+      signed: false
+      bits:
+        - start: 20
+          end: 31
+    - name: imm_s
+      signed: true
+      bits:
+        - start: 20
+          end: 31
+  S:
+    - name: opcode
+      signed: false
+      bits:
+        - start: 0
+          end: 6
+    - name: func3
+      signed: false
+      bits:
+        - start: 12
+          end: 14
+    - name: rs1
+      type: REGISTER
+      signed: false
+      bits:
+        - start: 15
+          end: 19
+    - name: rs2
+      type: REGISTER
+      signed: false
+      bits:
+        - start: 20
+          end: 24
+    - name: imm_u
+      signed: false
+      bits:
+        - start: 7
+          end: 11
+        - start: 25
+          end: 31
+    - name: imm_s
+      signed: true
+      bits:
+        - start: 7
+          end: 11
+        - start: 25
+          end: 31
+  U:
+    - name: opcode
+      signed: false
+      bits:
+        - start: 0
+          end: 6
+    - name: rd
+      type: REGISTER
+      signed: false
+      bits:
+        - start: 7
+          end: 11
+    - name: imm_u
+      signed: false
+      bits:
+        - start: 12
+          end: 31
+    - name: imm_s
+      signed: true
+      bits:
+        - start: 12
+          end: 31
+  B:
+    - name: opcode
+      signed: false
+      bits:
+        - start: 0
+          end: 6
+    - name: func3
+      signed: false
+      bits:
+        - start: 12
+          end: 14
+    - name: rs1
+      type: REGISTER
+      signed: false
+      bits:
+        - start: 15
+          end: 19
+    - name: rs2
+      type: REGISTER
+      signed: false
+      bits:
+        - start: 20
+          end: 24
+    - name: imm_u
+      signed: false
+      bits:
+        - zeros: 1
+        - start: 8
+          end: 11
+        - start: 25
+          end: 30
+        - start: 7
+          end: 7
+        - start: 31
+          end: 31
+    - name: imm_s
+      signed: true
+      bits:
+        - zeros: 1
+        - start: 8
+          end: 11
+        - start: 25
+          end: 30
+        - start: 7
+          end: 7
+        - start: 31
+          end: 31
+  J:
+    - name: opcode
+      signed: false
+      bits:
+        - start: 0
+          end: 6
+    - name: rd
+      type: REGISTER
+      signed: false
+      bits:
+        - start: 7
+          end: 11
+    - name: imm_u
+      signed: false
+      bits:
+        - zeros: 1
+        - start: 21
+          end: 24
+        - start: 25
+          end: 30
+        - start: 20
+          end: 20
+        - start: 12
+          end: 19
+        - start: 31
+          end: 31
+    - name: imm_s
+      signed: true
+      bits:
+        - zeros: 1
+        - start: 21
+          end: 24
+        - start: 25
+          end: 30
+        - start: 20
+          end: 20
+        - start: 12
+          end: 19
+        - start: 31
+          end: 31
+known_types:
+  REGISTER:
+    total_bits: 5

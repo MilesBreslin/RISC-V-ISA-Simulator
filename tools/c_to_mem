@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+FAIL() {
+    echo "$@" >&2
+    exit 1
+}
+
+TOOLCHAIN=riscv32-unknown-elf
+CC="${TOOLCHAIN}-gcc"
+LD="${TOOLCHAIN}-ld"
+OBJDUMP="${TOOLCHAIN}-objdump"
+
+# Check for dependencies
+if ! which "$CC" >/dev/null 2>/dev/null ; then
+    FAIL "Could not find a compiler"
+fi
+if ! which "$LD" >/dev/null 2>/dev/null ; then
+    FAIL "Could not find a linker"
+fi
+if ! which "$OBJDUMP" >/dev/null 2>/dev/null ; then
+    FAIL "Could not find objdump"
+fi
+
+# Check usage args
+if [ -z "$1" ] ; then
+    FAIL "$0 <target_file>"
+fi
+[ -e "$1" ] || FAIL "File $1 not found"
+
+# Ensure we know the target and the base name for the target
+TARGET="$1"
+BASEFILENAME="${TARGET/.c}"
+if [ "$TARGET" == "$BASEFILENAME" ] ; then
+    FAIL "Could not parse path \"$TARGET\". Is it a .c file?"
+fi
+
+set -e
+
+"$CC" -march=rv32i -mabi=ilp32 -fpic -ggdb -O0 -c "$TARGET" -o "$BASEFILENAME.o"
+"$LD" "$BASEFILENAME.o" -o "$BASEFILENAME"
+"$OBJDUMP" -D "$BASEFILENAME" \
+    | sed 's/^ *//;/^[a-f0-9]*:/!d;s/  .*//;s/ //g' \
+    > "$BASEFILENAME.mem"
+"$OBJDUMP" -d "$BASEFILENAME" \
+    | sed '/<_start>/!d;s/ .*//;s/^/PC: /' \
+    >> "$BASEFILENAME.mem"

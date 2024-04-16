@@ -1,0 +1,21 @@
+#Load know values to registers t0-t4 VALUES ARE HEX
+REG_T0:9 
+REG_T1:2
+REG_T2:3
+REG_T3:00afffaf
+REG_T4:0000ffff
+REG_T5:ffff0000
+#explicitly assign PC
+PC:0
+#Load instructions -Results stored to REG_S1-S9
+0:026284b3 
+4:02629933
+8:0262b9b3
+c:0262aa33
+10:0253cab3
+14:0253db33
+18:0263ebb3
+1c:0263fc33
+20:0263ccb3
+24:03de1d33
+28:03ee8db3 
